@@ -17,8 +17,9 @@ private:
 public:
   linkedlist() // 생성자
   {
-    head = new node;
-    tail = new node;
+    head = new node; // 만일 "BAPC" 가 입력값으로 주어지면 링크드 리스트 구조는 
+    tail = new node; // head => B => A => P => C 이런 구조로 이루어짐. 데이터 B를 저장하는 노드는
+    // head 노드의 next 노드이며, 노드 C 는 tail 의 prev 노드이다.
 
     head -> next = tail;
     tail -> prev = head;
