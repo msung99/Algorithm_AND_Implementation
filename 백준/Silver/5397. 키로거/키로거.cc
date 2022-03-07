@@ -46,7 +46,7 @@ public:
 
   // 커서 포인터 왼쪽으로 한칸이동
   void moveleft(){
-    if(cursor != head)
+    if(cursor != head)  // cursor 가 head 일때 커서 포인터를 왼쪽으로 이동 불가임
     {
       cursor = cursor->prev; 
     }
@@ -62,7 +62,8 @@ public:
 
   // 커서 포인터의 노드 삭제
   void deletepass(){
-    if(cursor != head){
+    if(cursor != head){ // 커서 포인터가 맨 앞 노드인 head일때 삭제하려고 하면, 삭제할 노드가 없음
+      // 생각해보면 cursor->prev 노드가 존재하지 않을 것임.
       cursor->next ->prev = cursor-> prev;
       cursor->prev ->next = cursor->next;  
     
@@ -87,7 +88,7 @@ int main(void)
 
   cin >> n;
   
-  while(n--)
+  while(n--) 
   {
     linkedlist pw;
 
