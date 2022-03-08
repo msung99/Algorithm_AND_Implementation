@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+  
+    int testNum;
+    cin >> testNum;
+
+    for(int j=0; j < testNum; j++)
+    {
+        string s;
+        cin >> s;
+
+        list<char> li = {};
+        auto cursor = li.begin();
+       // list<char>::iterator cursor = li.begin();
+
+        for(auto c : s){
+            if(c == '<')
+            {
+                if(cursor != li.begin())
+                cursor--;
+            }
+            else if(c == '>')
+            {
+                if(cursor != li.end())
+                  cursor++;
+            }
+            else if(c == '-')
+            {
+                if(cursor != li.begin()){
+                cursor--;
+                cursor = li.erase(cursor);
+              }
+            }
+            else // 그냥 알파벳 문자인 경우
+            {
+              li.insert(cursor,c);
+            }
+        }
+        for(auto c : li){
+            cout << c;
+        }
+        cout << '\n';
+    }
+}
