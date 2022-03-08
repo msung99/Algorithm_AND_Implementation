@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+#include <list>
+using namespace std;
+
+int main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int num;
+    string str;
+  
+    cin >> str;
+    cin >> num;
+
+    list<char> l;
+    for(auto c : str) l.push_back(c);
+/*
+    list<char> l(str.begin(), str.end()); // 문자열 str를 list에 복사함
+    // for(auto c: str) l.push_back(c); // 이 표현과 동일한 결과를 가져옴 
+*/  
+
+    list<char>::iterator cursor = l.end(); // iterator 인 cursor
+    
+    while(num--){
+        char tmp;
+        cin >> tmp;
+
+        if(tmp == 'L')
+        {
+            cursor--;
+        }
+        else if(tmp == 'D')
+        {
+            cursor++;
+        }
+        else if(tmp == 'B')
+        {
+            cursor--;
+            cursor = l.erase(cursor); // erase는 cursor포인터(iterator)에 있는 노드를 삭제하고
+            // 삭제된 노드 뒤의 노드의 iterator 를 리턴함
+        }
+        else if(tmp == 'P')
+        {
+            char ch;
+            cin >> ch;
+            l.insert(cursor,ch); // insert는 cursor 포인터가 가리키는 노드의 바로 앞 노드에 ch 노드를 삽입함
+        }
+    }
+    // iterator 를 움직이면서 각 iterator 에 대한 데이터 값을 조회 
+    for(auto c : l) cout << c;
+/*
+    for(auto iter = l.begin(); iter != l.end(); iter++){
+      cout << *iter; 
+    }
+  */
+}
