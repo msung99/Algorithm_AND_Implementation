@@ -13,16 +13,19 @@ class Stack
 private:
   Node* head;
   Node* tail;
+  int length; // 스택의 크기 
 public:
   Stack()
   {
     head = NULL;
     tail = NULL;
+    length = 0;
   }
   void push(int value);
   int pop();
   bool empty();
   int top();
+  int size();
 };
 
 // 스택이 비어있으면 true 리턴
@@ -44,6 +47,11 @@ int Stack::top()
     return tail->value; 
 }
 
+int Stack::size()
+{
+  return length;
+}
+
 // 스택에 데이터 추가
 void Stack::push(int _value)
 {
@@ -63,6 +71,7 @@ void Stack::push(int _value)
         tail -> next = newNode;
         tail = newNode; // tail 노드 최신화 
     }
+    length++; // 스택의 크기 1 증가
 }
 
 // 상단 데이터 삭제
@@ -83,6 +92,7 @@ int Stack::pop()
             head = NULL;
             tail = NULL;
             delete(head);
+            length--; // 스택의 크기 1 감소
         }
         else // case2) 데이터가 하나 남은게 아닌 경우
         {
@@ -94,6 +104,7 @@ int Stack::pop()
                     ptr -> next = NULL; // tail 노드 이전노드인 ptr 과 tail 노드의 연결 관계를 끊어버리고
                     delete(tail); // tail 노드를 삭제시킨다
                     tail = ptr; // 그리고 tail 노드를 최신화해준다
+                    length--; // 스택의 크기 1감소
                     break; 
                 }
                 ptr = ptr -> next; // tail 노드 직전 위치를 찾가위해 계속 한칸씩 이동함
@@ -113,11 +124,13 @@ int main()
   stack.push(4);
   stack.push(5); // 1 2 3 4 5 
   cout << stack.top() << endl; // 5
+  cout << stack.size() << endl; // 5
 
   cout << stack.pop() << endl; // 5 
   cout << stack.pop() << endl; // 4
   cout << stack.pop() << endl; // 3
   cout << stack.pop() << endl; // 2
   cout << stack.pop() << endl; // 1
+  cout << stack.size() << endl; // 0
   cout << stack.pop() << endl << endl; // -1 리턴
 }
