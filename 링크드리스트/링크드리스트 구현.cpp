@@ -107,7 +107,6 @@ void S_linkedlist::get(int idx)
   Node* scan = head; // 탐색용 노드
   for(int i=0; i <idx; i++){
     scan = scan -> next;
-    idx --;
   }
   cout << scan -> elem << endl;
 }
