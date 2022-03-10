@@ -91,7 +91,6 @@ void S_linkedlist::remove(int idx)
       for(int i=0; i< idx-1; i++) // 삭제하려는 인덱스idx 바로 앞까지 감
       {
         scan = scan -> next;
-        idx--;
       }
 
       Node* target = scan -> next; // target : 삭제하려는 노드
