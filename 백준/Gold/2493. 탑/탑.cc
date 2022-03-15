@@ -1,23 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define X first
-#define Y second
+#define x first
+#define y second
 
-int N;
-stack<pair<int,int>> tower;
+stack<pair<int, int>> tower;
+int n;
 
-int main() {
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
+int main(){
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
-  cin >> N;  
-  tower.push({100000001, 0});
-  for (int i = 1; i <= N; i++) {
-    int height;
-    cin >> height;
-    while (tower.top().X < height)
-      tower.pop();    
-    cout << tower.top().Y << " ";
-    tower.push({height, i});      
-  }
+	cin >> n;
+	tower.push({ 100000001,0 });
+
+	for (int i = 1; i <= n; i++){
+		int height;
+		cin >> height;
+
+		while (tower.top().x < height)
+			tower.pop(); 
+		cout << tower.top().y  << " ";
+		tower.push({ height,i });
+	}
 }
