@@ -7,7 +7,7 @@ using namespace std;
 // 원형 큐 구현
 class Queue {
 private:
-	int data[MAX]; // 큐 데이터를 저장하는 배열
+	int data[MAX]; // 큐 데이터를 저장하는 배열. 데이터터는 배열의 인덱스 1번 방부터 저장되기 시작한다.
 	int index_front; // 가장 앞 인덱스 ( = head 포인터 )
 	int index_back; // 맨 뒤 인덱스   ( = tail 포인터 )
 public:
@@ -32,7 +32,8 @@ bool Queue::empty()
 
 void Queue::push(int x)
 {// 배열이 꽉차면 다시 0번 인덱스부터 시작해서 push 를 하는 원형 큐의 특성을 구현
-	index_back = (index_back + 1) % MAX;  // 인덱스 MAX-1 까지 가득찼다면, 다시 0번 인덱스 부터 데이터를 삽입 
+	 // 인덱스 MAX-1 까지 가득찼다면, 다시 0번 인덱스 부터 데이터를 삽입 
+	index_back = (index_back + 1) % MAX;  // tail 인덱스를 한칸 이동시키고 이동시킨 곳에 데이터를 저징
 	data[index_back] = x;
 }
 
@@ -44,7 +45,7 @@ void Queue::pop()
 
 int Queue::front()
 {
-	return data[(index_front + 1) % MAX]; // 맨 앞 노드의 위치는 인덱스 head 다음 인덱스, 즉 인덱스 head+1 에 들어있다.
+	return data[(index_front + 1) % MAX]; // 맨 앞 노드의 위치는 인덱스 head(index_front)의 다음 인덱스, 즉 인덱스 index_front+1 에 들어있다.
 }
 
 int Queue::back()
