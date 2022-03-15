@@ -4,12 +4,12 @@ using namespace std;
 # define MAX 99999
 
 
-// ¿øÇü Å¥ ±¸Çö
+// ì›í˜• í êµ¬í˜„
 class Queue {
 private:
-	int data[MAX]; // Å¥ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÏ´Â ¹è¿­
-	int index_front; // °¡Àå ¾Õ ÀÎµ¦½º ( = head Æ÷ÀÎÅÍ )
-	int index_back; // ¸Ç µÚ ÀÎµ¦½º   ( = tail Æ÷ÀÎÅÍ )
+	int data[MAX]; // í ë°ì´í„°ë¥¼ ì €ì¥í•˜ëŠ” ë°°ì—´
+	int index_front; // ê°€ì¥ ì• ì¸ë±ìŠ¤ ( = head í¬ì¸í„° )
+	int index_back; // ë§¨ ë’¤ ì¸ë±ìŠ¤   ( = tail í¬ì¸í„° )
 public:
 	Queue();
 	bool empty();
@@ -31,20 +31,20 @@ bool Queue::empty()
 }
 
 void Queue::push(int x)
-{// ¹è¿­ÀÌ ²ËÂ÷¸é ´Ù½Ã 0¹ø ÀÎµ¦½ººÎÅÍ ½ÃÀÛÇØ¼­ push ¸¦ ÇÏ´Â ¿øÇü Å¥ÀÇ Æ¯¼ºÀ» ±¸Çö
-	index_back = (index_back + 1) % MAX;  // ÀÎµ¦½º MAX-1 ±îÁö °¡µæÃ¡´Ù¸é, ´Ù½Ã 0¹ø ÀÎµ¦½º ºÎÅÍ µ¥ÀÌÅÍ¸¦ »ğÀÔ 
+{// ë°°ì—´ì´ ê½‰ì°¨ë©´ ë‹¤ì‹œ 0ë²ˆ ì¸ë±ìŠ¤ë¶€í„° ì‹œì‘í•´ì„œ push ë¥¼ í•˜ëŠ” ì›í˜• íì˜ íŠ¹ì„±ì„ êµ¬í˜„
+	index_back = (index_back + 1) % MAX;  // ì¸ë±ìŠ¤ MAX-1 ê¹Œì§€ ê°€ë“ì°¼ë‹¤ë©´, ë‹¤ì‹œ 0ë²ˆ ì¸ë±ìŠ¤ ë¶€í„° ë°ì´í„°ë¥¼ ì‚½ì… 
 	data[index_back] = x;
 }
 
 void Queue::pop()
 {
-	index_front = (index_front + 1) % MAX; // head Æ÷ÀÎÅÍ¸¦ ÇÑÄ­ µÚ·Î ÀÌµ¿½ÃÄÑ¼­, ¸¶Ä¡ »èÁ¦µÈ µíÇÏ°Ô ÇÔ 
-	// (½ÇÁ¦·Î´Â ¸Ş¸ğ¸®¿¡¼­ »èÁ¦µÇÁø ¾ÊÀ½)
+	index_front = (index_front + 1) % MAX; // head í¬ì¸í„°ë¥¼ í•œì¹¸ ë’¤ë¡œ ì´ë™ì‹œì¼œì„œ, ë§ˆì¹˜ ì‚­ì œëœ ë“¯í•˜ê²Œ í•¨ 
+	// (ì‹¤ì œë¡œëŠ” ë©”ëª¨ë¦¬ì—ì„œ ì‚­ì œë˜ì§„ ì•ŠìŒ)
 }
 
 int Queue::front()
 {
-	return data[(index_front + 1) % MAX];
+	return data[(index_front + 1) % MAX]; // ë§¨ ì• ë…¸ë“œì˜ ìœ„ì¹˜ëŠ” ì¸ë±ìŠ¤ head ë‹¤ìŒ ì¸ë±ìŠ¤, ì¦‰ ì¸ë±ìŠ¤ head+1 ì— ë“¤ì–´ìˆë‹¤.
 }
 
 int Queue::back()
@@ -60,12 +60,12 @@ int Queue::size()
 int main(void)
 {
 	Queue q;
-	// 1~10 ¼ıÀÚ¸¦ Å¥¿¡ push
+	// 1~10 ìˆ«ìë¥¼ íì— push
 	for (int i = 1; i <= 10; i++) {
 		q.push(i);
 	}
 
-	// 1~4 ¼ıÀÚ¸¦ pop
+	// 1~4 ìˆ«ìë¥¼ pop
 	for (int i = 1; i <= 4; i++) {
 		q.pop();
 	}
@@ -74,8 +74,8 @@ int main(void)
 
 	while (!q.empty())
 	{
-		cout << "pop:" << q.front() << '\n'; // »èÁ¦ÇÒ µ¥ÀÌÅÍÀÇ °ª ( = ¸Ç ¾Õ µ¥ÀÌÅÍÀÇ °ª) À» ÃßÃâÇÏ°í
-		q.pop(); // »èÁ¦½ÃÅ´
+		cout << "pop:" << q.front() << '\n'; // ì‚­ì œí•  ë°ì´í„°ì˜ ê°’ ( = ë§¨ ì• ë°ì´í„°ì˜ ê°’) ì„ ì¶”ì¶œí•˜ê³ 
+		q.pop(); // ì‚­ì œì‹œí‚´
 	}
 }
 
