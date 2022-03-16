@@ -7,7 +7,7 @@ int main(void)
 {
 	while (1)
 	{
-		stack<int> s;
+		stack<char> s;
 		string str;
 		bool check = true;
 		
