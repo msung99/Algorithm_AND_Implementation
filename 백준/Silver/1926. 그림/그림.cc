@@ -49,16 +49,16 @@ int main(void)
 
 				// 상하좌우 탐색
 				for (int i = 0; i < 4; i++) {
-					int nx = cur.first + dx[i];
-					int ny = cur.second + dy[i];
+					int x = cur.first + dx[i];
+					int y = cur.second + dy[i];
 
-					if (nx < 0 || nx >= n || ny < 0 || ny >= m)
+					if (x < 0 || x >= n || y < 0 || y >= m)
 						continue;
-					if (board[nx][ny] != 1 || visit[nx][ny]) // 이전에 방문한 노드이거나, 그림이 없는 칸인 경우
+					if (board[x][y] != 1 || visit[x][y]) // 이전에 방문한 노드이거나, 그림이 없는 칸인 경우
 						continue;
 
-					q.push({ nx,ny });
-					visit[nx][ny] = 1;
+					q.push({ x,y });
+					visit[x][y] = 1;
 				}
 			}
 			mx = max(mx, case_max);
