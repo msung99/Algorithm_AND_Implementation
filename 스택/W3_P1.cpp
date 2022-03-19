@@ -3,18 +3,17 @@
 using namespace std;
 
 class arrayStack {
+private:
+	int* arr; // ìŠ¤íƒì˜ ì›ì†Œë¥¼ ì €ì¥í•˜ëŠ” ë°°ì—´
+	int capacity; // ìŠ¤íƒì˜ ìµœëŒ€ í¬ê¸°ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜ 
+	int topIndex; // ë°°ì—´ì—ì„œ ìŠ¤íƒì˜ topì´ ì €ì¥ë˜ì–´ ìˆëŠ” ì¸ë±ìŠ¤ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
 public:
 	arrayStack(int capacity);
-	bool empty(); 
+	bool empty();
 	int size();
 	int top();
 	void push(int data);
 	void pop();
-
-private:
-	int* arr;  // ½ºÅÃÀÇ ¿ø¼Ò¸¦ ÀúÀåÇÏ´Â ¹è¿­
-	int capacity; // ½ºÅÃÀÇ ÃÖ´ë Å©±â¸¦ ÀúÀåÇÏ´Â º¯¼ö
-	int topIndex; // ¹è¿­¿¡¼­ ½ºÅÃÀÇ topÀÌ ÀúÀåµÇ¾î ÀÖ´Â ÀÎµ¦½º¸¦ ÀúÀåÇÏ´Â º¯¼ö
 };
 
 arrayStack::arrayStack(int capacity) {
@@ -32,41 +31,38 @@ bool arrayStack::empty() {
 	}
 }
 
-int arrayStack::top() {
-	if (empty())
-		return -1;
-	return arr[topIndex];
-}
-
-void arrayStack::push(int data) {
-	if (size() == capacity)
-	{
-		cout << "FULL";
-		return;
-	}
-	
-	topIndex++;
-	arr[topIndex] = data;
-}
-
 int arrayStack::size() {
 	return topIndex + 1;
 }
 
-void arrayStack::pop() {
+int arrayStack::top() {
 	if (empty()) {
-		cout << -1 << '\n';
+		return -1;
+	}
+	return arr[topIndex];
+}
+
+void arrayStack::push(int data) {
+	if (size() == capacity) {
+		cout << "FULL\n";
 		return;
 	}
+	topIndex++;
+	arr[topIndex] = data;
+}
 
-	cout << top() << '\n';
-	topIndex--;
+void arrayStack::pop() {
+	if (empty()) {
+		cout << "-1\n";
+	}
+	else {
+		cout << top() << "\n";
+		topIndex--;
+	}
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(false);
-	cin.tie(0);
 	int capacity, n;
 	cin >> capacity >> n;
 
@@ -76,21 +72,20 @@ int main(void)
 	{
 		string command;
 		cin >> command;
-		if (command == "size")
+		if (command == "top")
 		{
-			cout << s.size() << '\n';
+			cout << s.top() << "\n";
+		}
+		else if (command == "size")
+		{
+			cout << s.size() << "\n";
 		}
 		else if (command == "empty")
 		{
 			if (s.empty())
-				cout << 1 << '\n';
+				cout << "1\n";
 			else
-				cout << 0 << '\n';
-		}
-
-		else if (command == "top")
-		{
-			cout << s.top() << endl;
+				cout << "0\n";
 		}
 		else if (command == "push")
 		{
