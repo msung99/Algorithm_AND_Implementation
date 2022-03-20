@@ -60,7 +60,7 @@ int main(void)
 			}
 		}
 		cout << area_count << '\n';
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) { // 새로운 테스트케이스에 대해서 실행하기 전에, board와 visited를 깨끗하게 초기화시켜둠
 			fill(board[i], board[i] + m, 0);
 			fill(visited[i], visited[i] + m, false);
 		}
