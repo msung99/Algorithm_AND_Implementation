@@ -91,8 +91,8 @@ int main(void)
 				}
 				if (dist2[x][y] != 0 || board[x][y] == -1) // 이미 거리 계산을 한 칸이거나, 그 칸이 벽인경우
 					continue;
-				if (dist1[x][y] != 0 && dist1[x][y] <= dist2[cur.first][cur.second] + 1) // 불이 번진 칸인경우
-					continue;
+				if (dist1[x][y] != 0 && dist1[x][y] <= dist2[cur.first][cur.second] + 1) // 불이 번진 칸으로 이동하려는 경우
+					continue;                                    // => 불의 데이터 값이 사람 데이터 값보다 더 작은 것은 곧 예전에 그 칸에 불이 이미 퍼졌다는 의미이다,
 				dist2[x][y] = dist2[cur.first][cur.second] + 1;
 				q2.push({ x,y });
 			}
