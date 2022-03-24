@@ -66,7 +66,7 @@ void arrayQueue::enqueue(int data) { // 큐의 rear 에 원소를 삽입하는 �
 	// rearIndex 는 배열의 끝 위치(rear) 칸의 다음 칸을 가리킨다는 것을 유의하기!
 	else {
 		arr[rearIndex] = data;  // 배열의 rearIndex 위치에 원소를 삽입하고, 1증가
-		rearIndex = (rearIndex + 1) % capacity;
+		rearIndex = rearIndex + 1;
 		n++; // 큐 실제 사이즈 1증가
 	}
 }
