@@ -26,7 +26,7 @@ int main(void)
 		cin >> num_list[i];
 
 	func(0, 0);
-	if (s == 0)
+	if (s == 0)  // 부분수열의 크기가 양수인것만 카운팅 한다고 했으므로 공집합은 제외해 줘야함. s가 0이 아닐때는 상관없고, s 가 0일때는 cnt에서 1을 뺴줘야함
 		cnt--;
 	cout << cnt;
 }
