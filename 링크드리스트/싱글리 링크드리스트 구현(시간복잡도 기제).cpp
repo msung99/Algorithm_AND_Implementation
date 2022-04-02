@@ -3,8 +3,8 @@
 using namespace std;
 
 struct node {
-	int data; // µ¥ÀÌÅÍ ÇÊµå
-	node* next;  // ¸µÅ© ÇÊµå
+	int data; // ë°ì´í„° í•„ë“œ
+	node* next;  // ë§í¬ í•„ë“œ
 };
 
 class singlyLinkedList {
@@ -37,7 +37,7 @@ bool singlyLinkedList::empty()
 	else
 		return false;
 }
-void singlyLinkedList::append(int data) //tail¿¡(tailÀÇ µÚ¿¡´Ù) µ¥ÀÌÅÍ Ãß°¡ => O(1)
+void singlyLinkedList::append(int data) //tailì—(tailì˜ ë’¤ì—ë‹¤) ë°ì´í„° ì¶”ê°€ => O(1)
 {
 	node* newNode = new node;
 	newNode->data = data;
@@ -65,7 +65,7 @@ void singlyLinkedList::insertion(int idx, int data)
 	if (idx < 0 || idx > listSize)
 		return;
 
-	if (idx == 0) // head ¿¡ insert => O(1)
+	if (idx == 0) // head ì— insert => O(1)
 	{
 		newNode->next = head;
 		head = newNode;
@@ -73,12 +73,12 @@ void singlyLinkedList::insertion(int idx, int data)
 
 	else if (idx == listSize)
 	{
-		append(data); // tail ¿¡ insert => O(1)
+		append(data); // tail ì— insert => O(1)
 	}
 	else
 	{
 		node* curNode = new node;
-		for (int i = 1; i < idx; i++)    // Áß°£¿¡ insert => O(n)
+		for (int i = 1; i < idx; i++)    // ì¤‘ê°„ì— insert => O(n)
 		{
 			curNode->next = curNode;
 		}
@@ -94,7 +94,7 @@ void singlyLinkedList::delection(int idx)
 		return;
 
 	node* curNode = head;
-	if (idx == 0) // head ÀÇ »èÁ¦ => O(1)
+	if (idx == 0) // head ì˜ ì‚­ì œ => O(1)
 	{
 		if (listSize == 1)
 		{
@@ -112,7 +112,7 @@ void singlyLinkedList::delection(int idx)
 	else
 	{
 		node* preNode = head;
-		for (int i = 0; i < idx; i++)  // Áß°£¿¡ ÀÖ´Â°Í, ¶Ç´Â tailÀÇ »èÁ¦ => O(n)
+		for (int i = 0; i < idx; i++)  // ì¤‘ê°„ì— ìžˆëŠ”ê²ƒ, ë˜ëŠ” tailì˜ ì‚­ì œ => O(n)
 		{
 			preNode = curNode;
 			curNode = curNode->next;
