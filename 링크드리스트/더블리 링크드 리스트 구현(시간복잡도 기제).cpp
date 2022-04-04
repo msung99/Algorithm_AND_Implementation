@@ -34,6 +34,7 @@ bool doublyLinkedlist::empty()
 	return (listSize == 0);
 }
 
+// append 에서 고려할 요소 : empty() 일때
 void doublyLinkedlist::append(int data) // tail에 노드 추가 => O(1)
 {
 	node* newNode = new node;
@@ -56,6 +57,7 @@ void doublyLinkedlist::append(int data) // tail에 노드 추가 => O(1)
 	}
 }
 
+// insert에서 고려할 것 : tail삽입, head삽입
 void doublyLinkedlist::insertion(int idx, int data) 
 {
 	if (idx < 0 || idx > listSize)
@@ -97,6 +99,7 @@ void doublyLinkedlist::insertion(int idx, int data)
 	}
 }
 
+// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제 
 void doublyLinkedlist::delection(int idx)
 {
 	if (idx < 0 || idx >= listSize || empty())
