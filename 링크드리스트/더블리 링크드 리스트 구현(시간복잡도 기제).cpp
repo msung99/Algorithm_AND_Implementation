@@ -135,6 +135,8 @@ void doublyLinkedlist::delection(int idx)
 		}
 		preNode->next = curNode->next;
 		curNode->next->prev = preNode;
+		delete curNode;
+		listSize--;
 	}
 }
 
