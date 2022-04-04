@@ -74,6 +74,7 @@ void doublyLinkedlist::insertion(int idx, int data)
 		newNode->data = data;
 		newNode->next = head;
 		head->prev = newNode;
+		newNode->next= head;
 		head = newNode;
 		listSize++;
 	}
