@@ -1,3 +1,8 @@
+// 중위 표기법을 후위 표기식으로 나타내기
+// 1. 피연산자를 만나면 바로 출력한다
+// 2. 연산자를 만나면 필요한 만큼의 피연산자를 스택에서 pop하여 연산하고, 연산결과를 다시 스택에 push한다
+// 3. 수식이 끝나면, 마지막으로 스택에서 pop하여 출력한다
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -12,9 +17,9 @@ public:
 	void pop();
 
 private:
-	int* arr;  // ������ ���Ҹ� �����ϴ� �迭
-	int capacity; // ������ �ִ� ũ�⸦ �����ϴ� ����
-	int topIndex; // �迭���� ������ top�� ����Ǿ� �ִ� �ε����� �����ϴ� ����
+	int* arr;  // 스택의 원소를 저장하는 배열
+	int capacity; // 스택의 최대 크기를 저장하는 변수
+	int topIndex; // 배열에서 스택의 top이 저장되어 있는 인덱스를 저장하는 변수
 };
 
 arrayStack::arrayStack(int capacity) {
@@ -70,12 +75,12 @@ int main(void)
 	arrayStack s(1000);
 
 	// 1-2+3 
-	// ���� :  12-3+
-	// ���� :  1-2343
+	// 정상 :  12-3+
+	// 실제 :  1-2343
 
 
 	// 12-3+
-	// ����:+
+	// 스택:+
 	while (n--)
 	{
 		string str;
