@@ -56,6 +56,12 @@ int listStack::top()  // top 연산 : O(1)
 
 void listStack::push(int data) // push 연산 : head 노드(topNode 노드) 에서 삽입 진행 => O(1)
 {
+	if (size() < listSize)
+	{
+		cout << "FULL" << endl;
+		return -1;
+	}
+	
 	node* newNode = new node;
 	newNode->data = data;
 
