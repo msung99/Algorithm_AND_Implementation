@@ -1,3 +1,7 @@
+// append 에서 고려할 요소 : empty() 일때
+// insert에서 고려할 것 : tail삽입, head삽입
+// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제 
+
 #include <iostream>
 #include <string>
 using namespace std;
