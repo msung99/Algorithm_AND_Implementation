@@ -3,18 +3,18 @@
 using namespace std;
 
 struct node {
-	int data; // µ¥ÀÌÅÍ ÇÊµå
-	node* next;  // ¸µÅ© ÇÊµå
+	int data;
+	node* next;
 	node* prev;
 };
 
-class doublyLinkedList {
+class doublyLinkedlist {
 private:
+	int listSize;
 	node* head;
 	node* tail;
-	int listSize;
 public:
-	doublyLinkedList();
+	doublyLinkedlist();
 	bool empty();
 	void append(int data);
 	void insertion(int idx, int data);
@@ -22,24 +22,19 @@ public:
 	void print();
 };
 
-doublyLinkedList::doublyLinkedList()
+doublyLinkedlist::doublyLinkedlist()
 {
 	head = NULL;
 	tail = NULL;
 	listSize = 0;
 }
 
-
-bool doublyLinkedList::empty()
+bool doublyLinkedlist::empty()
 {
-	if (listSize == 0)
-		return true;
-
-	else
-		return false;
+	return (listSize == 0);
 }
 
-void doublyLinkedList::append(int data) //tail¿¡(tailÀÇ µÚ¿¡´Ù) µ¥ÀÌÅÍ Ãß°¡ => O(1)
+void doublyLinkedlist::append(int data) // tailì— ë…¸ë“œ ì¶”ê°€ => O(1)
 {
 	node* newNode = new node;
 	newNode->data = data;
@@ -52,29 +47,28 @@ void doublyLinkedList::append(int data) //tail¿¡(tailÀÇ µÚ¿¡´Ù) µ¥ÀÌÅÍ Ãß°¡ => O
 		tail = newNode;
 		listSize++;
 	}
-	else
-	{
+
+	else {
 		tail->next = newNode;
 		newNode->prev = tail;
-		tail = tail->next;
+		tail = newNode;
 		listSize++;
 	}
 }
 
-
-void doublyLinkedList::insertion(int idx, int data)
+void doublyLinkedlist::insertion(int idx, int data) 
 {
-
-	if (idx < 0 || idx > listSize){
+	if (idx < 0 || idx > listSize)
 		return;
-	}
 
-	else if (idx == listSize)
+	else if (idx == listSize) // tailì— ì‚½ìž…ì´ë¯€ë¡œ append í˜¸ì¶œ => O(1)
 	{
-		append(data); // tail ¿¡ insert => O(1)
+		append(data);
+		listSize++;
+		cout << "insertionì—ì„œ appeend í˜¸ì¶œ" << endl;
 	}
 
-	if (idx == 0) // head ¿¡ insert => O(1)
+	else if (idx == 0) // head ì— ì‚½ìž… => O(1)
 	{
 		node* newNode = new node;
 		newNode->data = data;
@@ -84,133 +78,117 @@ void doublyLinkedList::insertion(int idx, int data)
 		listSize++;
 	}
 
-	else
+	else // ì¤‘ê°„ì— ì–´ë”˜ê°€ì— ì‚½ìž… => O(n)
 	{
 		node* newNode = new node;
 		newNode->data = data;
 		node* curNode = head;
-		for (int i = 1; i < idx; i++)    // Áß°£¿¡ insert => O(n)
+		for (int i = 1; i < idx; i++)
 		{
-			curNode = curNode->next; // »ðÀÔÇÒ À§Ä¡ÀÇ ÀÌÀü ³ëµå
+			curNode = curNode->next;
 		}
-		curNode->next->prev = newNode;
 		newNode->next = curNode->next;
+		curNode->next->prev = newNode;
 
 		newNode->prev = curNode;
 		curNode->next = newNode;
-
 		listSize++;
 	}
 }
 
-void doublyLinkedList::delection(int idx)
+void doublyLinkedlist::delection(int idx)
 {
-	if (empty() || idx < 0 || idx > listSize)
+	if (idx < 0 || idx >= listSize || empty())
 		return;
 
 	node* curNode = head;
-	if (idx == 0) // head ÀÇ »èÁ¦ => O(1)
+	if (idx == 0) // head ì‚­ì œ => O(1)
 	{
 		if (listSize == 1)
 		{
-			head = NULL;
-			tail = NULL;
-			listSize--;
+			head = tail = NULL;
 		}
 		else
 		{
 			head = head->next;
-			delete curNode;
-			listSize--;
 		}
 	}
 
-	else if (idx == listSize) // tail ³ëµå »èÁ¦ => O(1)   ( ½Ì±Û¸® ¸®½ºÆ®ÀÇ °æ¿ì tail »èÁ¦°¡ O(n) )
+	
+	else if (idx == listSize-1) // tail ì‚­ì œ => O(1)
 	{
-		tail->prev->next = NULL;
-		tail = tail->prev;
-		delete tail;
+		node* tmp = tail;
+		tail = tmp->prev;
+		tail->next = NULL;
+		delete tmp;
 		listSize--;
 	}
-
-	else
+	
+	else // ì¤‘ê°„ ë…¸ë“œ ì‚­ì œ => O(n)
 	{
 		node* preNode = head;
-		for (int i = 0; i < idx; i++)  // Áß°£¿¡ ÀÖ´Â ³ëµå »èÁ¦ => O(n)
+		for (int i = 0; i < idx; i++)
 		{
 			preNode = curNode;
 			curNode = curNode->next;
 		}
 		preNode->next = curNode->next;
 		curNode->next->prev = preNode;
-		delete curNode;
-		listSize--;
 	}
 }
 
-void doublyLinkedList::print()
+void doublyLinkedlist::print()
 {
 	if (empty())
-	{
-		cout << "Empty\n";
-		return;
-	}
+		cout << "empty";
+
 	node* curNode = head;
 	while (curNode != NULL)
 	{
-		cout << curNode->data << ' ';
+		cout << curNode->data << " ";
 		curNode = curNode->next;
 	}
-	cout << '\n';
+	cout << endl;
 }
-
-bool empty();
-void append(int data);
-void insertion(int idx, int data);
-void delection(int idx);
-void print();
 
 int main(void)
 {
-	doublyLinkedList d1;
+	doublyLinkedlist d;
 
 	int testCase;
 	cin >> testCase;
-
 	while (testCase--)
 	{
 		string command;
 		cin >> command;
-
 		if (command == "empty")
 		{
-			if (d1.empty())
+			if (d.empty())
 				cout << "EMPTY" << endl;
 			else
 				cout << "NOT EMPTY" << endl;
 		}
-
 		else if (command == "append")
 		{
-			int dat;
-			cin >> dat;
-			d1.append(dat);
+			int data;
+			cin >> data;
+			d.append(data);
 		}
-		else if (command == "insertion")
+		else if (command == "insert")
 		{
-			int a, b;
-			cin >> a >> b;
-			d1.insertion(a, b);
+			int idx, data;
+			cin >> idx >> data;
+			d.insertion(idx, data);
 		}
-		else if (command == "delection")
+		else if (command == "delete")
 		{
-			int a;
-			cin >> a;
-			d1.delection(a);
+			int idx;
+			cin >> idx;
+			d.delection(idx);
 		}
 		else if (command == "print")
 		{
-			d1.print();
+			d.print();
 		}
 	}
 }
