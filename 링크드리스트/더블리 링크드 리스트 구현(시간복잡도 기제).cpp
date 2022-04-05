@@ -105,7 +105,8 @@ void doublyLinkedlist::insertion(int idx, int data)
 	}
 }
 
-// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제 3.중간 삽입에서 for문은 i=0부터 돌리고, 삭제할 노드와 그전노드인 curNode,preNode를 구한다.
+// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제
+// 3.중간 삽입에서 삭제할 직전노도와 ,삭제할 노드를 모두 구해야해서 for문을 i=0부터 "많이" 돌린다. 
 // tail 노드 삭제시 insert 연산의 경우엔 idx == listSize 일때 진행했지만, delete 연산은 idx == listSize-1 일 떄이다.
 // (idx < 0 || idx >= listSize || empty()) return; 에서 idx ">=" listSize 인것도 주의하자. (insert연산은 idx ">" listSize 이다.)
 void doublyLinkedlist::delection(int idx)
