@@ -61,8 +61,9 @@ void doublyLinkedlist::append(int data) // tail에 노드 추가 => O(1)
 	}
 }
 
-// insert에서 고려할 것 : tail삽입, head삽입. 중간삽입에서 for문은 "조금" 돌린다.(i=1 일때 부터시작)
+// insert에서 고려할 것 : tail삽입, head삽입. 중간삽입은 삽입할 인덱스의 노드 직전의 노드를 구하므로, for문을 "조금" 돌린다.(i=1 일때 부터시작)
 // tail에 insert를 진행하는 것은 idx == listSize 일때이다. (tail 노드 삭제연산의 경우는 idx == listSize-1 일떄이다)
+// if (idx < 0 || idx > listSize) return; 에서 delete 연산과 다르게 idx ">" listSize 인것도 주의하자.
 void doublyLinkedlist::insertion(int idx, int data) 
 {
 	if (idx < 0 || idx > listSize)
@@ -106,6 +107,7 @@ void doublyLinkedlist::insertion(int idx, int data)
 
 // delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제 3.중간 삽입에서 for문은 i=0부터 돌리고, 삭제할 노드와 그전노드인 curNode,preNode를 구한다.
 // tail 노드 삭제시 insert 연산의 경우엔 idx == listSize 일때 진행했지만, delete 연산은 idx == listSize-1 일 떄이다.
+// (idx < 0 || idx >= listSize || empty()) return; 에서 idx ">=" listSize 인것도 주의하자. (insert연산은 idx ">" listSize 이다.)
 void doublyLinkedlist::delection(int idx)
 {
 	if (idx < 0 || idx >= listSize || empty())
