@@ -5,15 +5,16 @@ using namespace std;
 class arrayQueue {
 private:
 	int* arr;
-	int capacity;
 	int frontIndex;
 	int rearIndex;
-	int size;
+	int n;
+	int capacity;
 public:
 	arrayQueue(int capacity);
-	bool empty();
 	int size();
+	bool empty();
 	int front();
+	int rear();
 	void enqueue(int data);
 	void dequeue();
 };
@@ -22,22 +23,17 @@ arrayQueue::arrayQueue(int capacity)
 {
 	this->capacity = capacity;
 	arr = new int[capacity];
-	size = 0;
-	frontIndex = 0;
-	rearIndex = 0;
+	n = frontIndex = rearIndex = 0;
+}
+
+int arrayQueue::size()
+{
+	return n;
 }
 
 bool arrayQueue::empty()
 {
-	if (size() == 0)
-		return true;
-	else
-		return false;
-}
-
-bool arrayQueue::size()
-{
-	return size;
+	return (n == 0);
 }
 
 int arrayQueue::front()
@@ -47,13 +43,38 @@ int arrayQueue::front()
 		cout << "EMPTY" << endl;
 		return -1;
 	}
-	return arr[frontIndex];
+	else
+	{
+		return arr[frontIndex];
+	}
+}
+
+int arrayQueue::rear()
+{
+	if (empty())
+	{
+		cout << "EMPTY" << endl;
+		return -1;
+	}
+	else
+	{
+		return arr[rearIndex-1];
+	}
 }
 
 void arrayQueue::enqueue(int data)
 {
-	arr[rearIndex] = data;
-	rearIndex = (rearIndex + 1) % capacity;
+	if (n > capacity)
+	{
+		cout << "FULL" << endl;
+		return;
+	}
+	else
+	{
+		arr[rearIndex] = data;
+		rearIndex = (rearIndex + 1) % capacity;
+		n++;
+	}
 }
 
 void arrayQueue::dequeue()
@@ -64,41 +85,48 @@ void arrayQueue::dequeue()
 		return;
 	}
 	else
+	{
 		frontIndex = (frontIndex + 1) % capacity;
+		n--;
+	}
 }
 
-int main(void)
-{
-	int testCase;
-	cin >> testCase;
+int main() {
+	int test_case;
+	cin >> test_case; // N : 큐의 크기, test_case : 테스트케이스 횟수
+	arrayQueue _arr(10000);
 
-	arrayQueue q(100);
+	for (int i = 0; i < test_case; i++) {
+		string a;
+		cin >> a;
 
-	while (testCase--)
-	{
-		string command;
-		cin >> command;
-		if (command == "empty")
-		{
-			cout << q, empty() << endl;
+		if (a == "isEmpty") {
+			if (_arr.empty())
+				cout << "True" << endl;
+			else
+				cout << "False" << endl;
 		}
-		else if (command == "size")
-		{
-			cout << q.size() << endl;
+
+		else if (a == "dequeue") {
+			_arr.dequeue();
 		}
-		else if (command == "front")
-		{
-			cout << q.front() << endl;
+
+		else if (a == "enqueue") {
+			int v;
+			cin >> v;
+			_arr.enqueue(v);
 		}
-		else if (command == "enqueue")
-		{
-			int data;
-			cin >> data;
-			q.enqueue(data);
+
+		else if (a == "front") {
+			cout << _arr.front() << endl;
 		}
-		else if (command == "dequeue")
-		{
-			q.dequeue();
+
+		else if (a == "rear") {
+			cout << _arr.rear() << endl;
+		}
+
+		else if (a == "size") {
+			cout << _arr.size() << '\n';
 		}
 	}
 }
