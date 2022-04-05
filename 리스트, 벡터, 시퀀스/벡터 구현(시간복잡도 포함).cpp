@@ -54,13 +54,13 @@ void vector::set(int idx, int data) // O(1)
 	n++;
 }
 
-// insert ¿¬»ê : O(1) => ¿ø·¡´Â O(n) ÀÌÁö¸¸, ´õºí¸µ ±â¹ýÀ¸·Î ±¸ÇöÇßÀ¸¹Ç·Î Amotized Analysis¿¡ µû¶ó¼­ O(1) ÀÌ´Ù.
+// insert ì—°ì‚° : O(n) =>  BUT, ë”ë¸”ë§ ê¸°ë²•ìœ¼ë¡œ êµ¬í˜„í–ˆìœ¼ë¯€ë¡œ ë°°ì—´ì´ ê½‰ì°¼ì„ ë•Œì˜ insertì—°ì‚°ì— í•œí•´ì„œëŠ” Amotized Analysisì— ë”°ë¼ì„œ O(1) ì´ë‹¤.
 void vector::insert(int idx, int data) 
 {
 	if (idx < 0 || idx >= n)
 		return;
-	if (n == capacity) // ¹è¿­ÀÌ ²ËÂ÷¼­ ´õºí¸µ strategy ¸¦ ÇÏ´Â°æ¿ì
-		reverse(2 * capacity);  // ´õºí¸µ strategy => O(1)
+	if (n == capacity) // ë°°ì—´ì´ ê½‰ì°¨ì„œ ë”ë¸”ë§ strategy ë¥¼ í•˜ëŠ”ê²½ìš°
+		reverse(2 * capacity);  // ë”ë¸”ë§ strategy => O(1)
 
 	for (int i = n - 1; i >= idx; i--)
 	{
@@ -70,24 +70,24 @@ void vector::insert(int idx, int data)
 	n++;
 }
 
-void vector::reverse(int size)  // ´õºí¸µ strategy => O(1) (Amotized Analysis¿¡ µû¶ó¼­ O(n)Ã³·³ º¸¿©µµ ½ÇÁ¦·Î´Â O(1)ÀÌ´Ù)
+void vector::reverse(int size)  // ë”ë¸”ë§ strategy => O(1) (Amotized Analysisì— ë”°ë¼ì„œ O(n)ì²˜ëŸ¼ ë³´ì—¬ë„ ì‹¤ì œë¡œëŠ” O(1)ì´ë‹¤)
 {
 	if (size <= capacity)
 		return;
-	int* newArr = new int[size]; // ¹è·Î¿î ¹è¿­¿¡ µ¥ÀÌÅÍ °ªµé ÇÒ´ç
+	int* newArr = new int[size]; // ë°°ë¡œìš´ ë°°ì—´ì— ë°ì´í„° ê°’ë“¤ í• ë‹¹
 	for (int i = 0; i < n; i++)
 	{
 		newArr[i] = arr[i];
 	}
 
-	if (arr != NULL) // ±âÁ¸ ¹è¿­ »èÁ¦
+	if (arr != NULL) // ê¸°ì¡´ ë°°ì—´ ì‚­ì œ
 		delete[] arr;
 
-	arr = newArr; // ±âÁ¸ ¹è¿­¿¡ ´ëÇÑ Æ÷ÀÎÅÍ°¡ ÀÌÁ¦ »õ·Î¿î ¹è¿­À» °¡¸®Å°°Ô ÇÔ
+	arr = newArr; // ê¸°ì¡´ ë°°ì—´ì— ëŒ€í•œ í¬ì¸í„°ê°€ ì´ì œ ìƒˆë¡œìš´ ë°°ì—´ì„ ê°€ë¦¬í‚¤ê²Œ í•¨
 	capacity = size;
 }
 
-void vector::erase(int idx) // erase ¿¬»ê : O(n) (=> È¯Çü¹è¿­·Î ±¸ÇöÇß´Ù¸é ¸Ç¾Õ,¸ÇµÚ ¿ø¼Ò¸¦ eraseÇÏ´Â ¿¬»ê¿¡ ÇÑÇØ¼­¸¸ O(1)ÀÌ °É·ÈÀ»°ÍÀÌ´Ù.)
+void vector::erase(int idx) // erase ì—°ì‚° : O(n) (=> í™˜í˜•ë°°ì—´ë¡œ êµ¬í˜„í–ˆë‹¤ë©´ ë§¨ì•ž,ë§¨ë’¤ ì›ì†Œë¥¼ eraseí•˜ëŠ” ì—°ì‚°ì— í•œí•´ì„œë§Œ O(1)ì´ ê±¸ë ¸ì„ê²ƒì´ë‹¤.)
 {
 	if (idx < 0 || idx >= n)
 		return;
