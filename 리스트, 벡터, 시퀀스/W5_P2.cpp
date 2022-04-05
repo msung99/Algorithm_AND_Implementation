@@ -4,49 +4,40 @@ using namespace std;
 
 struct node {
 	int data;
-	node* prev;
 	node* next;
+	node* prev;
 };
 
 class nodeList {
 private:
-	node* header;  // header ³ëµå¸¦ ÂüÁ¶ÇÏ´Â Æ÷ÀÎÅÍ º¯¼ö
-	node* trailer;  // trailer ³ëµå¸¦ ÂüÁ¶ÇÏ´Â Æ÷¾ÈÅÍ º¯¼ö
+	node* header;
+	node* trailer;
 	int n;
 public:
 	nodeList();
 	bool empty();
 	int size();
 
-	node* begin();  // ¸®½ºÆ®ÀÇ Ã¹¹øÂ° ¿ø¼ÒÀÇ ÁÖ¼Ò¸¦ ¸®ÅÏÇÏ´Â ÇÔ¼ö
-	node* end();  // ¸®½ºÆ®ÀÇ ¸¶Áö¸· ¿ø¼ÒÀÇ ´ÙÀ½ ¿ø¼Ò¸¦ ¸®ÅÏÇÏ´Â ÇÔ¼ö
+	node* begin();
+	node* end();
+	void insert(node* pos, int data);
+	node* erase(node* pos);
 
-	void insert(node* pos, int data); // ¸®½ºÆ®¿¡¼­ pos°¡ °¡¸®Å°´Â ¿ø¼ÒÀÇ ¾ÕÂÊ¿¡ data¸¦ »ğÀÔÇÏ´Â ÇÔ¼ö
-	void insertFront(int data);
-	void insertBack(int data);
-	node* erase(node* pos); // ¸®½ºÆ®¿¡¼­ pos°¡ °¡¸®Å°´Â ¿ø¼Ò¸¦ »èÁ¦ÇÏ´Â ÇÔ¼ö
-	void eraseFront();
-	void eraseBack();
-
-	node* nextP(node* pos); // p¸¦ p°¡ °¡¸®Å°´Â ³ëµåÀÇ ´ÙÀ½ ³ëµå·Î ÀÌµ¿½ÃÅ´. (´Ü,p°¡ trailer¸¦ °¡¸®Å°´Â °æ¿ì, ÀÌµ¿½ÃÅ°Áö ¾Ê´Â´Ù)
-	node* prevP(node* pos); // p¸¦ p°¡ °¡¸®Å°´Â ³ëµåÀÇ ÀÌÀü ³ëµå·Î ÀÌµ¿½ÃÅ´. (´Ü,p°¡ headerÀÇ ´ÙÀ½ ³ëµå¸¦ °¡¸®Å°´Â °æ¿ì, ÀÌµ¿½ÃÅ°Áö ¾Ê´Â´Ù)
-
-	void print(); // headerÀÇ ´ÙÀ½³ëµåºÎÅÍ trailerÀÇ ÀÌÀü ³ëµå±îÁö Â÷·Ê´ë·Î ³ëµåÀÇ data¸¦ ¶ç¾î¾²±â·Î ±¸ºĞÇÏ¿© Ãâ·Â(¸®½ºÆ®°¡ ºñ¾îÀÖ´Ù¸é "Empty"¸¦ Ãâ·Â)
-	void find(int e); // ¸®½ºÆ® ³»¿¡¼­ e¿Í µ¿ÀÏÇÑ °ªÀÌ ÀúÀåµÈ ³ëµåÀÇ index¸¦ ¿À¸§Â÷¼øÀ¸·Î ¸ğµÎ Ãâ·Â.(³ëµåÀÇ index´Â 0ºÎÅÍ ½ÃÀÛÇÑ´Ù)
-				   // ¸®½ºÆ® ³»¿¡ e¿Í µ¿ÀÏÇÑ °ªÀÌ ÀúÀåµÈ ³ëµå°¡ ¾ø´Ù¸é -1À» Ãâ·ÂÇÑ´Ù.
-
-	void printp(node* p);
-	int getData(node* p);
+	node* nextP(node* pos);
+	node* prevP(node* pos);
+	void print();
+	void find(int data);
+	int getData(node* pos, int check);
 };
 
 nodeList::nodeList()
 {
-	header = new node();
-	trailer = new node();
-	header->next = trailer;
-	trailer->prev = header;
+	header = new node;
+	trailer = new node;
 	header->prev = NULL;
 	trailer->next = NULL;
+	header->next = trailer;
+	trailer->prev = header;
 	n = 0;
 }
 
@@ -60,99 +51,61 @@ int nodeList::size()
 	return n;
 }
 
-// ¸®½ºÆ®ÀÇ ¸Ç¾Õ ¿ø¼Ò(headerÀÇ ´ÙÀ½ ³ëµå)ÀÇ ÁÖ¼Ò¸¦ ¸®ÅÏÇÏ´Â ÇÔ¼ö
 node* nodeList::begin()
 {
 	return header->next;
 }
 
-// ¸®½ºÆ®ÀÇ ¸ÇµÚ ¿ø¼Ò(trailer)ÀÇ ÁÖ¼Ò¸¦ ¸®ÅÏÇÏ´Â ÇÔ¼ö
 node* nodeList::end()
 {
 	return trailer;
 }
 
-// ¸®½ºÆ®ÀÇ pos°¡ °¡¸®Å°´Â ³ëµåÀÇ ¾ÕÂÊ¿¡ data¸¦ »ğÀÔÇÏ´Â ÇÔ¼ö
-void nodeList::insert(node* pos, int data)
+void nodeList::insert(node* pos, int data) // pos ì•ì—ë‹¤ ì‚½ì…
 {
-	node* newNode = new node();
+	node* newNode = new node;
 	newNode->data = data;
-
 	newNode->prev = pos->prev;
 	newNode->next = pos;
-
 	pos->prev->next = newNode;
 	pos->prev = newNode;
 	n++;
 }
 
-// ¸®½ºÆ®ÀÇ ¸Ç¾Õ¿¡ data¸¦ »ğÀÔÇÏ´Â ÇÔ¼ö
-void nodeList::insertFront(int data)
-{
-	insert(begin(), data);
-}
-
-// ¸®½ºÆ®ÀÇ ¸ÇµÚ¿¡ data¸¦ »ğÀÔÇÏ´Â ÇÔ¼ö
-void nodeList::insertBack(int data)
-{
-	insert(end(), data);
-}
-
-// ¸®½ºÆ®¿¡¼­ pos°¡ °¡¸®Å°´Â ³ëµå¸¦ »èÁ¦ÇÏ´Â ÇÔ¼ö
 node* nodeList::erase(node* pos)
 {
-	// node* new_p = begin();
-
-	node* new_p = pos->prev;
-
-	if (pos == trailer)
+	if (empty())
 	{
-		if (empty())
-		{
-			cout << "Empty" << '\n';
-		}
-
+		cout << "Empty" << endl;
 		return pos;
 	}
-
-	pos->prev->next = pos->next;
-	pos->next->prev = pos->prev;
-	delete pos;
-	n--;
-	return new_p;
-}
-
-// ¸®½ºÆ®ÀÇ ¸Ç¾Õ ¿ø¼Ò¸¦ »èÁ¦
-void nodeList::eraseFront()
-{
-	erase(begin());
-}
-
-void nodeList::eraseBack()
-{
-	erase(end()->prev);
+	if (pos == trailer)
+		return pos;
+	else
+	{
+		node* tmp = pos;
+		pos->next->prev = pos->prev;
+		pos->prev->next = pos->next;
+		delete tmp;
+		n--;
+		return begin();
+	}
 }
 
 node* nodeList::nextP(node* pos)
 {
-	if (pos == trailer) // p°¡ trailer¸¦ °¡¸®Å°´Â °æ¿ì, ÀÌµ¿½ÃÅ°Áö ¾Ê´Â´Ù
+	if (pos == trailer)
 		return pos;
 	else
-	{
-		pos = pos->next;
-		return pos;
-	}
+		return pos->next;
 }
 
 node* nodeList::prevP(node* pos)
 {
-	if (pos->prev == header) // p°¡ headerÀÇ ´ÙÀ½ ³ëµå¸¦ °¡¸®Å°´Â °æ¿ì(Áï, ¸Ç¾Õ ¿ø¼Ò¸¦ °¡¸®Å°´Â °æ¿ì) ÀÌµ¿½ÃÅ°Áö ¾Ê´Â´Ù
+	if (pos == header->next)
 		return pos;
 	else
-	{
-		pos = pos->prev;
-		return pos;
-	}
+		return pos->prev;
 }
 
 void nodeList::print()
@@ -162,49 +115,57 @@ void nodeList::print()
 		cout << "Empty" << endl;
 		return;
 	}
-
-	node* tmp = new node;
-	tmp = header->next;
-	while (tmp != trailer)
+	node* curNode = header->next;
+	while (curNode != trailer)
 	{
-		cout << tmp->data << ' ';
-		tmp = tmp->next;
+		cout << curNode->data << ' ';
+		curNode = curNode->next;
 	}
-	cout << '\n';
+	cout << endl;
 }
 
-void nodeList::find(int find_data)
+void nodeList::find(int data)
 {
+	node* curNode = header->next;
+	int check = false;
 	int index = 0;
-	int check = false; // e¿Í µ¿ÀÏÇÑ °ªÀÌ ÀúÀåµÈ ³ëµå°¡ ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â º¯¼ö
-	node* tmp = new node;
-	tmp = header->next;
-	while (tmp != trailer)
+
+	while (curNode != trailer)
 	{
-		if (tmp->data == find_data)
+		if (curNode->data == data)
 		{
-			cout << index << '\n';
+			cout << index << ' ';
 			check = true;
 		}
-		tmp = tmp->next;
+		curNode = curNode->next;
 		index++;
 	}
-	if (!check) // e¿Í µ¿ÀÏÇÑ °ªÀÌ ÀúÀåµÇ¾î ÀÖÁö ¾Ê´Â °æ¿ì
-		cout << -1 << '\n';
+	if (!check)
+		cout << -1;
+	cout << endl;
 }
 
-void nodeList::printp(node* p)
-{
-	cout << p->data << '\n';
-}
-
-int nodeList::getData(node* p)
+int nodeList::getData(node* p, int check)
 {
 	int sum = 0;
 	sum = p->data;
-	sum += p->prev->data;
-	sum += p->next->data;
 
+	if (check == 0) // ë¦¬ìŠ¤íŠ¸ ë§¨ì• 2ê°œ ì›ì†Œì˜ í•©
+	{   // p->prev->data ëŠ” header->data ì´ë¯€ë¡œ, header ì˜ ë°ì´í„°ëŠ” ì œì™¸í•˜ê³  ë¦¬ìŠ¤íŠ¸ ë§¨ì• 2ê°œì˜ ë°ì´í„°ë§Œ sumì— ë”í•œë‹¤ 
+		sum += p->next->data;
+	}
+
+	else if (check == 1)
+	{
+		// p->next->data ëŠ” trailer->data ì´ë¯€ë¡œ, trailer ì˜ ë°ì´í„°ëŠ” ì œì™¸í•˜ê³  ë¦¬ìŠ¤íŠ¸ ë§¨ë’¤ 2ê°œì˜ ë°ì´í„°ë§Œ sumì— ë”í•œë‹¤ 
+		sum += p->prev->data;
+	}
+
+	else if (check == 2)  // ë¦¬ìŠ¤íŠ¸ì˜ ì¤‘ê°„ ì›ì†Œë“¤ì˜ í•©
+	{
+		sum += p->next->data;
+		sum += p->prev->data;
+	}
 	return sum;
 }
 
@@ -215,25 +176,35 @@ int main(void)
 
 	while (testCase--)
 	{
-		int n;
-		cin >> n;
 		nodeList list;
-		node* p = list.begin();  // ³ëµåÇü Æ÷ÀÎÅÍ p => position ADT ¸¦ ±¸ÇöÇØ³õÀº °Í
-
-		for (int i = 0; i < n; i++)
+		node* p = list.begin();
+		int size;
+		cin >> size;
+		for (int i = 0; i < size; i++)
 		{
-			int num;
-			cin >> num;
-			list.insert(p, num);
+			int data;
+			cin >> data;
+			list.insert(p, data);
 		}
-
 		p = list.begin();
-
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < size; i++)
 		{
-			cout << list.getData(p) << ' ';
-			p = list.nextP(p);
+			if (i == 0)
+			{
+				cout << list.getData(p, 0) << ' ';  // ì²«ë²ˆì§¸ í•©ì‚°ì„ êµ¬í•˜ëŠ” ê²½ìš°(ë¦¬ìŠ¤íŠ¸ ë§¨ì• 2ê°œ ì›ì†Œì˜ í•©)
+				p = list.nextP(p);
+			}
+			else if (i == size-1)
+			{
+				cout << list.getData(p, 1) << ' '; // ë§¨ ë§ˆì§€ë§‰ í•©ì‚°ì„ êµ¬í•˜ëŠ” ê²½ìš°(ë¦¬ìŠ¤íŠ¸ ë§¨ë’¤ 2ê°œ ì›ì†Œì˜ í•©)
+				p = list.nextP(p);
+			}
+			else
+			{
+				cout << list.getData(p, 2) << ' '; // ê·¸ëƒ¥ ë¦¬ìŠ¤íŠ¸ ì¤‘ê°„ ì›ì†Œ 3ê°œì˜ í•© 
+				p = list.nextP(p);
+			}
 		}
-		cout << '\n';
+		cout << endl;
 	}
 }
