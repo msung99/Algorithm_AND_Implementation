@@ -1,84 +1,89 @@
-class Queue {
-public:
-	Queue();
-	~Queue();
+#include <iostream>
+#include <string>
+using namespace std;
 
-	bool empty() const;
-	int size() const;
-	int front() const;
-	void push(const int data);
-	int popFront();
-
-	void display() const;
-
-private:
-	Node* headNode;
-	Node* tailNode;
-	int dataSize; // Å¥¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ °³¼ö
+struct node {
+	node* next;
+	int data;
 };
 
-bool Queue::empty() const {
-	if (dataSize == 0)
-		return 1;
-	else
-		return 0;
+class listQueue {
+private:
+	node* frontNode;
+	node* rearNode;
+	int n;
+public:
+	listQueue();
+	void enqueue(int data);
+	void dequeue();
+	void front();
+	bool empty();
+	int size();
+};
+
+listQueue::listQueue()
+{
+	frontNode = rearNode = NULL;
+	n = 0;
 }
 
-int Queue::size() const {
-	return dataSize;
+bool listQueue::empty()
+{
+	return (n == 0);
 }
 
-int Queue::front() const {
-	if (empty()) {
-		return -1;
-	}
-	return headNode->getData();
+int listQueue::size()
+{
+	return n;
 }
 
-void Queue::push(const int data) {
+void listQueue::front()
+{
+	if (empty())
+		return;
+	cout << frontNode->data << endl;
+}
+
+void listQueue::enqueue(int data) // rear ì—ì„œ ì¶”ê°€ì—°ì‚° ì§„í–‰
+{
+	node* newNode = new node;
+	newNode->data = data;
+	newNode->next = NULL;
 	if (empty())
 	{
-		headNode = tailNode = new Node(data);
-		dataSize++;
+		frontNode = newNode;
+		rearNode = newNode;
+		n++;
+	}
+	else
+	{
+		rearNode->next = newNode;
+		rearNode = newNode;
+		n++;
+	}
+}
+
+void listQueue::dequeue()  // frontì—ì„œ ë…¸ë“œ ì‚­ì œì—°ì‚°ì§„í–‰ => ìŠ¤íƒê³¼ ë§ˆì°¬ê°€ì§€ì„
+{
+	if (empty())
+	{
+		cout << "EMPTY" << endl;
 		return;
 	}
-	Node* node = new Node(data, tailNode, NULL); // »õ·Î ÇÒ´çÇÏ·Á´Â ³ëµå node ÀÇ ÀÌÀü ³ëµå¸¦ tail ·Î, ´ÙÀ½ ³ëµå¸¦ NULL ·Î ¼³Á¤
-	tailNode->setNext(node); // tail ³ëµåÀÇ ´ÙÀ½ ³ëµå¸¦ node ·Î ¼³Á¤
-	tailNode = node; // tail ³ëµå ÃÖ½ÅÈ­
-	dataSize++;
-}
-
-int Queue::popFront() {
-	int frontData = front(); // »èÁ¦ÇÒ ³ëµåÀÇ µ¥ÀÌÅÍ => ¸¸¾à¿¡ ½ºÅÃÀÌ ºñ¾îÀÖÀ¸¸é ¿¡·¯ ¹ß»ıÇÔ
-	Node* node = headNode;
-
-	headNode = headNode->getNext(); // head ³ëµå¸¦ ÇÑÄ­ ÀÌµ¿
-
-	// headNode == NULL ÀÎ °æ¿ì : ½ºÅÃ¿¡¼­ ³ëµå°¡ µü ÇÏ³ª³²Àº °ÍÀ» (head ³ëµå À¯ÀÏÇÏ°Ô ÇÏ³ª¿´À» ¶§) »èÁ¦ÇÏ·Á´Â °æ¿ì
-	// Áï, if¹®ÀÇ ÀÌ °æ¿ì´Â ½ºÅÃ¿¡ ³ëµå°¡ 2°³ ÀÌ»ó ÀÖÀ» ¶§ »èÁ¦¸¦ ÇÏ´Â °æ¿ìÀÌ´Ù.
-	if (headNode != NULL)
+	if (n == 1)
 	{
-		headNode->setPrev(NULL); // head ³ëµåÀÇ ÀÌÀü ³ëµå¸¦ NULL ·Î ¼³Á¤
-	}
-	delete node; // ±âÁ¸ head ³ëµå¸¦ ¸Ş¸ğ¸®¿¡¼­ »èÁ¦
-	dataSize--;
-	return frontData; // »èÁ¦ÇÑ ³ëµåÀÇ µ¥ÀÌÅÍ ¸®ÅÏ
-}
-
-void Queue::display() const {
-	if (empty())
-	{
-		cout << "Queue is empty";
+		frontNode = NULL;
+		rearNode = NULL;
+		n--;
 	}
 	else
 	{
-		cout << "size:" << size() << "\n";
-		cout << "front:" << front() << "\n";
-		for (auto i = headNode; i != NULL; i = i->getNext())
-		{
-			cout << i->getData() << " ";
-		}
-		cout << endl;
+		node* tmp = frontNode;
+		frontNode = frontNode->next;
+		n--;
+		delete tmp;
 	}
 }
+
+
 
