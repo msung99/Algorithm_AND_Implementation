@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct node {
+	node* next;
+	int data;
+};
+
+class Stack {
+private:
+	node* topNode;
+	int n;
+public:
+	Stack();
+	int size();
+	bool empty();
+	int top();
+	void pop();
+	void push(int data);
+};
+
+Stack::Stack()
+{
+	topNode = NULL;
+	n = 0;
+}
+
+int Stack::size()
+{
+	return n;
+}
+
+bool Stack::empty()
+{
+	return (n == 0);
+}
+
+int Stack::top()
+{
+	if (empty())
+		return 0;
+	else
+	{
+		return topNode->data;
+	}
+}
+
+void Stack::pop()
+{
+	if (empty())
+		return;
+	else
+	{
+		node* tmp = topNode;
+		topNode = topNode->next;
+		delete tmp;
+		n--;
+	}
+}
+
+void Stack::push(int data)
+{
+	node* newNode = new node;
+	newNode->data = data;
+	newNode->next = topNode;
+	topNode = newNode;
+	n++;
+}
+
+int main(void)
+{
+	int testCase;
+	cin >> testCase;
+
+	Stack s;
+
+	while (testCase--)
+	{
+		string str;
+		cin >> str;
+		for (int i = 0; i < str.length(); i++)
+		{
+			if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/')
+			{
+				int num1 = s.top();
+				s.pop();
+				int num2 = s.top();
+				s.pop();
+				int result = 0;
+				if (str[i] == '+')
+				{
+					result = num1 + num2;
+					s.push(result);
+				}
+				else if (str[i] == '-')
+				{
+					result = num2 - num1;
+					s.push(result);
+				}
+				else if (str[i] == '*')
+				{
+					result = num1 * num2;
+					s.push(result);
+				}
+				else if (str[i] == '/')
+				{
+					result = num2 / num1;
+					s.push(result);
+				}
+			}
+			else
+			{
+				s.push(str[i]-'0');
+			}
+		}
+		cout << s.top() << endl;
+		s.pop();
+	}
+}
