@@ -58,7 +58,7 @@ int arrayQueue::rear()
 	}
 	else
 	{
-		return arr[rearIndex-1];
+		return arr[rearIndex-1];    // rearIndex는 맨 마지막 원소 인덱스의 다음 인덱스이므로 "진짜 마지막 인덱스"의 원소 값을 출력하기 위해선 rearIndex-1 인덱스의 데이터를 추출해준다.
 	}
 }
 
