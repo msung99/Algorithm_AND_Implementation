@@ -49,7 +49,7 @@ void listQueue::enqueue(int data) // rear 에서 추가연산 진행
 	node* newNode = new node;
 	newNode->data = data;
 	newNode->next = NULL;
-	if (empty())
+	if (empty()) // empty() 일때 enqueue 연산 따로 처리하는 점 주의!
 	{
 		frontNode = newNode;
 		rearNode = newNode;
@@ -70,7 +70,7 @@ void listQueue::dequeue()  // front에서 노드 삭제연산진행 => 스택과
 		cout << "EMPTY" << endl;
 		return;
 	}
-	if (n == 1)
+	if (n == 1) // 삭제 연산에서 n == 1 일떄 따로 처리해야한다는 점 주의!
 	{
 		frontNode = NULL;
 		rearNode = NULL;
