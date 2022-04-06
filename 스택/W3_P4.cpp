@@ -111,7 +111,7 @@ int main(void)
 			}
 			else
 			{
-				s.push(str[i]-'0');
+				s.push(str[i]-'0');   // char 형 숫자는 char ‘0’을 빼줌으로써 int로 바꿀 수 있다!!!
 			}
 		}
 		cout << s.top() << endl;
