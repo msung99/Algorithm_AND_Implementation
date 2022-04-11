@@ -8,6 +8,7 @@ struct node {
 	int data;
 };
 
+
 class doublyLinkedlist {
 private:
 	int listSize;
@@ -121,7 +122,7 @@ void doublyLinkedlist::delection(int idx)
 	}
 
 	node* curNode = head;
-	if (idx == 0) // head »èÁ¦ => O(1)
+	if (idx == 0) // head Â»Ã¨ÃÂ¦ => O(1)
 	{
 		if (listSize == 1)
 		{
@@ -134,7 +135,7 @@ void doublyLinkedlist::delection(int idx)
 	}
 
 	
-	else if (idx == listSize-1) // tail »èÁ¦ => O(1)
+	else if (idx == listSize-1) // tail Â»Ã¨ÃÂ¦ => O(1)
 	{
 		node* tmp = tail;
 		tail = tmp->prev;
@@ -143,7 +144,7 @@ void doublyLinkedlist::delection(int idx)
 		listSize--;
 	}
 	
-	else // Áß°£ ³ëµå »èÁ¦ => O(n)
+	else // ÃÃŸÂ°Â£ Â³Ã«ÂµÃ¥ Â»Ã¨ÃÂ¦ => O(n)
 	{
 		node* preNode = head;
 		for (int i = 0; i < idx; i++)
