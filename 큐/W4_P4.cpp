@@ -3,166 +3,161 @@
 using namespace std;
 
 struct node {
-	int data;
 	node* next;
+	int data;
 };
 
 class Queue {
-	int data;
-	node* next;
-};
-
-class listQueue {
 private:
 	node* frontNode;
 	node* rearNode;
-	int n;
+	int listSize;
 public:
-	listQueue();
-	bool empty();
-	int size();
-	int front();
-	int rear();
+	Queue();
 	void enqueue(int data);
 	void dequeue();
+	int front();
+	bool empty();
 };
 
-listQueue::listQueue()
+Queue::Queue()
 {
 	frontNode = NULL;
 	rearNode = NULL;
-	n = 0;
+	listSize = 0;
 }
 
-bool listQueue::empty()
+bool Queue::empty()
 {
-	return (n == 0);
+	return (listSize == 0);
 }
 
-int listQueue::size()
-{
-	return n;
-}
 
-int listQueue::front()
+int Queue::front()
 {
 	if (empty())
-	{
-		cout << "Empty" << endl;
-	}
-	else
-	{
-		return frontNode->data;
-	}
+		return -1;
+
+	return frontNode->data;
 }
 
-
-void listQueue::enqueue(int data)
+void Queue::enqueue(int data)
 {
 	node* newNode = new node;
 	newNode->data = data;
 	newNode->next = NULL;
-
 	if (empty())
 	{
-		frontNode = newNode;
-		rearNode = newNode;
-		n++;
+		frontNode = rearNode = newNode;
+		listSize++;
 	}
 	else
 	{
 		rearNode->next = newNode;
 		rearNode = newNode;
-		n++;
+		listSize++;
 	}
 }
 
-void listQueue::dequeue()
+void Queue::dequeue()
 {
 	if (empty())
 		return;
-	node* tmp = frontNode;
-	frontNode = frontNode->next;
-	delete tmp;
-	n--;
+	if (listSize == 1)
+	{
+		frontNode = rearNode = NULL;
+		listSize--;
+	}
+	else
+	{
+		node* tmp = frontNode;
+		frontNode = frontNode->next;
+		listSize--;
+		delete tmp;
+	}
 }
 
-
-// W4_P2 ¹®Á¦¿Í ´Ù¸¥Á¡ : W4_P2 ¹®Á¦´Â ÀÌ±ä »ç¶÷¿¡°Ô Ã¤·ÂÀ» Ãß°¡ÇØÁáÁö¸¸, ÀÌ ¹®Á¦´Â Áø »ç¶÷¿¡°Ô Ã¤·ÂÀ» Ãß°¡ÇØÁÖ´Â °ÍÀÌ´Ù.
-// ÀÌ°Å¹Û¿¡ Â÷ÀÌ°¡ ¾ø´Ù.
-void play(int testCase, listQueue q1, listQueue q2)
+void play(Queue q1, Queue q2, int round)
 {
-	for (int k = 0; k < testCase; k++)
+	for (int i = 0; i < round; i++)
 	{
-		int card;
-		cin >> card;
-		for (int i = 0; i < card; i++)
-		{
-			int data;
-			cin >> data;
-			q1.enqueue(data);
-		}
-		for (int i = 0; i < card; i++)
-		{
-			int data;
-			cin >> data;
-			q2.enqueue(data);
-		}
-		int last_score = 0, p1_score = 0, p2_score = 0, who_win = 0;
-		for (int i = 0; i < card; i++)
-		{
-			int p1_card = q1.front();
-			int p2_card = q2.front();
-
-			if (who_win == 1) // ÇÃ·¹ÀÌ¾î1ÀÌ ÀÌ°å´Ù¸é ÇÃ·¹ÀÌ¾î 2¿¡°Ô Ã¤·ÂÀ» Ãß°¡ÇØÁÜ
-				p2_card += last_score;  
-			else if (who_win == 2) // ÇÃ·¹ÀÌ¾î2°¡ ÀÌ°å´Ù¸é ÇÃ·¹ÀÌ¾î 1¿¡°Ô Ã¤·ÂÀ» Ãß°¡ÇØÁÜ
-				p1_card += last_score;
-
-			if (p1_card > p2_card)
-			{
-				last_score = p1_card - p2_card;
-				p1_score++;
-				who_win = 1;
-			}
-			else if (p1_card < p2_card)
-			{
-				last_score = p2_card - p1_card;
-				p2_score++;
-				who_win = 2;
-			}
-			else if (p1_card == p2_card)
-			{
-				who_win = 0;
-			}
-
-			if (who_win == 1)
-			{
-				cout << "Round" << i + 1 << " " << "P1" << ' ' << last_score << endl;
-			}
-			else if (who_win == 2)
-			{
-				cout << "Round" << i + 1 << " " << "P2" << ' ' << last_score << endl;
-			}
-
-			q1.dequeue();
-			q2.dequeue();
-		}
-		if (p1_score > p2_score)
-			cout << "Winner P1" << endl;
-		else if (p1_score < p2_score)
-			cout << "Winner P2" << endl;
-		else if (p1_score == p2_score)
-			cout << "Draw" << endl;
+		int data;
+		cin >> data;
+		q1.enqueue(data);
 	}
+	for (int i = 0; i < round; i++)
+	{
+		int data;
+		cin >> data;
+		q2.enqueue(data);
+	}
+
+	int p1_score = 0, p2_score = 0, last_score = 0, winner = 0;
+	for (int i = 0; i < round; i++)
+	{
+		int player1 = q1.front();
+		int player2 = q2.front();
+		
+		// W2_P2 ë¬¸ì œì™€ ë‹¤ë¥¸ì  
+		if (winner == 1) // í”Œë ˆì´ì–´1ì´ ì´ê²¼ë‹¤ë©´ í”Œë ˆì´ì–´ 2ì—ê²Œ ì±„ë ¥ì„ ì¶”ê°€í•´ì¤Œ
+			player2 += last_score;
+		else if (winner == 2) // í”Œë ˆì´ì–´2ê°€ ì´ê²¼ë‹¤ë©´ í”Œë ˆì´ì–´ 1ì—ê²Œ ì±„ë ¥ì„ ì¶”ê°€í•´ì¤Œ
+			player1 += last_score;
+
+		if (player1 > player2)
+		{
+			winner = 1;
+			last_score = player1 - player2;
+			p1_score++;
+		}
+		else if (player1 < player2)
+		{
+			winner = 2;
+			last_score = player2 - player1;
+			p2_score++;
+		}
+		else if (player1 == player2)
+		{
+			winner = 0;
+			last_score = 0;
+		}
+
+		if (winner == 1)
+		{
+			cout << "Round" << i + 1 << " P1 " << last_score << endl;
+		}
+		else if (winner == 2)
+		{
+			cout << "Round" << i + 1 << " P2 " << last_score << endl;
+		}
+		else if (winner == 0)
+		{
+			cout << "Round" << i + 1 << " Draw" << endl;
+		}
+
+		q1.dequeue();
+		q2.dequeue();
+	}
+	if (p1_score > p2_score)
+		cout << "Winner P1" << endl;
+	else if (p1_score < p2_score)
+		cout << "Winner P2" << endl;
+	else if (p1_score == p2_score)
+		cout << "Draw" << endl;
 }
 
 int main(void)
 {
-	listQueue q1;
-	listQueue q2;
 	int testCase;
 	cin >> testCase;
 
-	play(testCase, q1, q2);
+	Queue q1;
+	Queue q2;
+
+	while (testCase--)
+	{
+		int round;
+		cin >> round;
+		play(q1, q2, round);
+	}
 }
