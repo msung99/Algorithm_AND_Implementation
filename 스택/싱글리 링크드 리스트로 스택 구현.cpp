@@ -55,13 +55,7 @@ int listStack::top()  // top 연산 : O(1)
 }
 
 void listStack::push(int data) // push 연산 : head 노드(topNode 노드) 에서 삽입 진행 => O(1)
-{
-	if (size() < listSize)
-	{
-		cout << "FULL" << endl;
-		return -1;
-	}
-	
+{	
 	node* newNode = new node;
 	newNode->data = data;
 
@@ -73,7 +67,7 @@ void listStack::push(int data) // push 연산 : head 노드(topNode 노드) 에�
 void listStack::pop() // pop 연산 : 마찬가지로 head 노드에서 삭제 진행 => O(1)
 {
 	if (empty())
-		return;
+	  return;
 
 	node* tmp = topNode;
 	topNode = topNode->next;
