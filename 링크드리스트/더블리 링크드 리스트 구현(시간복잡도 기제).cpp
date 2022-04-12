@@ -1,24 +1,20 @@
-// append 에서 고려할 요소 : empty() 일때
-// insert에서 고려할 것 : tail삽입, head삽입
-// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제 
-
 #include <iostream>
 #include <string>
 using namespace std;
 
 struct node {
-	int data;
 	node* next;
 	node* prev;
+	int data;
 };
 
-class doublyLinkedlist {
+class Doublylinkedlist {
 private:
 	int listSize;
 	node* head;
 	node* tail;
 public:
-	doublyLinkedlist();
+	Doublylinkedlist();
 	bool empty();
 	void append(int data);
 	void insertion(int idx, int data);
@@ -26,34 +22,32 @@ public:
 	void print();
 };
 
-doublyLinkedlist::doublyLinkedlist()
+Doublylinkedlist::Doublylinkedlist()
 {
+	listSize = 0;
 	head = NULL;
 	tail = NULL;
-	listSize = 0;
 }
 
-bool doublyLinkedlist::empty()
+bool Doublylinkedlist::empty()
 {
 	return (listSize == 0);
 }
 
-// append 에서 고려할 요소 : empty() 일때
-void doublyLinkedlist::append(int data) // tail에 노드 추가 => O(1)
+void Doublylinkedlist::append(int data)
 {
 	node* newNode = new node;
-	newNode->data = data;
 	newNode->next = NULL;
 	newNode->prev = NULL;
-
+	newNode->data = data;
 	if (empty())
 	{
 		head = newNode;
 		tail = newNode;
 		listSize++;
 	}
-
-	else {
+	else
+	{
 		tail->next = newNode;
 		newNode->prev = tail;
 		tail = newNode;
@@ -61,84 +55,83 @@ void doublyLinkedlist::append(int data) // tail에 노드 추가 => O(1)
 	}
 }
 
-// insert에서 고려할 것 : tail삽입, head삽입. 중간삽입은 삽입할 인덱스의 노드 직전의 노드를 구하므로, for문을 "조금" 돌린다.(i=1 일때 부터시작)
-// tail에 insert를 진행하는 것은 idx == listSize 일때이다. (tail 노드 삭제연산의 경우는 idx == listSize-1 일떄이다)
-// if (idx < 0 || idx > listSize) return; 에서 delete 연산과 다르게 idx ">" listSize 인것도 주의하자.
-void doublyLinkedlist::insertion(int idx, int data) 
+
+void Doublylinkedlist::insertion(int idx, int data)
 {
 	if (idx < 0 || idx > listSize)
 		return;
 
-	else if (idx == listSize) // tail에 삽입이므로 append 호출 => O(1)
+	node* newNode = new node;
+	newNode->data = data;
+	newNode->next = NULL;
+	newNode->prev = NULL;
+
+	if (idx == 0)
+	{
+		if (listSize == 0)
+		{
+			append(data);
+		}
+		else
+		{
+			newNode->next = head;
+			head->prev = newNode;
+			head = newNode;
+			listSize++;
+		}
+	}
+	else if (idx == listSize)
 	{
 		append(data);
-		listSize++;
-		cout << "insertion에서 appeend 호출" << endl;
 	}
-
-	else if (idx == 0) // head 에 삽입 => O(1)
+	else
 	{
-		node* newNode = new node;
-		newNode->data = data;
-		newNode->next = head;
-		head->prev = newNode;
-		newNode->next= head;
-		head = newNode;
-		listSize++;
-	}
-
-	else // 중간에 어딘가에 삽입 => O(n)
-	{
-		node* newNode = new node;
-		newNode->data = data;
 		node* curNode = head;
-		for (int i = 1; i < idx; i++)
+		for (int i = 0; i < idx - 1; i++)
 		{
 			curNode = curNode->next;
 		}
-		newNode->next = curNode->next;
 		curNode->next->prev = newNode;
-
-		newNode->prev = curNode;
+		newNode->next = curNode->next;
 		curNode->next = newNode;
+		newNode->prev = curNode;
 		listSize++;
 	}
 }
 
-// delete 에서 고려할 것 : head 삭제(1.원소가 하나 남았을 때 2.그냥 삭제하는거일때) tail 삭제
-// 3.중간 삽입에서 삭제할 직전노도와 ,삭제할 노드를 모두 구해야해서 for문을 i=0부터 "많이" 돌린다. 
-// tail 노드 삭제시 insert 연산의 경우엔 idx == listSize 일때 진행했지만, delete 연산은 idx == listSize-1 일 떄이다.
-// (idx < 0 || idx >= listSize || empty()) return; 에서 idx ">=" listSize 인것도 주의하자. (insert연산은 idx ">" listSize 이다.)
-void doublyLinkedlist::delection(int idx)
+
+void Doublylinkedlist::delection(int idx)
 {
 	if (idx < 0 || idx >= listSize || empty())
+	{
+		cout << -1 << endl;
 		return;
-
-	node* curNode = head;
-	if (idx == 0) // head 삭제 => O(1)
+	}
+	if (idx == 0)
 	{
 		if (listSize == 1)
 		{
-			head = tail = NULL;
+			head = NULL;
+			tail = NULL;
+			listSize--;
 		}
 		else
 		{
 			head = head->next;
+			listSize--;
 		}
 	}
-
-	
-	else if (idx == listSize-1) // tail 삭제 => O(1)
+	else if(idx == listSize-1)
 	{
 		node* tmp = tail;
 		tail = tmp->prev;
 		tail->next = NULL;
-		delete tmp;
 		listSize--;
+		delete tmp;
 	}
-	
-	else // 중간 노드 삭제 => O(n)
+	else
 	{
+		node* curNode = head;
 		node* preNode = head;
 		for (int i = 0; i < idx; i++)
 		{
@@ -147,20 +140,23 @@ void doublyLinkedlist::delection(int idx)
 		}
 		preNode->next = curNode->next;
 		curNode->next->prev = preNode;
-		delete curNode;
 		listSize--;
+		delete curNode;
 	}
 }
 
-void doublyLinkedlist::print()
+void Doublylinkedlist::print()
 {
 	if (empty())
-		cout << "empty";
-
+	{
+		cout << "Empty" << endl;
+		return;
+	}
+	
 	node* curNode = head;
 	while (curNode != NULL)
 	{
-		cout << curNode->data << " ";
+		cout << curNode->data << ' ';
 		curNode = curNode->next;
 	}
 	cout << endl;
@@ -168,38 +164,32 @@ void doublyLinkedlist::print()
 
 int main(void)
 {
-	doublyLinkedlist d;
-
 	int testCase;
 	cin >> testCase;
+
+	Doublylinkedlist d;
+
 	while (testCase--)
 	{
 		string command;
 		cin >> command;
-		if (command == "empty")
-		{
-			if (d.empty())
-				cout << "EMPTY" << endl;
-			else
-				cout << "NOT EMPTY" << endl;
-		}
-		else if (command == "append")
+		if (command == "append")
 		{
 			int data;
 			cin >> data;
 			d.append(data);
-		}
-		else if (command == "insert")
-		{
-			int idx, data;
-			cin >> idx >> data;
-			d.insertion(idx, data);
 		}
 		else if (command == "delete")
 		{
 			int idx;
 			cin >> idx;
 			d.delection(idx);
+		}
+		else if (command == "insert")
+		{
+			int idx, data;
+			cin >> idx >> data;
+			d.insertion(idx, data);
 		}
 		else if (command == "print")
 		{
