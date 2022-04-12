@@ -208,3 +208,50 @@ int main(void)
 		cout << endl;
 	}
 }
+/* 
+// 풀이2
+int main(void)
+{
+
+	int testCase;
+	cin >> testCase;
+	while (testCase--)
+	{
+		arrayList ar;
+		node* p = ar.begin();
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++)
+		{
+			int data;
+			cin >> data;
+			ar.insert(p, data);
+		}
+
+		p = ar.begin();
+		for (int i = 0; i < n; i++)
+		{
+			int sum = 0;
+			if (i == 0) // p == ar.begin()
+			{
+				sum += p->data;
+				sum += p->next->data;
+			}
+			else if (i == n-1) // p == ar.end()->prev
+			{
+				sum += p->data;
+				sum += p->prev->data;
+			}
+			else
+			{
+				sum += p->prev->data;
+				sum += p->data;
+				sum += p->next->data;
+			}
+			cout << sum << ' ';
+			p = ar.nextP(p);
+		}
+		cout << endl;
+	}
+}
+*/
