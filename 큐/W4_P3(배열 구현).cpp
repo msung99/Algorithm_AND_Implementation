@@ -52,13 +52,13 @@ void Queue::rear()
 		return;
 	else
 	{
-		if (rearIndex == 0)
+		if (rearIndex == 0)  // 끝 지점에 도달했을때.
 		{
-			cout << arr[arrSize - 1] << endl;
+		  cout << arr[arrSize - 1] << endl;
 		}
 		else
 		{
-			cout << arr[rearIndex - 1] << endl;
+		  cout << arr[rearIndex - 1] << endl;
 		}
 	}
 }
