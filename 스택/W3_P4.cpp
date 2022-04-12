@@ -81,7 +81,7 @@ int main(void)
 		cin >> str;
 		for (int i = 0; i < str.length(); i++)
 		{
-			if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/')
+			if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/') // 연산자인 경우
 			{
 				int num1 = s.top();
 				s.pop();
@@ -109,12 +109,12 @@ int main(void)
 					s.push(result);
 				}
 			}
-			else
+			else  // 숫자인 경우
 			{
 				s.push(str[i]-'0');   // char 형 숫자는 char ‘0’을 빼줌으로써 int로 바꿀 수 있다!!!
 			}
 		}
-		cout << s.top() << endl;
+		cout << s.top() << endl;  // 테스틐케이스 종료 직전에, 연산의 최종 결과물을 스택에서 
 		s.pop();
 	}
 }
