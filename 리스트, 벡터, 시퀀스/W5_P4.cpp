@@ -241,3 +241,95 @@ int main(void)
 		cout << endl;
 	}
 }
+/*
+// 풀이2 - 이렇게 함수를 따로 만들어서 main 함수를 간단하게 정리하는 것도 좋다.
+
+int arrayList::find_max(node* pos)
+{
+	int max = pos->data;
+	if (pos == begin()) // 맨 처음 2개 원소 최댓값 계산
+	{
+		if (max < pos->next->data)
+			max = pos->next->data;
+	}
+
+	else if (pos == end()->prev) // 맨 마지막 2개 원소 최댓값 계산
+	{
+		if (max < pos->prev->data)
+			max = pos->prev->data;
+	}
+
+	else  // 중간 요소 3개 계산
+	{
+		if (max < pos->prev->data)
+			max = pos->prev->data;
+
+		if (max < pos->next->data)
+			max = pos->next->data;
+	}
+
+	return max;
+}
+
+int arrayList::find_min(node* pos)
+{
+	int min = pos->data;
+	if (pos == begin()) // 맨 처음 2개 원소 최솟값 계산
+	{
+		if (min > pos->next->data)
+			min = pos->next->data;
+	}
+
+	else if (pos == end()->prev) // 맨 마지막 2개 원소 최솟값 계산
+	{
+		if (min > pos->prev->data)
+			min = pos->prev->data;
+	}
+	
+	else  // 중간 요소 3개 계산
+	{
+		if (min > pos->prev->data)
+			min = pos->prev->data;
+
+		if (min > pos->next->data)
+			min = pos->next->data;
+	}
+
+	return min;
+
+}
+
+
+int main(void)
+{
+	arrayList list;
+	node* p = list.begin();
+
+	int testCase;
+	cin >> testCase;
+
+	while (testCase--)
+	{
+		int n;
+		cin >> n;
+		for (int i = 0; i < n; i++)
+		{
+			int data;
+			cin >> data;
+			list.insert(p, data);
+		}
+
+		p = list.begin();
+		for (int i = 0; i < n; i++)
+		{
+			int max = list.find_max(p);
+			int min = list.find_min(p);
+			cout << max - min << ' ';
+			p = list.nextP(p);
+		}
+		cout << endl;
+	}
+}
+
+
+*/
