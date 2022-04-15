@@ -6,7 +6,7 @@ using namespace std;
 struct node {
 	int data;
 	node* parent;
-	vector<node*> childList; // ÀÚ½Ä ³ëµåµéÀ» °¡¸®Å°´Â Æ÷ÀÎÅÍµéÀ» º¤ÅÍ¿¡ ÀúÀå
+	vector<node*> childList; // ìì‹ ë…¸ë“œë“¤ì„ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°ë“¤ì„ ë²¡í„°ì— ì €ì¥
 
 	node(int data, node* parent)
 	{
@@ -18,15 +18,15 @@ struct node {
 class Tree {
 private:
 	node* root;
-	vector<node*> nodeList; // Æ®¸®ÀÇ ³ëµåµéÀÇ ÁÖ¼Ò°ªÀ» ÀúÀåÇÏ°í ÀÖ´Â º¤ÅÍ ¸®½ºÆ®
+	vector<node*> nodeList; // íŠ¸ë¦¬ì˜ ë…¸ë“œë“¤ì˜ ì£¼ì†Œê°’ì„ ì €ì¥í•˜ê³  ìˆëŠ” ë²¡í„° ë¦¬ìŠ¤íŠ¸
 public:
 	Tree(int data);
-	int find(int data, vector<node*>& list); // ³ëµåÇü Æ÷ÀÎÅÍµéÀ» ÀúÀåÇÏ´Â º¤ÅÍ ¸®½ºÆ®¿¡¼­ data °ªÀ» °¡Áö´Â ³ëµåÀÇ ÀÎµ¦½º¸¦ ¸®ÅÏ
-	void insertNode(int parData, int data); // data °ªÀ» °¡Áö´Â »õ·Î¿î ³ëµå¸¦ Æ®¸®¿¡ insert
-	void deleteNode(int data); // Æ®¸®¿¡¼­ data °ªÀ» °¡Áö°í ÀÖ´Â ³ëµå¸¦ »èÁ¦
-	void printParent(int data); // Æ®¸®¿¡¼­ data °ªÀ» °¡Áö°í ÀÖ´Â ³ëµåÀÇ ºÎ¸ğ³ëµåÀÇ µ¥ÀÌÅÍ °ªÀ» Ãâ·Â
-	void printChild(int data); // Æ®¸®¿¡¼­ data °ªÀ» °¡Áö°í ÀÖ´Â ³ëµåÀÇ ÀÚ½Ä³ëµåµéÀÇ µ¥ÀÌÅÍ °ªµéÀ» Ãâ·Â
-	void maxChild(int data); // Æ®¸®ÀÇ ³ëµåµé Áß¿¡ µ¥ÀÌÅÍ ÃÖ´ñ°ªÀ» Ãâ·Â
+	int find(int data, vector<node*>& list); // ë…¸ë“œí˜• í¬ì¸í„°ë“¤ì„ ì €ì¥í•˜ëŠ” ë²¡í„° ë¦¬ìŠ¤íŠ¸ì—ì„œ data ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œì˜ ì¸ë±ìŠ¤ë¥¼ ë¦¬í„´
+	void insertNode(int parData, int data); // data ê°’ì„ ê°€ì§€ëŠ” ìƒˆë¡œìš´ ë…¸ë“œë¥¼ íŠ¸ë¦¬ì— insert
+	void deleteNode(int data); // íŠ¸ë¦¬ì—ì„œ data ê°’ì„ ê°€ì§€ê³  ìˆëŠ” ë…¸ë“œë¥¼ ì‚­ì œ
+	void printParent(int data); // íŠ¸ë¦¬ì—ì„œ data ê°’ì„ ê°€ì§€ê³  ìˆëŠ” ë…¸ë“œì˜ ë¶€ëª¨ë…¸ë“œì˜ ë°ì´í„° ê°’ì„ ì¶œë ¥
+	void printChild(int data); // íŠ¸ë¦¬ì—ì„œ data ê°’ì„ ê°€ì§€ê³  ìˆëŠ” ë…¸ë“œì˜ ìì‹ë…¸ë“œë“¤ì˜ ë°ì´í„° ê°’ë“¤ì„ ì¶œë ¥
+	void maxChild(int data); // íŠ¸ë¦¬ì˜ ë…¸ë“œë“¤ ì¤‘ì— ë°ì´í„° ìµœëŒ“ê°’ì„ ì¶œë ¥
 	void minChild(int data);
 	void printAncestors(int data);
 };
@@ -38,7 +38,7 @@ Tree::Tree(int data)
 	nodeList.push_back(newNode);
 }
 
-// ³ëµåÇü Æ÷ÀÎÅÍµéÀ» ÀúÀåÇÏ´Â º¤ÅÍ ¸®½ºÆ®¿¡¼­ data °ªÀ» °¡Áö´Â ³ëµåÀÇ ÀÎµ¦½º¸¦ ¸®ÅÏ
+// ë…¸ë“œí˜• í¬ì¸í„°ë“¤ì„ ì €ì¥í•˜ëŠ” ë²¡í„° ë¦¬ìŠ¤íŠ¸ì—ì„œ data ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œì˜ ì¸ë±ìŠ¤ë¥¼ ë¦¬í„´
 int Tree::find(int data, vector<node*>& list)
 {
 	for (int i = 0; i < list.size(); i++) 
@@ -162,7 +162,7 @@ void Tree::minChild(int data)
 	cout << max << endl;
 }
 
-// Á¶»óµéÀ» Â÷·Ê´ë·Î ¼øÂ÷ÀûÀ¸·Î ¿Ã¶ó°¡¸é¼­ µ¥ÀÌÅÍ °ªÀ» Ãâ·Â
+// ì¡°ìƒë“¤ì„ ì°¨ë¡€ëŒ€ë¡œ ìˆœì°¨ì ìœ¼ë¡œ ì˜¬ë¼ê°€ë©´ì„œ ë°ì´í„° ê°’ì„ ì¶œë ¥
 void Tree::printAncestors(int data)
 {
 	int idx = find(data, nodeList);
@@ -172,12 +172,12 @@ void Tree::printAncestors(int data)
 	node* parNode = curNode->parent;
 	while (true)
 	{
-		if (parNode == root) // ·çÆ® ³ëµå¸¦ ¸¸³­´Ù¸é ·çÆ® ³ëµåÀÇ µ¥ÀÌÅÍ°ªÀ» Ãâ·ÂÇÏ°í while¹® Á¾·á
+		if (parNode == root) // ë£¨íŠ¸ ë…¸ë“œë¥¼ ë§Œë‚œë‹¤ë©´ ë£¨íŠ¸ ë…¸ë“œì˜ ë°ì´í„°ê°’ì„ ì¶œë ¥í•˜ê³  whileë¬¸ ì¢…ë£Œ
 		{
 			cout << parNode->data << ' ' << endl;
 			return;
 		}
-		cout << parNode->data << ' '; // ·çÆ® ³ëµå¸¦ ¸¸³ª±â Àü±îÁö´Â °è¼Ó Âß Á¶»ó³ëµåµéÀ» Å¸°í ¿Ã¶ó°¡¸é¼­ µ¥ÀÌÅÍ°ª Ãâ·Â
+		cout << parNode->data << ' '; // ë£¨íŠ¸ ë…¸ë“œë¥¼ ë§Œë‚˜ê¸° ì „ê¹Œì§€ëŠ” ê³„ì† ì­‰ ì¡°ìƒë…¸ë“œë“¤ì„ íƒ€ê³  ì˜¬ë¼ê°€ë©´ì„œ ë°ì´í„°ê°’ ì¶œë ¥
 		parNode = parNode->parent;
 	}
 }
