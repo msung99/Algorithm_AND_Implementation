@@ -5,8 +5,8 @@ using namespace std;
 
 struct node {
 	int data;
-	node* parent; // ºÎ¸ğ ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ º¯¼ö
-	vector<node*> childList;  // ÀÚ½Ä ³ëµåµéÀ» °¡¸®Å°´Â Æ÷ÀÎÅÍ º¤ÅÍ
+	node* parent; 
+	vector<node*> childList; 
 
 	node(int data, node* parent) {
 		this->data = data;
@@ -16,15 +16,14 @@ struct node {
 
 class Tree {
 private:
-	node* root;  // Æ®¸®ÀÇ root¸¦ ÀúÀåÇÏ´Â Æ÷ÀÎÅÍ º¯¼ö
-	vector<node*> nodeList; // Æ®¸®ÀÇ ¸ğµç ³ëµåÀÇ Æ÷ÀÎÅÍ¸¦ ÀúÀåÇÏ´Â º¤ÅÍ
+	node* root;  
+	vector<node*> nodeList; 
 public:
-	int find(int data, vector<node*>& list); // ³ëµåÆ÷ÀÎÅÍ º¤ÅÍ¿¡¼­ Æ¯Á¤ ³ëµå¸¦ Ã£´Â ÇÔ¼ö
+	int find(int data, vector<node*>& list);
 	Tree(int data);
-	void insertNode(int parData, int data); // data¸¦ ÀúÀåÇÏ´Â ³ëµå¸¦ »ı¼ºÇÏ¿© parDataÀÇ ÀÚ½ÄÀ¸·Î »ğÀÔÇÏ´Â ÇÔ¼ö
-
-	void preOrder(node* curNode, int count);
-	void postOrder(node* curNode, int count);
+	void insertNode(int parData, int data);
+	
+	void postOrder(node* curNode, int count); // í›„ìœ„ìˆœíšŒ ì§„í–‰ 
 	node* findNode(int data);
 };
 
@@ -36,33 +35,32 @@ Tree::Tree(int data)
 }
 
 
-int Tree::find(int data, vector<node*>& list) {  // ³ëµå Æ÷ÀÎÅÍ º¤ÅÍ¿¡¼­ Æ¯Á¤ ³ëµåÀÇ ÀÎµ¦½º¸¦ Ã£´ÂÇÔ¼ö
+int Tree::find(int data, vector<node*>& list) {  
 	for (int i = 0; i < list.size(); i++) {
-		if (list[i]->data == data) // ³ëµå¸¦ Ã£¾ÒÀ» °æ¿ì, ÀÎµ¦½º¸¦ ¸®ÅÏ
+		if (list[i]->data == data) 
 			return i;
 	}
 	return -1;
 }
 
-// data¸¦ ÀúÀåÇÏ´Â ³ëµå¸¦ »ı¼ºÇÏ¿© parDataÀÇ ÀÚ½ÄÀ¸·Î »ğÀÔÇÏ´Â ÇÔ¼ö
 void Tree::insertNode(int parData, int data) {
-	if (find(data, nodeList) != -1)  // »õ·Î »ğÀÔÇÒ ³ëµå(data ³ëµå)°¡ ÀÌ¹Ì Á¸ÀçÇÏ´Â °æ¿ì
+	if (find(data, nodeList) != -1)  
 	{
 		cout << -1 << endl;
 		return;
 	}
 
-	int idx = find(parData, nodeList); // nodeList¿¡¼­ ºÎ¸ğ ³ëµåÀÇ ÀÎµ¦½º¸¦ Ã£À½ 
-	if (idx == -1)  // ºÎ¸ğ ³ëµå(parData ³ëµå)°¡ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
+	int idx = find(parData, nodeList);
+	if (idx == -1)  
 	{
 		cout << -1 << endl;
 		return;
 	}
 
 	node* parNode = nodeList[idx];
-	node* newNode = new node(data, parNode); // »õ·Î »ğÀÔÇÒ ³ëµå¸¦ »ı¼ºÇÏ°í, ºÎ¸ğ¸¦ parNode·Î ÁöÁ¤
-	parNode->childList.push_back(newNode);  // parNodeÀÇ ÀÚ½Ä º¤ÅÍ ¸®½ºÆ®¿¡ newNode¸¦ »ğÀÔ
-	nodeList.push_back(newNode); // ÀüÃ¼ ³ëµå º¤ÅÍ ¸®½ºÆ®¿¡ »õ·Î¿î ³ëµå newNode ¸¦ ÀúÀå
+	node* newNode = new node(data, parNode);
+	parNode->childList.push_back(newNode); 
+	nodeList.push_back(newNode); 
 	return;
 }
 
@@ -72,22 +70,14 @@ node* Tree::findNode(int data)
 	return nodeList[idx];
 }
 
-void Tree::preOrder(node* curNode, int count)
-{
-	cout << count << ' ';
-	for (int i = 0; i < curNode->childList.size(); i++)
-	{
-		preOrder(curNode->childList[i], count + 1);
-	}
-}
-
-void Tree::postOrder(node* curNode, int count)
+// depth = ê¹Šì´
+void Tree::postOrder(node* curNode, int depth)
 {
 	for (int i = 0; i < curNode->childList.size(); i++)
 	{
-		postOrder(curNode->childList[i], count + 1);
+		postOrder(curNode->childList[i], depth + 1);
 	}
-	cout << count << ' ';
+	cout << depth << ' ';
 }
 
 int main(void)
