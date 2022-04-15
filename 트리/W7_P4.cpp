@@ -4,8 +4,8 @@
 using namespace std;
 
 struct node {
-	int data;   // ¸î¹ø¤Š ³ëµåÀÎÁö 
-	int data2;  // ½b´õ ¿ë·® »çÀÌÁî °ª
+	int data;   /// ëª‡ë²ˆì¨° ë…¸ë“œì¸ì§€ 
+	int data2;  // í¹ë” ìš©ëŸ‰ ì‚¬ì´ì¦ˆ ê°’
 	node* parent; 
 	vector<node*> childList; 
 
@@ -23,9 +23,9 @@ public:
 	int find(int data, vector<node*>& list);
 	Tree(int data);
 	void insertNode(int parData, int data);
-	int postOrder(node* curNode);  // ÈÄÀ§ ¼øÈ¸·Î ÁøÇàÇÔ
-	node* findNode(int data); // Æ®¸®¿¡ data °ªÀ» °¡Áö´Â ³ëµå¸¦ Å½»öÈÄ ±× ³ëµå¸¦ ¸®ÅÏ
-	void folderSize(int data, int changeData); //  °¢ data ³ëµå¿¡´Ù°¡ Æú´õÀÇ ¿ë·® °ªÀ» ÇÒ´ç½ÃÅ´ 
+	int postOrder(node* curNode);  // í›„ìœ„ ìˆœíšŒë¡œ ì§„í–‰í•¨
+	node* findNode(int data); // íŠ¸ë¦¬ì— data ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œë¥¼ íƒìƒ‰í›„ ê·¸ ë…¸ë“œë¥¼ ë¦¬í„´
+	void folderSize(int data, int changeData); //  ê° data ë…¸ë“œì—ë‹¤ê°€ í´ë”ì˜ ìš©ëŸ‰ ê°’ì„ í• ë‹¹ì‹œí‚´ 
 };
 
 Tree::Tree(int data)
@@ -71,7 +71,7 @@ node* Tree::findNode(int data)
 	return nodeList[idx];
 }
 
-// ÈÄÀ§¼øÈ¸·Î ¼­ºêÆ®¸®ÀÇ ÃÑ Æú´õ ¿ë·®À» °è»êÈÄ Ãâ·Â
+// í›„ìœ„ìˆœíšŒë¡œ ì„œë¸ŒíŠ¸ë¦¬ì˜ ì´ í´ë” ìš©ëŸ‰ì„ ê³„ì‚°í›„ ì¶œë ¥
 int Tree::postOrder(node* curNode)
 {
 	if (curNode->childList.size() == 0)
@@ -80,13 +80,12 @@ int Tree::postOrder(node* curNode)
 	int sum = 0;
 	for (int i = 0; i < curNode->childList.size(); i++)
 	{
-		sum += postOrder(curNode->childList[i]); // curNode ³ëµåÀÇ °¢ ¼­ºêÆ®¸®ÀÇ Æú´õ ¿ë·®ÀÇ ÇÕ»êÀ» sum¿¡´Ù ¸ğµÎ Ãß°¡ ÇöÀç curNodeÀÇ ÃÑ ¿ë·®À» ±¸ÇÔ
+		sum += postOrder(curNode->childList[i]); // curNode ë…¸ë“œì˜ ê° ì„œë¸ŒíŠ¸ë¦¬ì˜ í´ë” ìš©ëŸ‰ì˜ í•©ì‚°ì„ sumì—ë‹¤ ëª¨ë‘ ì¶”ê°€ í˜„ì¬ curNodeì˜ ì´ ìš©ëŸ‰ì„ êµ¬í•¨
 	}
-	return sum + curNode->data2; // °¢ ¼­ºêÆ®¸®ÀÇ ¿ë·®À» sum¿¡ ¸ğµÎ ´õÇß´Ù¸é, ¸¶Áö¸·¿¡´Â ÀÚ½ÅÀÇ Æú´õ ¿ë·®µµ ´õÇØ¾ßÁö ÃÑ ¿ë·®ÀÌ µÈ´Ù.
-}
+	return sum + curNode->data2;// ê° ì„œë¸ŒíŠ¸ë¦¬ì˜ ìš©ëŸ‰ì„ sumì— ëª¨ë‘ ë”í–ˆë‹¤ë©´, ë§ˆì§€ë§‰ì—ëŠ” ìì‹ ì˜ í´ë” ìš©ëŸ‰ë„ ë”í•´ì•¼ì§€ ì´ ìš©ëŸ‰ì´ ëœë‹¤.
 
 
-void Tree::folderSize(int data, int folderSize) // °¢ ³ëµå¿¡´Ù Æú´õÀÇ ¿ë·® µ¥ÀÌÅÍ °ªÀ» ÇÒ´ç
+void Tree::folderSize(int data, int folderSize)// ê° ë…¸ë“œì—ë‹¤ í´ë”ì˜ ìš©ëŸ‰ ë°ì´í„° ê°’ì„ í• ë‹¹
 {
 	int idx = find(data, nodeList);
 	node* curNode = nodeList[idx];
@@ -107,7 +106,7 @@ int main(void)
 		tree.insertNode(parData, data);
 	}
 
-	// °¢ ³ëµå¿¡´Ù Æú´õÀÇ ¿ë·® µ¥ÀÌÅÍ °ªÀ» ÇÒ´ç
+	// ê° ë…¸ë“œì—ë‹¤ í´ë”ì˜ ìš©ëŸ‰ ë°ì´í„° ê°’ì„ í• ë‹¹
 	for (int i = 0; i < size; i++) 
 	{
 		int data, changeData;
@@ -115,7 +114,7 @@ int main(void)
 		tree.folderSize(data, changeData);
 	}
 
-	// ÈÄÀ§¼øÈ¸·Î ¼­ºêÆ®¸®ÀÇ ÃÑ Æú´õ ¿ë·®À» °è»êÈÄ Ãâ·Â
+	// í›„ìœ„ìˆœíšŒë¡œ ì„œë¸ŒíŠ¸ë¦¬ì˜ ì´ í´ë” ìš©ëŸ‰ì„ ê³„ì‚°í›„ ì¶œë ¥
 	for (int i = 0; i < n; i++)
 	{
 		int data;
