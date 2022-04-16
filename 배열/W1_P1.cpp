@@ -4,21 +4,21 @@ using namespace std;
 
 class Array {
 private:
-	int* arr;
 	int arrSize;
+	int* arr;
 public:
-	Array(int arrSize);
+	Array(int capacity);
 	void add(int idx, int data);
 	void remove(int idx);
 	void set(int idx, int data);
 	void print();
-	void find(int data);
+	int find(int data);
 };
 
-Array::Array(int arrSize)
+Array::Array(int capacity)
 {
-	this->arrSize = arrSize;
-	this->arr = new int[arrSize];
+	arrSize = capacity;
+	arr = new int[arrSize];
 	for (int i = 0; i < arrSize; i++)
 	{
 		arr[i] = 0;
@@ -27,7 +27,7 @@ Array::Array(int arrSize)
 
 void Array::add(int idx, int data)
 {
-	for (int i = arrSize - 2; i >= idx; i--)
+	for (int i = arrSize-2; i>=idx; i--)
 	{
 		arr[i + 1] = arr[i];
 	}
@@ -36,7 +36,7 @@ void Array::add(int idx, int data)
 
 void Array::remove(int idx)
 {
-	for (int i = idx + 1; i <= arrSize - 1; i++)
+	for (int i = idx + 1; i <= arrSize -1; i++)
 	{
 		arr[i - 1] = arr[i];
 	}
@@ -57,25 +57,21 @@ void Array::print()
 	cout << endl;
 }
 
-void Array::find(int data)
+int Array::find(int data)
 {
 	for (int i = 0; i < arrSize; i++)
 	{
-		if (arr[i] == data)
-		{
-			cout << i << endl;
-			return;
-		}
+		if (data == arr[i])
+			return i;
 	}
-	cout << -1 << endl;
+	return -1;
 }
 
 int main(void)
 {
-	int testCase, arrSize;
-	cin >> testCase >> arrSize;
-
-	Array arr(arrSize);
+	int testCase, size;
+	cin >> testCase >> size;
+	Array arr(size);
 
 	while (testCase--)
 	{
@@ -86,6 +82,10 @@ int main(void)
 			int idx, data;
 			cin >> idx >> data;
 			arr.add(idx, data);
+		}
+		else if (command == "print")
+		{
+			arr.print();
 		}
 		else if (command == "remove")
 		{
@@ -99,15 +99,11 @@ int main(void)
 			cin >> idx >> data;
 			arr.set(idx, data);
 		}
-		else if (command == "print")
-		{
-			arr.print();
-		}
 		else if (command == "find")
 		{
 			int data;
 			cin >> data;
-			arr.find(data);
+			cout << arr.find(data) << endl;
 		}
 	}
 }
