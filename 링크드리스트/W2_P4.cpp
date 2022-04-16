@@ -8,40 +8,38 @@ struct node {
 	int data;
 };
 
-class Doublylinkedlist {
+class doublyLinkedlist {
 private:
+	int listSize;
 	node* head;
 	node* tail;
-	int listSize;
 public:
-	Doublylinkedlist();
-	bool empty();
+	doublyLinkedlist();
 	void print();
 	void append(int data);
 	void delection(int idx);
-	void insertion(int idx, int data);
-	void sum();
 	void print_reverse();
 	void max();
-}; 
+	bool empty();
+};
 
-Doublylinkedlist::Doublylinkedlist()
+doublyLinkedlist::doublyLinkedlist()
 {
+	listSize = 0;
 	head = NULL;
 	tail = NULL;
-	listSize = 0;
 }
 
-bool Doublylinkedlist::empty()
+bool doublyLinkedlist::empty()
 {
 	return (listSize == 0);
 }
 
-void Doublylinkedlist::print()
+void doublyLinkedlist::print()
 {
 	if (empty())
 	{
-		cout << "Empty" << endl;
+		cout << "empty" << endl;
 		return;
 	}
 	node* curNode = head;
@@ -53,17 +51,18 @@ void Doublylinkedlist::print()
 	cout << endl;
 }
 
-void Doublylinkedlist::append(int data)
+void doublyLinkedlist::append(int data)
 {
 	node* newNode = new node;
 	newNode->data = data;
 	newNode->next = NULL;
 	newNode->prev = NULL;
+
 	if (empty())
 	{
-		head = newNode;
-		tail = newNode;
+		head = tail = newNode;
 		listSize++;
+		print();
 	}
 	else
 	{
@@ -71,38 +70,42 @@ void Doublylinkedlist::append(int data)
 		newNode->prev = tail;
 		tail = newNode;
 		listSize++;
+		print();
 	}
-	print();
 }
 
-void Doublylinkedlist::delection(int idx)
+void doublyLinkedlist::delection(int idx)
 {
-	if (idx < 0 || idx >= listSize || empty())
+	if (empty() || idx < 0 || idx >= listSize)
 	{
 		cout << -1 << endl;
 		return;
 	}
+	
 	if (idx == 0)
 	{
 		if (listSize == 1)
 		{
-			head = NULL;
-			tail = NULL;
+			cout << head->data << endl;
+			head = tail = NULL;
 			listSize--;
 		}
 		else
 		{
+			cout << head->data << endl;
 			head = head->next;
+			head->prev = NULL;
 			listSize--;
 		}
 	}
 	else if (idx == listSize - 1)
 	{
+		cout << tail->data << endl;
 		node* tmp = tail;
 		tail = tail->prev;
 		tail->next = NULL;
-		listSize--;
 		delete tmp;
+		listSize--;
 	}
 	else
 	{
@@ -113,14 +116,15 @@ void Doublylinkedlist::delection(int idx)
 			preNode = curNode;
 			curNode = curNode->next;
 		}
+		cout << curNode->data << endl;
 		curNode->next->prev = preNode;
 		preNode->next = curNode->next;
-		listSize--;
 		delete curNode;
+		listSize--;
 	}
 }
 
-void Doublylinkedlist::print_reverse()
+void doublyLinkedlist::print_reverse()
 {
 	if (empty())
 	{
@@ -128,29 +132,28 @@ void Doublylinkedlist::print_reverse()
 		return;
 	}
 	node* curNode = tail;
-	while (true)
+	while (curNode != NULL)
 	{
-		if (curNode == head)
-		{
-			cout << curNode->data << endl;
-			break;
-		}
-		else
-		{
-			cout << curNode->data << ' ';
-			curNode = curNode->prev;
-		}
+		cout << curNode->data << ' ';
+		curNode = curNode->prev;
 	}
+	cout << endl;
 }
 
-void Doublylinkedlist::max()
+void doublyLinkedlist::max()
 {
+	if (empty())
+	{
+		cout << "empty" << endl;
+		return;
+	}
 	int max = 0;
 	node* curNode = head;
 	while (curNode != NULL)
 	{
 		if (max < curNode->data)
 			max = curNode->data;
+
 		curNode = curNode->next;
 	}
 	cout << max << endl;
@@ -158,36 +161,38 @@ void Doublylinkedlist::max()
 
 int main(void)
 {
-	Doublylinkedlist d;
 	int testCase;
 	cin >> testCase;
+
+	doublyLinkedlist d;
+
 	while (testCase--)
 	{
 		string command;
 		cin >> command;
-		if (command == "delete")
+		if (command == "Delete")
 		{
-			int idx;
-			cin >> idx;
-			d.delection(idx);
+			int a;
+			cin >> a;
+			d.delection(a);
 		}
-		else if (command == "append")
+		else if (command == "Print")
 		{
-			int data;
-			cin >> data;
-			d.append(data);
+			d.print();
 		}
-		else if (command == "print_reverse")
+		else if (command == "Print_reverse")
 		{
 			d.print_reverse();
 		}
-		else if (command == "max")
+		else if (command == "Append")
+		{
+			int a;
+			cin >> a;
+			d.append(a);
+		}
+		else if (command == "Max")
 		{
 			d.max();
-		}
-		else if (command == "print")
-		{
-			d.print();
 		}
 	}
 }
