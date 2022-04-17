@@ -89,6 +89,22 @@ int Tree::postOrder(node* curNode) {
 	}
 	return count;
 }
+// 풀이 2
+/*
+int Tree::postOrder(node* pos)
+{
+	int count = 0;
+	if (pos->childList.size() == 0)
+		return 1;
+
+	for (int i = 0; i < pos->childList.size(); i++)
+	{
+		count += postOrder(pos->childList[i]);
+	}
+	return count;
+}
+*/
+
 
 node* Tree::getRoot()
 {
