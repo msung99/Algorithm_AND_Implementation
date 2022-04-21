@@ -1,5 +1,4 @@
-// ¸®½ºÆ®ÀÇ ¸ğµç ¿¬»êÀº O(1) ÀÌ °É¸°´Ù.
-
+// ë¦¬ìŠ¤íŠ¸ì˜ ëª¨ë“  ì—°ì‚°ì€ O(1) ì´ ê±¸ë¦°ë‹¤.
 #include <iostream>
 #include <string>
 using namespace std;
@@ -20,19 +19,19 @@ public:
 	bool empty();
 	int size();
 
-	node* begin(); // positionÀÌ headerÀÇ ´ÙÀ½ ³ëµå¸¦ °¡¸®Å°°Ô ÇÔ
-	node* end(); //  positionÀÌ trailer¸¦ °¡¸®Å°°ÔÇÔ
+	node* begin(); // positionì´ headerì˜ ë‹¤ìŒ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ê²Œ í•¨
+	node* end(); //  positionì´ trailerë¥¼ ê°€ë¦¬í‚¤ê²Œí•¨
 
-	void insert(node* pos, int data);  // pos°¡ °¡¸®Å°´Â ¾ÕÂÊ¿¡ data¸¦ »ğÀÔ
-	node* erase(node* pos); // pos°¡ °¡¸®Å°´Â ¿ø¼Ò¸¦ »èÁ¦
+	void insert(node* pos, int data);  // posê°€ ê°€ë¦¬í‚¤ëŠ” ì•ìª½ì— dataë¥¼ ì‚½ì…
+	node* erase(node* pos); // posê°€ ê°€ë¦¬í‚¤ëŠ” ì›ì†Œë¥¼ ì‚­ì œ
 
 	void insertFront(int data);
 	void eraseFront();
 	void insertBack(int data);
 	void eraseBack();
 
-	node* nextP(node* pos); // position À» µÚ·Î ÇÑÄ­ÀÌµ¿
-	node* prevP(node* pos); // position À» ¾ÕÀ¸·Î ÇÑÄ­ÀÌµ¿
+	node* nextP(node* pos); // position ì„ ë’¤ë¡œ í•œì¹¸ì´ë™
+	node* prevP(node* pos); // position ì„ ì•ìœ¼ë¡œ í•œì¹¸ì´ë™
 	void print();
 	void find(int data);
 
@@ -60,12 +59,12 @@ int nodeList::size()
 	return n;
 }
 
-node* nodeList::begin()  // headerÀÇ ´ÙÀ½ ³ëµå¸¦ ¸®ÅÏ
+node* nodeList::begin()  // headerì˜ ë‹¤ìŒ ë…¸ë“œë¥¼ ë¦¬í„´
 {
 	return header->next;
 }
 
-node* nodeList::end() // trailer ¸¦ ¸®ÅÏ
+node* nodeList::end() // trailer ë¥¼ ë¦¬í„´
 {
 	return trailer;
 }
