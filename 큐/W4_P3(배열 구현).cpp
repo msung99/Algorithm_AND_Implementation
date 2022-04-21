@@ -11,7 +11,7 @@ private:
 	int rearIndex;
 public:
 	Queue(int capacity);
-	int size();
+	void size();
 	bool empty();
 	void front();
 	void rear();
@@ -22,15 +22,15 @@ public:
 Queue::Queue(int capacity)
 {
 	this->capacity = capacity;
-	arr = new int[capacity];
 	arrSize = 0;
 	frontIndex = 0;
 	rearIndex = 0;
+	arr = new int[capacity];
 }
 
-int Queue::size()
+void Queue::size()
 {
-	return arrSize;
+	cout << arrSize << endl;
 }
 
 bool Queue::empty()
@@ -41,25 +41,23 @@ bool Queue::empty()
 void Queue::front()
 {
 	if (empty())
+	{
+		cout << "Empty" << endl;
 		return;
-	else
-		cout << arr[frontIndex] << endl;
+	}
+	cout << arr[frontIndex] << endl;
 }
 
 void Queue::rear()
 {
 	if (empty())
+	{
+		cout << "Empty" << endl;
 		return;
+	}
 	else
 	{
-		if (rearIndex == 0)  // 끝 지점에 도달했을때.
-		{
-		  cout << arr[arrSize - 1] << endl;
-		}
-		else
-		{
-		  cout << arr[rearIndex - 1] << endl;
-		}
+		cout << arr[rearIndex - 1] << endl;
 	}
 }
 
@@ -67,9 +65,10 @@ void Queue::enqueue(int data)
 {
 	if (arrSize == capacity)
 	{
-		cout << "FULL " << endl;
+		cout << "FULL" << endl;
 		return;
 	}
+
 	arr[rearIndex] = data;
 	rearIndex = (rearIndex + 1) % capacity;
 	arrSize++;
@@ -78,46 +77,53 @@ void Queue::enqueue(int data)
 void Queue::dequeue()
 {
 	if (empty())
+	{
+		cout << "Empty" << endl;
 		return;
-
+	}
+	front();
 	frontIndex = (frontIndex + 1) % capacity;
 	arrSize--;
 }
 
 int main(void)
 {
-	Queue q(5);
-	int testCase;
-	cin >> testCase;
-	while (testCase--)
+	int size, t;
+	cin >> size >> t;
+	Queue q(size);
+	while (t--)
 	{
-		string command;
-		cin >> command;
-		if (command == "size")
+		string a;
+		cin >> a;
+		if (a == "isEmpty")
 		{
-			cout << q.size() << endl;
+			if (q.empty())
+				cout << "True" << endl;
+			else
+				cout << "False" << endl;
 		}
-		else if (command == "empty")
+		else if (a == "size")
 		{
-			cout << q.empty() << endl;
+			q.size();
 		}
-		else if (command == "front")
+		else if (a == "front")
 		{
 			q.front();
 		}
-		else if (command == "rear")
+		else if (a == "rear")
 		{
 			q.rear();
 		}
-		else if (command == "dequeue")
-		{
-			q.dequeue();
-		}
-		else if (command == "enqueue")
+		else if (a == "enqueue")
 		{
 			int data;
 			cin >> data;
 			q.enqueue(data);
 		}
+		else if (a == "dequeue")
+		{
+			q.dequeue();
+		}
 	}
 }
+
