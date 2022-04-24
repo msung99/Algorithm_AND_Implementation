@@ -1,4 +1,4 @@
-// 리스트의 모든 연산은 O(1) 이 걸린다.
+// 리스트의 모든 연산은 O(1) 이 걸린다. 
 #include <iostream>
 #include <string>
 using namespace std;
