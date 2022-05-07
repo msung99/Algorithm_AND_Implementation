@@ -1,5 +1,3 @@
-// minPQ 를 가정, 홀수가 우선순위가 더 높다
-
 #include <iostream>
 #include <string>
 #include <vector>
