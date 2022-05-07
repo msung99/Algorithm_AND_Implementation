@@ -1,18 +1,19 @@
+// minPQ ë¥¼ ê°€ì •, í™€ìˆ˜ê°€ ìš°ì„ ìˆœìœ„ê°€ ë” ë†’ë‹¤
+
 #include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
 
-// ºñ±³ÀÚ - µÎ ¿ø¼ÒÀÇ ¿ì¼±¼øÀ§¸¦ ºñ±³ÇÏ´Â ADT
-// compare(p ,q) : p°¡ qº¸´Ù ¿ì¼±¼øÀ§°¡ ³ôÀºÁö¸¦ ÆÇ´Ü.
-// maxPQ ¸¦ ±¸ÇöÇßÀ¸¹Ç·Î, ¿ì¼±¼øÀ§°¡ ÃÖ´ñ°ªÀÌ´Ù.
+// ë¹„êµìž - ë‘ ì›ì†Œì˜ ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµí•˜ëŠ” ADT
+// compare(p ,q) : pê°€ që³´ë‹¤ ìš°ì„ ìˆœìœ„ê°€ ë†’ì€ì§€ë¥¼ íŒë‹¨.
 struct compare {
 	bool operator()(const int& p, const int& q) const {
-		return p > q; // maxPQ ÀÌ¹Ç·Î p > q ÀÎµ¥, ¸¸ÀÏ minPQ ¸¦ ±¸ÇöÇß´Ù¸é "return p < q" °¡ µÈ´Ù.
+		return p > q;
 	}
 };
 
-// maxPQ ¸¦ ±¸Çö ºñÁ¤·Ä ½ÃÄö½º º¤ÅÍ·Î ±¸Çö
+// maxPQ ë¥¼ êµ¬í˜„ ë¹„ì •ë ¬ ì‹œí€€ìŠ¤ ë²¡í„°ë¡œ êµ¬í˜„
 class unsortedSeqPQ {
 private:
 	vector<int> seq;
@@ -33,14 +34,14 @@ bool unsortedSeqPQ::empty() {
 	return (seq.size() == 0);
 }
 
-// ¿ì¼±¼øÀ§ Å¥¿¡ ¿ø¼Ò e¸¦ »ðÀÔ
-// Á¤·Ä°°Àº°Å ¾ÈÇÏ°í, ±×³É ½ÃÄö½º ¸Ç µÚ¿¡ ¿ø¼Ò »ðÀÔ
+// ìš°ì„ ìˆœìœ„ íì— ì›ì†Œ eë¥¼ ì‚½ìž…
+// ì •ë ¬ê°™ì€ê±° ì•ˆí•˜ê³ , ê·¸ëƒ¥ ì‹œí€€ìŠ¤ ë§¨ ë’¤ì— ì›ì†Œ ì‚½ìž…
 void unsortedSeqPQ::insert(int data) {
 	seq.push_back(data);
 }
 
-// ºñ±³ÀÚ(Á¤·Ä±âÁØ) C¿¡ µû¶ó¼­ ÃÖ¼Ú°ªÀ» Å½»ö
-// Á¤·ÄµÇÁö ¾ÊÀº ½ÃÄö½º¿¡¼­ ¸Ç¾Õ¿¡¼­ºÎÅÍ ¸Ç ³¡±îÁö ½Ï´Ù Å½»öÇÏ¸é¼­ ÃÖ´ñ°ª Ã£¾Æ³»±â
+// ë¹„êµìž(ì •ë ¬ê¸°ì¤€) Cì— ë”°ë¼ì„œ ìµœì†Ÿê°’ì„ íƒìƒ‰
+// ì •ë ¬ë˜ì§€ ì•Šì€ ì‹œí€€ìŠ¤ì—ì„œ ë§¨ì•žì—ì„œë¶€í„° ë§¨ ëê¹Œì§€ ì‹¹ë‹¤ íƒìƒ‰í•˜ë©´ì„œ ìµœëŒ“ê°’ ì°¾ì•„ë‚´ê¸°
 int unsortedSeqPQ::max() {
 	if (empty())
 		return -1;
@@ -54,8 +55,8 @@ int unsortedSeqPQ::max() {
 	return max_value;
 }
 
-// Á¤·ÄµÇÁö ¾ÊÀº ½ÃÄö½º¿¡¼­ ¸Ç¾Õ¿¡¼­ºÎÅÍ ¸Ç ³¡±îÁö ½Ï´Ù Å½»öÇÏ¸é¼­
-// ÃÖ´ñ°ª Ã£¾Æ³»°í »èÁ¦
+// ì •ë ¬ë˜ì§€ ì•Šì€ ì‹œí€€ìŠ¤ì—ì„œ ë§¨ì•žì—ì„œë¶€í„° ë§¨ ëê¹Œì§€ ì‹¹ë‹¤ íƒìƒ‰í•˜ë©´ì„œ
+// ìµœëŒ“ê°’ ì°¾ì•„ë‚´ê³  ì‚­ì œ
 void unsortedSeqPQ::removeMax() {
 	if (empty())
 		return;
@@ -76,12 +77,12 @@ int main(void)
 	cin >> t;
 	while (t--)
 	{
-		// ¼±ÅÃÁ¤·Ä(selection sort)¸¦ À§ÇØ PQ¸¦ ºñÁ¤·Ä ½ÃÄö½º º¤ÅÍ·Î ±¸Çö
+		// ì„ íƒì •ë ¬(selection sort)ë¥¼ ìœ„í•´ PQë¥¼ ë¹„ì •ë ¬ ì‹œí€€ìŠ¤ ë²¡í„°ë¡œ êµ¬í˜„
 		unsortedSeqPQ q;
 		int n;
 		cin >> n;
 
-		// 1) ½ÃÄö½º ³»¿ëÀ» Á¤·ÄÇÏÁö ¾Ê°í ±×´ë·Î PQ ¹è¿­¿¡ Ä«ÇÇÈÄ,
+		// 1) ì‹œí€€ìŠ¤ ë‚´ìš©ì„ ì •ë ¬í•˜ì§€ ì•Šê³  ê·¸ëŒ€ë¡œ PQ ë°°ì—´ì— ì¹´í”¼í›„,
 		while (n--) 
 		{
 			int data;
@@ -89,12 +90,12 @@ int main(void)
 			q.insert(data);
 		}
 
-		// 2) ÃÖ´ñ°ªÀ» ÀÏÀÏÀÌ ¸Ç ¾Õ¿¡¼­ºÎÅÍ ºñ±³ÇÏ¸é¼­ Ã£¾Æ³»°í, Ã£¾Æ³½ ÃÖ´ñ°ªÀ» PQ ¿¡¼­ Ãâ·Â°ú µ¿½Ã¿¡ »èÁ¦
+		// 2) ìµœëŒ“ê°’ì„ ì¼ì¼ì´ ë§¨ ì•žì—ì„œë¶€í„° ë¹„êµí•˜ë©´ì„œ ì°¾ì•„ë‚´ê³ , ì°¾ì•„ë‚¸ ìµœëŒ“ê°’ì„ PQ ì—ì„œ ì¶œë ¥ê³¼ ë™ì‹œì— ì‚­ì œ
 		int q_size = q.size(); 
 		for (int i = 0; i < q_size; i++) 
 		{
-			cout << q.max() << ' '; // ÃÖ´ñ°ª Ãâ·ÂÇÏ°í
-			q.removeMax(); // ÃÖ´ñ°ª »èÁ¦
+			cout << q.max() << ' '; // ìµœëŒ“ê°’ ì¶œë ¥í•˜ê³ 
+			q.removeMax(); // ìµœëŒ“ê°’ ì‚­ì œ
 		}
 		cout << endl;
 	}
