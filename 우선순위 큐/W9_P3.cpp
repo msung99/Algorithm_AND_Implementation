@@ -9,8 +9,8 @@ using namespace std;
 // compare(p ,q) : p가 q보다 우선순위가 높은지를 판단.
 struct compare {
 	bool operator()(const int& p, const int& q) const {
-		return p > q;
-	}
+		return p > q;  // 만일 minPQ 가 아닌 maxPQ 의 비교자를 구현한다면,
+	}                      // 우선순위가 최솟값이 아닌 최댓값이므로 "return p > q" 로 수정해야 한다. (여기서는 minPQ를 가정)
 };
 
 // maxPQ 를 구현 비정렬 시퀀스 벡터로 구현
