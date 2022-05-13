@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 #include <vector>
 using namespace std;
 
@@ -31,46 +30,46 @@ BST::BST()
 	root = NULL;
 }
 
-// Å½»ö ¿¬»ê
-// 1. ¸ñÇ¥ °ªÀÌ ÇöÀç ³ëµåÀÇ key ¿Í °°À¸¸é Å½»ö Á¾·á (Å½»ö ¼º°øÇÑ °ÍÀÓ)
-// 2. ¸ñÇ¥ °ªÀÌ ÇöÀç ³ëµåÀÇ key º¸´Ù ÀÛÀ¸¸é ¿ÞÂÊ ÀÚ½ÄÀ¸·Î ÀÌµ¿ÇÏ¿© Å½»ö
-// 3. ¸ñÇ¥ °ªÀÌ ÇöÀç ³ëµåÀÇ key º¸´Ù Å©¸é ¿À¸¥ÂÊ ÀÚ½ÄÀ¸·Î ÀÌµ¿ÇÏ¿© Å½»ö
+// íƒìƒ‰ ì—°ì‚°
+// 1. ëª©í‘œ ê°’ì´ í˜„ìž¬ ë…¸ë“œì˜ key ì™€ ê°™ìœ¼ë©´ íƒìƒ‰ ì¢…ë£Œ (íƒìƒ‰ ì„±ê³µí•œ ê²ƒìž„)
+// 2. ëª©í‘œ ê°’ì´ í˜„ìž¬ ë…¸ë“œì˜ key ë³´ë‹¤ ìž‘ìœ¼ë©´ ì™¼ìª½ ìžì‹ìœ¼ë¡œ ì´ë™í•˜ì—¬ íƒìƒ‰
+// 3. ëª©í‘œ ê°’ì´ í˜„ìž¬ ë…¸ë“œì˜ key ë³´ë‹¤ í¬ë©´ ì˜¤ë¥¸ìª½ ìžì‹ìœ¼ë¡œ ì´ë™í•˜ì—¬ íƒìƒ‰
 
 
-// ¸ñÇ¥ key ¸¦ °¡Áö´Â ³ëµåÀÇ Æ÷ÀÎÅÍ¸¦ ¸®ÅÏ;
+// ëª©í‘œ key ë¥¼ ê°€ì§€ëŠ” ë…¸ë“œì˜ í¬ì¸í„°ë¥¼ ë¦¬í„´;
 node* BST::search(node* curNode, int key) {
-	if (curNode == NULL)  // key °ªÀ» °¡Áö´Â ³ëµå¸¦ Ã£Áö ¸øÇÏ¸é(= external ³ëµå¶ó¸é) NULL À» ¸®ÅÏ
+	if (curNode == NULL)  // key ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œë¥¼ ì°¾ì§€ ëª»í•˜ë©´(= external ë…¸ë“œë¼ë©´) NULL ì„ ë¦¬í„´
 		return NULL;
 
-	if (curNode->key == key) // ÇöÀç ³ëµåÀÇ key °ªÀÌ ¸ñÇ¥ key °ª°ú ÀÏÄ¡ÇÏ´Â °æ¿ì
-		return curNode;  // ¸®ÅÏÇÏ¸é ³¡
+	if (curNode->key == key) // í˜„ìž¬ ë…¸ë“œì˜ key ê°’ì´ ëª©í‘œ key ê°’ê³¼ ì¼ì¹˜í•˜ëŠ” ê²½ìš°
+		return curNode;  // ë¦¬í„´í•˜ë©´ ë
 
-	else if (curNode->key < key)   // ÇöÀç ³ëµåÀÇ key °ªº¸´Ù ¸ñÇ¥ key°ªÀÌ ´õ Å« °æ¿ì
-		return search(curNode->right, key); // ¿À¸¥ÂÊ ¼­ºêÆ®¸®·Î ³»·Á°¨
+	else if (curNode->key < key)   // í˜„ìž¬ ë…¸ë“œì˜ key ê°’ë³´ë‹¤ ëª©í‘œ keyê°’ì´ ë” í° ê²½ìš°
+		return search(curNode->right, key); // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ë¡œ ë‚´ë ¤ê°
 
-	else if (curNode->key > key) // ÇöÀç ³ëµåÀÇ key °ªº¸´Ù ¸ñÇ¥ key°ªÀÌ ´õ ÀÛÀº °æ¿ì
-		return search(curNode->left, key); // ¿ÞÂÊ ¼­ºêÆ®¸®·Î ³»·Á°¨
+	else if (curNode->key > key) // í˜„ìž¬ ë…¸ë“œì˜ key ê°’ë³´ë‹¤ ëª©í‘œ keyê°’ì´ ë” ìž‘ì€ ê²½ìš°
+		return search(curNode->left, key); // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ë¡œ ë‚´ë ¤ê°
 }
 
-// Å½»ö ¿¬»ê°ú À¯»çÇÑ ¹æ¹ýÀ¸·Î ·çÆ®¿¡¼­ external ³ëµå±îÁö ³»·Á¿Â µÚ, external ³ëµåÀÇ ÀÚ½ÄÀ¸·Î »õ·Î¿î ³ëµå¸¦ Ãß°¡
+// íƒìƒ‰ ì—°ì‚°ê³¼ ìœ ì‚¬í•œ ë°©ë²•ìœ¼ë¡œ ë£¨íŠ¸ì—ì„œ external ë…¸ë“œê¹Œì§€ ë‚´ë ¤ì˜¨ ë’¤, external ë…¸ë“œì˜ ìžì‹ìœ¼ë¡œ ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ì¶”ê°€
 void BST::insert(int key) {
-	if (search(root, key) != NULL)  // ÁÖ¾îÁø key¿¡ ÇØ´çÇÏ´Â ³ëµå°¡ ÀÌ¹Ì Á¸ÀçÇÒ °æ¿ì, »ðÀÔÇÏÁö ¾Ê°í Á¾·á
+	if (search(root, key) != NULL)  // ì£¼ì–´ì§„ keyì— í•´ë‹¹í•˜ëŠ” ë…¸ë“œê°€ ì´ë¯¸ ì¡´ìž¬í•  ê²½ìš°, ì‚½ìž…í•˜ì§€ ì•Šê³  ì¢…ë£Œ
 		return;
 
-	node* newNode = new node(key); // »ðÀÔÇÒ »õ·Î¿î ³ëµå
+	node* newNode = new node(key); // ì‚½ìž…í•  ìƒˆë¡œìš´ ë…¸ë“œ
 
-	if (root == NULL) // ºñ¾îÀÖ´Â ÀÌÁøÅ½»öÆ®¸®ÀÎ °æ¿ì
+	if (root == NULL) // ë¹„ì–´ìžˆëŠ” ì´ì§„íƒìƒ‰íŠ¸ë¦¬ì¸ ê²½ìš°
 	{
-		root = newNode; // »ðÀÔÇÒ ³ëµå¸¦ ·çÆ®·Î ÁöÁ¤
+		root = newNode; // ì‚½ìž…í•  ë…¸ë“œë¥¼ ë£¨íŠ¸ë¡œ ì§€ì •
 		return;
 	}
 
-	node* curNode = root; // »õ·Î »ðÀÔÇÒ ³ëµåÀÇ À§Ä¡¸¦ Å½»öÇÏ´Â º¯¼ö
-	node* parNode = NULL; // »õ·Î »ðÀÔÇÒ ³ëµåÀÇ ºÎ¸ð¸¦ Å½»öÇÏ´Â º¯¼ö
+	node* curNode = root; // ìƒˆë¡œ ì‚½ìž…í•  ë…¸ë“œì˜ ìœ„ì¹˜ë¥¼ íƒìƒ‰í•˜ëŠ” ë³€ìˆ˜
+	node* parNode = NULL; // ìƒˆë¡œ ì‚½ìž…í•  ë…¸ë“œì˜ ë¶€ëª¨ë¥¼ íƒìƒ‰í•˜ëŠ” ë³€ìˆ˜
 
-	// ·çÆ®¿¡¼­ºÎÅÍ ½ÃÀÛÇØ¼­ Å½»öÀ» ÁøÇàÇØ¼­, »õ·Î »ðÀÔÇÒ ³ëµåÀÇ À§Ä¡¸¦ Ã£¾Æ³½´Ù.
-	// Á¤·ÄÀÇ ¿ø¸®¿¡ µû¶ó ¸®ÇÁ ³ëµå¿¡ µµ´Þ ÈÄ, ¸®ÇÁ ³ëµåÀÇ ÀÚ½ÄÀ¸·Î »õ·Î¿î ³ëµå¸¦ Ãß°¡ÇÑ´Ù.
-	// <=> <ÀÌ·Ð ¼ö¾÷>TreeSearch() ¸¦ È£ÃâÇØ¼­ Á¤·ÄÀÇ ¿ø¸®¿¡ µû¶ó external ³ëµå¿¡ µµ´ÞÈÄ, ¸®ÅÏµÇ´Â external ³ëµå À§Ä¡¿¡ »õ·Î¿î ³ëµå¸¦ »ðÀÔÇÑ´Ù.
+	// ë£¨íŠ¸ì—ì„œë¶€í„° ì‹œìž‘í•´ì„œ íƒìƒ‰ì„ ì§„í–‰í•´ì„œ, ìƒˆë¡œ ì‚½ìž…í•  ë…¸ë“œì˜ ìœ„ì¹˜ë¥¼ ì°¾ì•„ë‚¸ë‹¤.
+	// ì •ë ¬ì˜ ì›ë¦¬ì— ë”°ë¼ ë¦¬í”„ ë…¸ë“œì— ë„ë‹¬ í›„, ë¦¬í”„ ë…¸ë“œì˜ ìžì‹ìœ¼ë¡œ ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ì¶”ê°€í•œë‹¤.
+	// <=> <ì´ë¡  ìˆ˜ì—…>TreeSearch() ë¥¼ í˜¸ì¶œí•´ì„œ ì •ë ¬ì˜ ì›ë¦¬ì— ë”°ë¼ external ë…¸ë“œì— ë„ë‹¬í›„, ë¦¬í„´ë˜ëŠ” external ë…¸ë“œ ìœ„ì¹˜ì— ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ì‚½ìž…í•œë‹¤.
 	while (curNode != NULL) {
 		parNode = curNode;
 		if (curNode->key < key) {
@@ -80,11 +79,11 @@ void BST::insert(int key) {
 			curNode = curNode->left;
 		}
 	}
-	// while ¹®ÀÌ ³¡³ª¸é curNode ´Â NULLÀÌ µÇ°í, parNode ´Â ¸®ÇÁ ³ëµå°¡ µÇ¾úÀ» °ÍÀÓ. 
-	// Áï, NULL °ªÀ» °¡Áö´Â À§Ä¡ÀÎ curNode ÀÚ¸®¿¡ »õ·Î¿î ³ëµå newNode ¸¦ »ðÀÔÇÑ´Ù. newNode ÀÇ ºÎ¸ð´Â parNode ¸®ÇÁ ³ëµå°¡ µÇ´Â °ÍÀÌ´Ù.
+	// while ë¬¸ì´ ëë‚˜ë©´ curNode ëŠ” NULLì´ ë˜ê³ , parNode ëŠ” ë¦¬í”„ ë…¸ë“œê°€ ë˜ì—ˆì„ ê²ƒìž„. 
+	// ì¦‰, NULL ê°’ì„ ê°€ì§€ëŠ” ìœ„ì¹˜ì¸ curNode ìžë¦¬ì— ìƒˆë¡œìš´ ë…¸ë“œ newNode ë¥¼ ì‚½ìž…í•œë‹¤. newNode ì˜ ë¶€ëª¨ëŠ” parNode ë¦¬í”„ ë…¸ë“œê°€ ë˜ëŠ” ê²ƒì´ë‹¤.
 
 
-	// ¸®ÇÁ ³ëµå¿Í »õ·Î¿î ³ëµå¸¦ ¼­·Î ¿¬°á 
+	// ë¦¬í”„ ë…¸ë“œì™€ ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ì„œë¡œ ì—°ê²° 
 	newNode->parent = parNode;
 	if (parNode->key < key) {
 		parNode->right = newNode;
@@ -95,7 +94,7 @@ void BST::insert(int key) {
 }
 
 
-// curNode ¸¦ ·çÆ® ³ëµå·Î ÇÏ´Â ¼­ºêÆ®¸®ÀÇ Å©±â¸¦ ¸®ÅÏ 
+// curNode ë¥¼ ë£¨íŠ¸ ë…¸ë“œë¡œ í•˜ëŠ” ì„œë¸ŒíŠ¸ë¦¬ì˜ í¬ê¸°ë¥¼ ë¦¬í„´ 
 int BST::size(node* curNode)
 {
 	if (curNode == NULL)
@@ -104,7 +103,7 @@ int BST::size(node* curNode)
 	return size(curNode->left) + size(curNode->right) + 1;
 }
 
-// key °ªÀ» °¡Áö´Â ³ëµåÀÇ ¿ÞÂÊ ÀÚ½Ä³ëµå¸¦ ¸®ÅÏ
+// key ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œì˜ ì™¼ìª½ ìžì‹ë…¸ë“œë¥¼ ë¦¬í„´
 node* BST::get_node(int key)
 {
 	node* parNode = search(root, key);
@@ -127,7 +126,7 @@ int main(void)
 	{
 		int key;
 		cin >> key;
-		node* curNode = b1.get_node(key); // ¿ÞÂÊ ¼­ºêÆ®¸®ÀÇ ·çÆ® ³ëµå¸¦ ¾ò¾î¿È
-		cout << b1.size(curNode) << endl; // ¿ÞÂÊ ¼­ºêÆ®¸®ÀÇ »çÀÌÁî¸¦ Ãâ·Â 
+		node* curNode = b1.get_node(key); // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì˜ ë£¨íŠ¸ ë…¸ë“œë¥¼ ì–»ì–´ì˜´
+		cout << b1.size(curNode) << endl; // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ì˜ ì‚¬ì´ì¦ˆë¥¼ ì¶œë ¥ 
 	}
 }
