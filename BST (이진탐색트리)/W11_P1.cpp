@@ -21,7 +21,7 @@ public:
 	node* search(node* curNode, int key);
 	node* get_node(int key);
 	void insert(int key);
-	// void remove(int key);
+	// void remove(int key);  // 삭제연산은 필요x
 	int size(node* parNode);
 };
 
