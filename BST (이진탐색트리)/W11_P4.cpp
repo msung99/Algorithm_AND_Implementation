@@ -4,6 +4,7 @@
 #include <algorithm>
 using namespace std;
 
+
 struct node {
 	int key;
 	node* parent;
@@ -26,9 +27,9 @@ public:
 	void insert(int key);
 	void remove(int key);
 	
-	void max_num(int k);  // ÀÌÁøÅ½»öÆ®¸®¿¡¼­ k¹øÂ°·Î Å« Á¤¼ö¸¦ Ãâ·Â 
-	int get_height(node* sub_root); // ÀÌÁøÅ½»öÆ®¸®¿¡¼­ key °ªÀ» °¡Áö´Â ³ëµå¸¦ ·çÆ® ³ëµå·Î ÇÏ´Â ¼­ºêÆ®¸®ÀÇ ³ôÀÌ¸¦ Ãâ·Â
-	                      // Æ®¸®ÀÇ ³ôÀÌ´Â ¸ğµç leaf ÀÇ ±íÀÌ Áß ÃÖ´ñ°ªÀ» ÀÇ¹Ì.
+	void max_num(int k);  // ì´ì§„íƒìƒ‰íŠ¸ë¦¬ì—ì„œ kë²ˆì§¸ë¡œ í° ì •ìˆ˜ë¥¼ ì¶œë ¥ 
+	int get_height(node* sub_root); // ì´ì§„íƒìƒ‰íŠ¸ë¦¬ì—ì„œ key ê°’ì„ ê°€ì§€ëŠ” ë…¸ë“œë¥¼ ë£¨íŠ¸ ë…¸ë“œë¡œ í•˜ëŠ” ì„œë¸ŒíŠ¸ë¦¬ì˜ ë†’ì´ë¥¼ ì¶œë ¥
+	                      // íŠ¸ë¦¬ì˜ ë†’ì´ëŠ” ëª¨ë“  leaf ì˜ ê¹Šì´ ì¤‘ ìµœëŒ“ê°’ì„ ì˜ë¯¸.
 	int get_depth(node* cur);
 };
 
@@ -56,7 +57,7 @@ void BST::insert(int key) {
 	if (search(root, key) != NULL)  
 		return;
 
-	key_list.push_back(key); // Å° ¸®½ºÆ® key_list ¿¡ key °ªÀ» Ãß°¡ 
+	key_list.push_back(key); // í‚¤ ë¦¬ìŠ¤íŠ¸ key_list ì— key ê°’ì„ ì¶”ê°€ 
 
 	node* newNode = new node(key);
 
@@ -124,7 +125,7 @@ void BST::remove(int key) {
 
 
 	
-	// »èÁ¦ ¿¬»ê ÁøÇà½Ã, key °ª ¸®½ºÆ® key_list ¿¡¼­ ÇØ´ç Å°°ªµµ »èÁ¦ÇÏ´Â °ÍÀ» ÀØÁö¸»ÀÚ.
+	// ì‚­ì œ ì—°ì‚° ì§„í–‰ì‹œ, key ê°’ ë¦¬ìŠ¤íŠ¸ key_list ì—ì„œ í•´ë‹¹ í‚¤ê°’ë„ ì‚­ì œí•˜ëŠ” ê²ƒì„ ìŠì§€ë§ì.
 	for (int i = 0; i < key_list.size(); i++)
 	{
 		if (key_list[i] == key)
@@ -155,12 +156,12 @@ void BST::remove(int key) {
 	delete delNode; 
 }
 
-// BST ¿ø¼Òµé Áß¿¡ k¹øÂ°·Î Å« ¼ıÀÚ Ãâ·Â
+// BST ì›ì†Œë“¤ ì¤‘ì— kë²ˆì§¸ë¡œ í° ìˆ«ì ì¶œë ¥
 void BST::max_num(int k)
 {
-	sort(key_list.begin(), key_list.end(), greater<int>()); // ¿À¸§Â÷¼ø Á¤·ÄÈÄ
+	sort(key_list.begin(), key_list.end(), greater<int>()); // ì˜¤ë¦„ì°¨ìˆœ ì •ë ¬í›„
 
-	cout << key_list[k - 1] << endl; // k¹øÂ°·Î Å« ¼ıÀÚ Ãâ·Â
+	cout << key_list[k - 1] << endl; // kë²ˆì§¸ë¡œ í° ìˆ«ì ì¶œë ¥
 }
 
 
@@ -170,8 +171,8 @@ node* BST::get_node(int key)
 	return curNode;
 }
 
-// ÇØ´ç ³ëµå°¡ ·çÆ® ³ëµåÀÎ ¼­ºêÆ®¸®ÀÇ ³ôÀÌ ±¸ÇÏ±â 
-// main ÇÔ¼ö¿¡¼­ 1À» »« °á°ú°ªÀ» Ãâ·ÂÇØ¾ß ÇÔ¿¡ À¯ÀÇÇÏÀÚ.
+// í•´ë‹¹ ë…¸ë“œê°€ ë£¨íŠ¸ ë…¸ë“œì¸ ì„œë¸ŒíŠ¸ë¦¬ì˜ ë†’ì´ êµ¬í•˜ê¸° 
+// main í•¨ìˆ˜ì—ì„œ 1ì„ ëº€ ê²°ê³¼ê°’ì„ ì¶œë ¥í•´ì•¼ í•¨ì— ìœ ì˜í•˜ì.
 int BST::get_height(node* sub_root)
 {
 	int height = 0;
@@ -183,7 +184,7 @@ int BST::get_height(node* sub_root)
 	return height;
 } 
 
-// ÇØ´ç ³ëµåÀÇ ±íÀÌ ±¸ÇÏ±â
+// í•´ë‹¹ ë…¸ë“œì˜ ê¹Šì´ êµ¬í•˜ê¸°
 int BST::get_depth(node* cur)
 {
 	int count = 0;
@@ -234,8 +235,8 @@ int main(void)
 		{
 			int data;
 			cin >> data;
-			node* sub_root = b1.get_node(data); // ÇØ´ç ¼­ºêÆ®¸®ÀÇ ·çÆ® ³ëµå
-			cout << b1.get_height(sub_root) -1 << endl;  // 1 À» –A °ªÀ» °á°ú·Î Ãâ·ÂÇØ¾ß ÇÔ¿¡ ÁÖÀÇÇÏÀÚ!!!
+			node* sub_root = b1.get_node(data); // í•´ë‹¹ ì„œë¸ŒíŠ¸ë¦¬ì˜ ë£¨íŠ¸ ë…¸ë“œ
+			cout << b1.get_height(sub_root) -1 << endl;  // 1 ì„ Â–A ê°’ì„ ê²°ê³¼ë¡œ ì¶œë ¥í•´ì•¼ í•¨ì— ì£¼ì˜í•˜ì!!!
 		}
 	}
 }
