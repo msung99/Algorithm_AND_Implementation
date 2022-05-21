@@ -1,12 +1,10 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include <cmath>
+#define EMPTY 0   // 회원가입 자체도 진행하지 않은 경우. 즉, 해당 셀이 비어있는 경우
+#define LOGIN 1   // 회원가입은 몰론 로그인까지 한 경우
+#define LOGOUT 2  // 회원가입은 했으나, 로그아웃 상태인 경우
+#define SIGNED 3  // 회원가입만 
 using namespace std;
-
-#define NOITEM 0  // 로그아웃 상태. 또는 회원가입 아직 안된상태
-#define ISITEM 1  // 회원가입은 몰론 현재 로그인까지도 된 상태 
-#define AVAILABLE 2 // 회원가입만 된 상태. 현재 로그인은 안된 상태
 
 struct entry {
 	int key;
@@ -16,17 +14,26 @@ struct entry {
 	entry() {
 		key = 0;
 		value = "";
-		valid = NOITEM;
+		valid = EMPTY;
 	}
 
-	entry(int key, string value) {
-		this->key = key;
+	// 주어진 문자열을 26진수로 변환
+	int tolnt(string key) {
+		int num = 0;
+		for (int i = 0; i < key.length(); i++) {
+			num = num + (key[i] - 97) * pow(26, i);
+		}
+		return num;
+	}
+
+	entry(string key, string value) {
+		this->key = tolnt(key);
 		this->value = value;
-		valid = ISITEM;
+		valid = SIGNED;
 	}
 
 	void erase() {
-		valid = AVAILABLE;
+		valid = LOGOUT;
 	}
 };
 
@@ -34,136 +41,144 @@ class hashTable {
 private:
 	entry* table;
 	int capacity;
-	int hashFnc(int key);
+	int divisor;
 public:
-	hashTable(int N);
-	void put(int key, string value);
-	void erase(int key);
-	void find(int key, string value);
-	int get_num_key(string key);
+	hashTable(int N, int M);
+	int hashFunc(int key);
+	int hashFunc2(int key);
+	int toInt(string key);
+	void signUp(string key, string value);
+	void logout(string key);
+	void login(string key, string value);
 };
 
-hashTable::hashTable(int N) {
+hashTable::hashTable(int N, int M) {
+	divisor = M;
 	capacity = N;
 	table = new entry[capacity];
-	return;
 }
 
-int hashTable::hashFnc(int key) {
-	cout << "hashFnc:" << key % capacity << endl;
+// 1차 해시함수
+int hashTable::hashFunc(int key) {
 	return key % capacity;
 }
 
-// 회원가입
-void hashTable::put(int  key, string value) {
-	int index = hashFnc(key);
-
-	// 유저 회원가입이 안되어있다면 회원가입 시도
-	if (table[index].valid == NOITEM)
-	{
-		table[index] = entry(key, value);
-		table[index].valid = AVAILABLE; // 회원가입 표식을 남김
-		//cout << "put의 submit" << endl;
-		cout << "Submit" << endl;
-		return;
-	}
-
-	// AVAILABLE : 이미 회원가입이 되어있는 상태.
-	// ISITEM : 이미 회원가입되있는 것은 몰론, 현재 해당 계정에 대해 로그인까지 되있는 상태 
-	else if (table[index].valid == ISITEM || table[index].valid == AVAILABLE)
-	{
-		//cout << "put의 invalid" << endl;
-		cout << "Invalid" << endl;
-		return;
-	}
+// 2차 해시함수
+int hashTable::hashFunc2(int key) {
+	return divisor - (key % divisor);
 }
 
-// 로그아웃
-void hashTable::erase(int key) {
-	int index = hashFnc(key);
-	
-	table[index].erase();
-		
-	//cout << "erase의 submit" << endl;
+// 주어진 문자열을 26진수로 변환
+int hashTable::toInt(string key) {
+	int num = 0;
+	for (int i = 0; i < key.length(); i++) {
+		num += static_cast<int>((key[i] - 97)) * pow(26, i);
+	}
+	return num;
+}
+
+// 회원가입
+void hashTable::signUp(string key, string value) {
+	int realKey = toInt(key);  // // 우리가 찾아야할 엔트리의 key (= 찾아야할 회원의 아이디). 26진수로 변형된 key 값
+	int index = hashFunc(realKey);
+	int probe = 1;
+
+	// 빈자리를 찾아서 탐색해 나감. 탐색이 끝나고 찾아낸 빈자리에 엔트릴 삽입한다.
+	while (table[index].valid != EMPTY && probe <= capacity) {
+		if (table[index].key == realKey) // 이미 회원가입된 아이디인 경우. 즉, key 값을 가지는 엔트리가 이미 배열에 존재하는 경우
+		{
+			cout << "Invalid" << endl;  // 이미 회원가입 되있으니까, 회원가입 하지 않고 종료
+			return;
+		}
+		index = hashFunc(index + hashFunc2(realKey)); // 이중 해싱을 활용해 충돌 관리
+		probe++;
+	}
+	if (probe > capacity)
+		return;
+
+	// 회원가입 시도
+	table[index] = entry(key, value); // 탐색 과정을 통해 찾아낸 빈자리에 엔트리를 삽입 
 	cout << "Submit" << endl;
 	return;
 }
 
-// 로그인 시도하기
-void hashTable::find(int key, string value) {
+// 로그아웃 => 주어진 key 값을 아이디로 가지는 회원을 찾아내서 로그아웃 시킨다.
+void hashTable::logout(string key) {
+	int realKey = toInt(key); // 우리가 찾아야할 엔트리의 key (= 찾아야할 회원의 아이디)
+	int index = hashFunc(realKey);
+	int probe = 1;
 
-	int index = hashFnc(key);
-
-	// 존재하지 않는 아이디이거나, s의 비밀번호가 일치하지 않는 경우
-	if (table[index].valid == NOITEM || table[index].value != value)
-	{
-		//cout << "find의 invalid" << endl;
-		cout << "Invalid" << endl;  // 로그인 실패
-		return;
+	// 탐색하는 해당 셀의 엔트리가 이전에 데이터가 저장되어 있던 엔트리였거나(= 회원가입o, 로그인x), 엔트리가 저장되어 있는 경우(= 회원가입o, 로그인o) 에 탐색을 지속
+	while (table[index].valid != EMPTY && probe <= capacity) {
+		if (table[index].key == realKey && table[index].valid == LOGIN) // 로그아웃을 해야할 대상을 찾은 경우 
+		{
+			table[index].erase();  // 로그아웃
+			cout << "Submit" << endl;
+			return;
+		}
+		index = hashFunc(index + hashFunc2(realKey)); // 이중 해시를 활용해 충돌을 방지하면서 로그아웃을 시킬 다움 대상을 탐색해 나감
+		probe++;
 	}
-
-	// 아이디, 비밀번호 쌍이 일치하지만, 해당 아이디가 현재 로그인 상태인 경우
-	else if (table[index].valid == ISITEM && table[index].key == key && table[index].value == value)
-	{
-		//cout << "find의 quit" << endl;
-		cout << "Quit" << endl;
-		return;
-	}
-
-	// 아이디 비밀번호 쌍이 일치하고, 로그아웃된 상태( = AVAILABLE ) 인 경우 
-	else if (table[index].valid == AVAILABLE && table[index].key == key && table[index].value == value)
-	{
-		table[index] = entry(key, value); // 로그인 요청을 승인한다.
-		
-		//cout << "find의 submit" << endl;
-		cout << "Submit" << endl;
-		return;
-	}
+	return;
 }
 
-// 주어진 문자열을 26진법으로 변환
-int hashTable::get_num_key(string key) {
-	int count = 0;
-	int multi = 1;
+void hashTable::login(string key, string value) {
+	int realKey = toInt(key);
+	int index = hashFunc(realKey);
+	int probe = 1;
+	while (table[index].valid != EMPTY && probe <= capacity) {
 
-	for (int i = 0; key[i]; ++i)
-	{
-		count += (key[i] - 'a') * multi;
-		multi = multi * 26;
+		// 아이디와 비밀번호과 일치하지만, 해당 계정이 이미 로그인 되어있는 상태인 경우
+		if (table[index].valid == LOGIN && table[index].key == realKey && table[index].value == value) {
+			cout << "Quit" << endl;
+			return;
+		}
+
+		// 아이디와 비밀번호 쌍이 일치하고, 해당 계정이 현재 로그아웃 된 상태인 경우
+		else if ((table[index].valid == LOGOUT || table[index].valid == SIGNED) && table[index].key == realKey && table[index].value == value) {
+			table[index].valid = LOGIN;
+			cout << "Submit" << endl;
+			return;
+		}
+
+		// 비밀번호가 일치하지 않는 경우
+		else if (table[index].key == realKey && table[index].value != value) {
+
+			cout << "Invalid" << endl;
+			return;
+		}
+		index = hashFunc((index + hashFunc2(realKey))); //capacity를 넘어가면 원형으로 만들어주기 위함이다.
+
+		probe++;
 	}
-	return count;
+
+	// 존재하지 않는 계정(아이디)인 경우
+	cout << "Invalid" << endl;
+	return;
 }
 
-int main(void)
-{
-	hashTable h(200003);
-	int t;
-	cin >> t;
-	while (t--)
-	{
-		string command;
-		cin >> command;
+int main() {
+	int a;
+	cin >> a;
+	hashTable t{ 200000, 7 };
 
-		if (command == "signup")
-		{
-			string id, password;
-			cin >> id >> password;
-			int my_id = h.get_num_key(id);
-			h.put(my_id, password);
+	string in;
+	string x;
+	string y;
+	for (int i = 0; i < a; i++) {
+		cin >> in;
+		if (in == "signup") {
+			cin >> x >> y;
+			t.signUp(x, y);
 		}
-		else if (command == "login")
-		{
-			string id, password;
-			cin >> id >> password;
-			int my_id = h.get_num_key(id);
-			h.find(my_id, password);
+		else if (in == "login") {
+			cin >> x >> y;
+			t.login(x, y);
 		}
-		else if (command == "logout")
-		{
-			string id;
-			cin >> id;
-			int my_id = h.get_num_key(id);
-			h.erase(my_id);
+		else if (in == "logout") {
+			cin >> x;
+			t.logout(x);
 		}
+
 	}
 }
