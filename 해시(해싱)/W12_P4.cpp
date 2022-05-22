@@ -1,3 +1,5 @@
+// entry 2개, 헤시 테이블 2개 생성
+
 #include <iostream>
 #include <cmath>
 using namespace std;
