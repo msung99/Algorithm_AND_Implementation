@@ -1,5 +1,5 @@
-// ÀÌ ¹®Á¦´Â key, value °ªÀ¸·Î ¸ğµÎ ÇØ½ÌÀ» ÇÏ´Â ÇØ½ÃÅ×ÀÌºíÀÌ´Ù.
-// key °ªÀº Á¤¼öÇü, Áï ¼ıÀÚ¶ó¼­ ¹®Á¦°¡ ¾ø´Ù. ÇÏÁö¸¸ value ´Â ¹®ÀÚ¿­ÀÌ¹Ç·Î 26Áø¹ıÀ¸·Î º¯È¯ÇØÁÖµµ·Ï ÇÑ´Ù.
+// ì´ ë¬¸ì œëŠ” key, value ê°’ìœ¼ë¡œ ëª¨ë‘ í•´ì‹±ì„ í•˜ëŠ” í•´ì‹œí…Œì´ë¸”ì´ë‹¤.
+// key ê°’ì€ ì •ìˆ˜í˜•, ì¦‰ ìˆ«ìë¼ì„œ ë¬¸ì œê°€ ì—†ë‹¤. í•˜ì§€ë§Œ value ëŠ” ë¬¸ìì—´ì´ë¯€ë¡œ 26ì§„ë²•ìœ¼ë¡œ ë³€í™˜í•´ì£¼ë„ë¡ í•œë‹¤.
 
 #include <iostream>
 #include <string>
@@ -7,14 +7,14 @@
 #include <cmath>
 using namespace std;
 
-#define EMPTY 0  // Ãâ¼®ºÎ ¸í´Ü¿¡ ¾ø´Â °æ¿ì
-#define CHECK 1 // Ãâ¼®ºÎ ¸í´Ü¿¡ ÀÖÀ¸¸ç, Ãâ¼® »óÅÂÀÎ °æ¿ì
-#define NOCHECK 2 // Ãâ¼®ºÎ ¸í´Ü¿¡ ÀÖÀ¸¸ç, °á¼® »óÅÂÀÎ °æ¿ì
-#define AVAILABLE 3     // Ãâ¼®ºÎ ¸í´Ü¿¡ ÀÖÀ½. Ãâ¼® ¹× °á¼® »óÅÂ´Â ¾ÆÁ÷ °áÁ¤µÇÁö ¾ÊÀ½.
+#define EMPTY 0  // ì¶œì„ë¶€ ëª…ë‹¨ì— ì—†ëŠ” ê²½ìš°
+#define CHECK 1 // ì¶œì„ë¶€ ëª…ë‹¨ì— ìˆìœ¼ë©°, ì¶œì„ ìƒíƒœì¸ ê²½ìš°
+#define NOCHECK 2 // ì¶œì„ë¶€ ëª…ë‹¨ì— ìˆìœ¼ë©°, ê²°ì„ ìƒíƒœì¸ ê²½ìš°
+#define AVAILABLE 3     // ì¶œì„ë¶€ ëª…ë‹¨ì— ìˆìŒ. ì¶œì„ ë° ê²°ì„ ìƒíƒœëŠ” ì•„ì§ ê²°ì •ë˜ì§€ ì•ŠìŒ.
 
 struct entry {
 	int key;
-	int trans_value; // 26Áø¹ıÀ¸·Î º¯È¯µÈ value °ª
+	int trans_value; // 26ì§„ë²•ìœ¼ë¡œ ë³€í™˜ëœ value ê°’
 	string value;
 	int valid;
 
@@ -27,15 +27,15 @@ struct entry {
 	entry(int key, string value) {
 		this->key = key;
 		this->value = value;
-		valid = NOCHECK;   // Ãâ¼®ºÎ ¸í´Ü¿¡ ¿Ã¶ó°¡ÀÖ´Â »óÅÂ
+		valid = NOCHECK;   // ì¶œì„ë¶€ ëª…ë‹¨ì— ì˜¬ë¼ê°€ìˆëŠ” ìƒíƒœ
 	}
 	void erase() {
-		valid = AVAILABLE; // °á¼® »óÅÂ·Î Ã³¸®
+		valid = AVAILABLE; // ê²°ì„ ìƒíƒœë¡œ ì²˜ë¦¬
 	}
 };
 
 
-// 1. key °ªÀ» ÇØ½ÌÇØ¼­ Å½»ö,»ğÀÔ,»èÁ¦¸¦ ÁøÇàÇÏ´Â ÇØ½ÃÅ×ÀÌºí
+// 1. key ê°’ì„ í•´ì‹±í•´ì„œ íƒìƒ‰,ì‚½ì…,ì‚­ì œë¥¼ ì§„í–‰í•˜ëŠ” í•´ì‹œí…Œì´ë¸”
 class hashTable1 {
 private:
 	entry* table;
@@ -46,11 +46,11 @@ public:
 	int hashFunc(int key);
 	int hashFunc2(int key);
 
-	void add(int key, string value); // Ãú¼®ºÎ¿¡ (key, value) ¿£Æ®¸® ÇĞ»ıÀ» µî·Ï
-	string delection(int key);  // ÇĞ¹øÀÌ key ÀÎ ÇĞ»ıÀ» Ãâ¼®ºÎ¿¡¼­ »èÁ¦
-	void name(int key);  // ÇĞ¹ø¿¡ key ÀÎ ÇĞ»ıÀÇ ÀÌ¸§(value) ¸¦ Ãâ·Â
+	void add(int key, string value); // ì¸¨ì„ë¶€ì— (key, value) ì—”íŠ¸ë¦¬ í•™ìƒì„ ë“±ë¡
+	string delection(int key);  // í•™ë²ˆì´ key ì¸ í•™ìƒì„ ì¶œì„ë¶€ì—ì„œ ì‚­ì œ
+	void name(int key);  // í•™ë²ˆì— key ì¸ í•™ìƒì˜ ì´ë¦„(value) ë¥¼ ì¶œë ¥
 
-	void make_present(int key); // hashTable2 ÀÇ present, absent ÇÔ¼ö¸¦ È£ÃâÇØ¼­ ÇØ´ç ÇĞ»ı(¿£Æ®¸®)ÀÇ Ãâ¼® ¹× °á¼® ¿©ºÎ¸¦ hashTable1¿¡¼­µµ º¯°æÇØ¾ß ÇÏ´Â°æ¿ì
+	void make_present(int key); // hashTable2 ì˜ present, absent í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•´ì„œ í•´ë‹¹ í•™ìƒ(ì—”íŠ¸ë¦¬)ì˜ ì¶œì„ ë° ê²°ì„ ì—¬ë¶€ë¥¼ hashTable1ì—ì„œë„ ë³€ê²½í•´ì•¼ í•˜ëŠ”ê²½ìš°
 	void make_absent(int key);
 };
 
@@ -60,12 +60,12 @@ hashTable1::hashTable1(int N, int M) {
 	table = new entry[capacity];
 }
 
-// 1Â÷ ÇØ½ÃÇÔ¼ö
+// 1ì°¨ í•´ì‹œí•¨ìˆ˜
 int hashTable1::hashFunc(int key) {
 	return key % capacity;
 }
 
-// 2Â÷ ÇØ½ÃÇÔ¼ö
+// 2ì°¨ í•´ì‹œí•¨ìˆ˜
 int hashTable1::hashFunc2(int key) {
 	return divisor - (key % divisor);
 }
@@ -96,7 +96,7 @@ string hashTable1::delection(int key) {
 		if (table[index].valid != EMPTY && table[index].key == key)
 		{
 			table[index].erase();
-			return table[index].value;  // »èÁ¦ÇÑ ¿£Æ®¸®ÀÇ value ¸¦ ¸®ÅÏ. ¸®ÅÏµÈ value ¸¦ hashTable2 ¿¡¼­ È°¿ëÇÑ´Ù. Áï, hashTable2 ÀÇ ¿£Æ®¸®¸¦ »èÁ¦ÇÒ‹š È°¿ë
+			return table[index].value;  // ì‚­ì œí•œ ì—”íŠ¸ë¦¬ì˜ value ë¥¼ ë¦¬í„´. ë¦¬í„´ëœ value ë¥¼ hashTable2 ì—ì„œ í™œìš©í•œë‹¤. ì¦‰, hashTable2 ì˜ ì—”íŠ¸ë¦¬ë¥¼ ì‚­ì œí• Â‹Âš í™œìš©
 		}
 		index = hashFunc(index + hashFunc2(key));
 		probe++;
@@ -121,7 +121,7 @@ void hashTable1::name(int key) {
 	}
 }
 
-// ÁÖ¾îÁø key ¿¡ ÇØ´çÇÏ´Â ¿£Æ®¸®(ÇĞ»ı)¸¦ Ãâ¼® »óÅÂ·Î º¯°æ
+// ì£¼ì–´ì§„ key ì— í•´ë‹¹í•˜ëŠ” ì—”íŠ¸ë¦¬(í•™ìƒ)ë¥¼ ì¶œì„ ìƒíƒœë¡œ ë³€ê²½
 void hashTable1::make_present(int key)
 {
 	if (key == -1)
@@ -134,7 +134,7 @@ void hashTable1::make_present(int key)
 	{
 		if (table[index].valid != EMPTY && table[index].key == key)
 		{
-			table[index].valid = CHECK; // Ãâ¼® 
+			table[index].valid = CHECK; // ì¶œì„ 
 			return;
 		}
 		index = hashFunc(index + hashFunc2(key));
@@ -142,7 +142,7 @@ void hashTable1::make_present(int key)
 	}
 }
 
-// ÁÖ¾îÁø key ¿¡ ÇØ´çÇÏ´Â ¿£Æ®¸®(ÇĞ»ı)¸¦ °á¼® »óÅÂ·Î º¯°æ
+// ì£¼ì–´ì§„ key ì— í•´ë‹¹í•˜ëŠ” ì—”íŠ¸ë¦¬(í•™ìƒ)ë¥¼ ê²°ì„ ìƒíƒœë¡œ ë³€ê²½
 void hashTable1::make_absent(int key)
 {
 	if (key == -1)
@@ -155,7 +155,7 @@ void hashTable1::make_absent(int key)
 	{
 		if (table[index].valid != EMPTY && table[index].key == key)
 		{
-			table[index].valid = NOCHECK; // °á¼® 
+			table[index].valid = NOCHECK; // ê²°ì„ 
 			return;
 		}
 		index = hashFunc(index + hashFunc2(key));
@@ -164,7 +164,7 @@ void hashTable1::make_absent(int key)
 }
 
 
-// 2. value °ªÀ» ÇØ½ÌÇØ¼­ Å½»ö, »ğÀÔ, »èÁ¦¸¦ ÁøÇàÇÏ´Â ÇØ½ÃÅ×ÀÌºí
+// 2. value ê°’ì„ í•´ì‹±í•´ì„œ íƒìƒ‰, ì‚½ì…, ì‚­ì œë¥¼ ì§„í–‰í•˜ëŠ” í•´ì‹œí…Œì´ë¸”
 
 class hashTable2 {
 private:
@@ -177,7 +177,7 @@ public:
 	int hashFunc2(int key);
 
 	int toInt(string key);
-	void add(int key, string value); // Ãú¼®ºÎ¿¡ (key, value) ¿£Æ®¸® ÇĞ»ıÀ» µî·Ï
+	void add(int key, string value); // ì¸¨ì„ë¶€ì— (key, value) ì—”íŠ¸ë¦¬ í•™ìƒì„ ë“±ë¡
 	void delection(string value);
 	int present(string value);
 	int absent(string value);
@@ -189,17 +189,17 @@ hashTable2::hashTable2(int N, int M) {
 	table = new entry[capacity];
 }
 
-// 1Â÷ ÇØ½ÃÇÔ¼ö
+// 1ì°¨ í•´ì‹œí•¨ìˆ˜
 int hashTable2::hashFunc(int key) {
 	return key % capacity;
 }
 
-// 2Â÷ ÇØ½ÃÇÔ¼ö
+// 2ì°¨ í•´ì‹œí•¨ìˆ˜
 int hashTable2::hashFunc2(int key) {
 	return divisor - (key % divisor);
 }
 
-// ÇØ´ç ¹®ÀÚ¿­À» 26Áø¹ıÀ¸·Î º¯È¯
+// í•´ë‹¹ ë¬¸ìì—´ì„ 26ì§„ë²•ìœ¼ë¡œ ë³€í™˜
 int hashTable2::toInt(string key) {
 	int num = 0;
 	for (int i = 0; i < key.length(); i++) {
@@ -232,11 +232,11 @@ void hashTable2::delection(string value)
 	int index = hashFunc(rearValue);
 	int probe = 1;
 
-	// »èÁ¦ÇÒ key °ª ÇØ½ÃÅ×ÀÌºí¿¡¼­ Ã£¾Æ³»±â(Å½»ö)
+	// ì‚­ì œí•  key ê°’ í•´ì‹œí…Œì´ë¸”ì—ì„œ ì°¾ì•„ë‚´ê¸°(íƒìƒ‰)
 	while (table[index].valid != EMPTY && probe <= capacity) {
-		if (table[index].valid != EMPTY && table[index].value == value) // »èÁ¦ÇÒ ¿£Æ®¸®¸¦ Ã£¾Æ³½ °æ¿ì 
+		if (table[index].valid != EMPTY && table[index].value == value) // ì‚­ì œí•  ì—”íŠ¸ë¦¬ë¥¼ ì°¾ì•„ë‚¸ ê²½ìš° 
 		{
-			table[index].valid = EMPTY; // EMPTY Ã³¸®(= ­„¼®ºÎ ¸í´Ü¿¡¼­ »èÁ¦)
+			table[index].valid = EMPTY; // EMPTY ì²˜ë¦¬(= Â„ì„ë¶€ ëª…ë‹¨ì—ì„œ ì‚­ì œ)
 			return;
 		}
 		index = hashFunc(index + hashFunc2(rearValue));
@@ -254,15 +254,15 @@ int hashTable2::present(string value) {
 	{
 		if (table[index].value == value && table[index].valid != EMPTY)
 		{
-			table[index].valid = CHECK; // Ãâ¼® »óÅÂ·Î º¯°æÈÄ
-			cout << table[index].key << endl; // ÇØ´ç ÇĞ»ıÀÇ ÇĞ¹øÀ» Ãâ·Â
-			return table[index].key;  // ¸®ÅÏµÈ key ´Â hashTable ÀÇ µ¿ÀÏÇÑ ¿£Æ®¸®¸¦ Ãâ¼® Ã³¸®ÇÏ±â À§ÇØ È°¿ë
+			table[index].valid = CHECK; // ì¶œì„ ìƒíƒœë¡œ ë³€ê²½í›„
+			cout << table[index].key << endl; // í•´ë‹¹ í•™ìƒì˜ í•™ë²ˆì„ ì¶œë ¥
+			return table[index].key;  // ë¦¬í„´ëœ key ëŠ” hashTable ì˜ ë™ì¼í•œ ì—”íŠ¸ë¦¬ë¥¼ ì¶œì„ ì²˜ë¦¬í•˜ê¸° ìœ„í•´ í™œìš©
 		}
 		index = hashFunc(index + hashFunc2(realValue));
 		probe++;
 	}
 
-	cout << "Invalid" << endl;  // Ãâ¼®ºÎ¿¡ Á¸ÀçÇÏÁö ¾ÊÀ» °æ¿ì
+	cout << "Invalid" << endl;  // ì¶œì„ë¶€ì— ì¡´ì¬í•˜ì§€ ì•Šì„ ê²½ìš°
 	return -1;
 }
 
@@ -280,7 +280,7 @@ int hashTable2::absent(string value)
 			{
 				table[index].valid = NOCHECK;
 				cout << table[index].key << endl;
-				return table[index].key; // ¸®ÅÏµÈ key ´Â hashTable ÀÇ µ¿ÀÏÇÑ ¿£Æ®¸®¸¦ Ãâ¼® Ã³¸®ÇÏ±â À§ÇØ È°¿ë
+				return table[index].key; // ë¦¬í„´ëœ key ëŠ” hashTable ì˜ ë™ì¼í•œ ì—”íŠ¸ë¦¬ë¥¼ ì¶œì„ ì²˜ë¦¬í•˜ê¸° ìœ„í•´ í™œìš©
 			}
 			index = hashFunc(index + hashFunc2(realValue));
 			probe++;
