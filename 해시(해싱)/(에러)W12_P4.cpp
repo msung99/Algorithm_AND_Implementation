@@ -1,6 +1,3 @@
-// 이 문제는 key, value 값으로 모두 해싱을 하는 해시테이블이다.
-// key 값은 정수형, 즉 숫자라서 문제가 없다. 하지만 value 는 문자열이므로 26진법으로 변환해주도록 한다.
-
 #include <iostream>
 #include <string>
 #include <vector>
