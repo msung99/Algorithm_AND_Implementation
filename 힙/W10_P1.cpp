@@ -109,6 +109,8 @@ void heap::downHeap(int idx) {
 		else
 			child = right;
 	}
+	
+	// 과정2. 앞서 찾아낸 더 작은 자식과 자신을 비교해서 내려말지 말지를 판단한다.
 
 	// 힙 순서조건을 만족하지 않는 경우 ( = 자신이 찾아낸 더 작은 자식 child 보다 더 작은 경우) 내려간다. 
 	if (arr[child] < arr[idx]) {
