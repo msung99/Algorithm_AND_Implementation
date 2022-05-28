@@ -3,6 +3,77 @@
 #include <vector>
 using namespace std;
 
+// min PQ 를 가정
+
+struct compare {
+	bool operator()(const int& p, const int& q) {
+		return p < q;
+	}
+};
+
+class sortedSeqPQ {
+private:
+	vector<int> seq;
+public:
+	int size();
+	bool empty();
+	void insert(int data);
+	void print();
+};
+
+int sortedSeqPQ::size() {
+	return seq.size();
+}
+
+bool sortedSeqPQ::empty() {
+	return seq.size() == 0;
+}
+
+void sortedSeqPQ::insert(int data) {
+	compare C;
+	int idx = 0;
+	for (idx = 0; idx < seq.size(); idx++) {
+		if (C(seq[idx], data))
+			break;
+	}
+
+	seq.insert(seq.begin() + idx, data);
+}
+
+void sortedSeqPQ::print() {
+	for (int i = 0; i < seq.size(); i++) {
+		cout << seq[i] << ' ';
+	}
+	cout << endl;
+}
+
+int main(void)
+{
+	int t;
+	cin >> t;
+
+	while (t--)
+	{
+		sortedSeqPQ s;
+		int n;
+		cin >> n;
+		while (n--)
+		{
+			int data;
+			cin >> data;
+			s.insert(data);
+		}
+		s.print();
+	}
+}
+
+
+/*
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
 // 비교자 - 두 원소의 우선순위를 비교하는 ADT
 // compare(p ,q) : p가 q보다 우선순위가 높은지를 판단.
 struct compare {
@@ -98,3 +169,4 @@ int main(void)
 		cout << endl;
 	}
 }
+*/
