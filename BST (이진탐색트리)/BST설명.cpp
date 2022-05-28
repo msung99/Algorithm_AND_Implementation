@@ -54,8 +54,8 @@ void BST::insert(int key)
 		return;
 
 	node* newNode = new node(key);
-	if (root == NULL) {
-		root = newNode;
+	if (root == NULL) {  // 아무것도 없는 트리였다면
+		root = newNode;  // 삽입할 노드를 루트노드로 지정
 		return;
 	}
 
@@ -72,6 +72,8 @@ void BST::insert(int key)
 		else
 			curNode = curNode->left;
 	}
+	
+	// 리프노드를 찾았으므로, 리프노드와 삽입할 노드를 서로 이어준다.
 
 	newNode->parent = parNode; // 리프노드인 parNode 를 부모로 설정 
 	// 리프 노드의 왼쪽 자식이 될지, 오른쪽 자식이 될지를 설정 
