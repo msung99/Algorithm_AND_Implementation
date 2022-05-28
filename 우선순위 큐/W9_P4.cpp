@@ -1,11 +1,79 @@
-// maxPQ ¸¦ °¡Á¤, Â¦¼ö°¡ ¿ì¼±¼øÀ§°¡ ³ô´Ù 
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+// max PQ ë¥¼ ê°€ì •
+struct compare {
+	bool operator()(const int& p, const int& q) {
+		return p > q;
+	}
+};
+
+class sortedSeqPQ {
+private:
+	vector<int> seq;
+public:
+	void insert(int data);
+	void print();
+};
+
+void sortedSeqPQ::insert(int data)
+{
+	compare C;
+	int idx = 0;
+	for (idx = 0; idx < seq.size(); idx++) {
+		if (C(seq[idx], data))
+			break;
+	}
+	seq.insert(seq.begin() + idx, data);
+}
+
+void sortedSeqPQ::print() {
+	vector<int> list;
+	for (int i = 0; i < seq.size(); i++) {
+		if (seq[i] % 2 == 1)
+			list.push_back(seq[i]);
+		else
+			cout << seq[i] << ' ';
+	}
+
+	for (int i = 0; i < list.size(); i++) {
+		cout << list[i] << ' ';
+	}
+	cout << endl;
+}
+
+int main(void)
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		sortedSeqPQ s;
+		int n;
+		cin >> n;
+		while (n--)
+		{
+			int data;
+			cin >> data;
+			s.insert(data);
+		}
+		s.print();
+	}
+}
+
+
+/*
+
+// maxPQ ë¥¼ ê°€ì •, ì§ìˆ˜ê°€ ìš°ì„ ìˆœìœ„ê°€ ë†’ë‹¤ 
 
 #include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
 
-// ºñ±³ÀÚ - µÎ ¿ø¼ÒÀÇ ¿ì¼±¼øÀ§¸¦ ºñ±³ÇÏ´Â ADT
+// ë¹„êµì - ë‘ ì›ì†Œì˜ ìš°ì„ ìˆœìœ„ë¥¼ ë¹„êµí•˜ëŠ” ADT
 struct compare {
 	bool operator()(const int& p, const int& q) const {
 		return p > q;
@@ -32,20 +100,20 @@ bool sortedSeqPQ::empty() {
 	return (seq.size() == 0);
 }
 
-// unsortedSeqPq °ú ´Ş¸®, ½ÃÄö½º º¤ÅÍ¿¡ ¿ø¼Ò¸¦ »ğÀÔ½Ã ±×³É »ğÀÔÇÏÁö ¾Ê°í »ğÀÔµÉ ÀûÀıÇÑ À§Ä¡¸¦ Ã£¾Æ°¡¼­ »ğÀÔµÈ´Ù.
+// unsortedSeqPq ê³¼ ë‹¬ë¦¬, ì‹œí€€ìŠ¤ ë²¡í„°ì— ì›ì†Œë¥¼ ì‚½ì…ì‹œ ê·¸ëƒ¥ ì‚½ì…í•˜ì§€ ì•Šê³  ì‚½ì…ë  ì ì ˆí•œ ìœ„ì¹˜ë¥¼ ì°¾ì•„ê°€ì„œ ì‚½ì…ëœë‹¤.
 void sortedSeqPQ::insert(int data) {
 	compare C;
 	int idx = 0;
 
-	// data ¿ø¼Ò°¡ »ğÀÔµÉ ÀûÀıÇÑ À§Ä¡¸¦ Å½»ö
+	// data ì›ì†Œê°€ ì‚½ì…ë  ì ì ˆí•œ ìœ„ì¹˜ë¥¼ íƒìƒ‰
 	for (idx = 0; idx < seq.size(); idx++) {
-		if (C(seq[idx], data))  // »ğÀÔÇÒ ¿ø¼Òº¸´Ù ¿ì¼±¼øÀ§°¡ ³ôÀº(= key°ªÀÌ ´õ ÀÛÀº) ¿ø¼Ò°¡ Ã³À½ µîÀåÇÏ´Â À§Ä¡¸¦ Å½»ö 
+		if (C(seq[idx], data))  // ì‚½ì…í•  ì›ì†Œë³´ë‹¤ ìš°ì„ ìˆœìœ„ê°€ ë†’ì€(= keyê°’ì´ ë” ì‘ì€) ì›ì†Œê°€ ì²˜ìŒ ë“±ì¥í•˜ëŠ” ìœ„ì¹˜ë¥¼ íƒìƒ‰ 
 			break;
 	}
-	seq.insert(seq.begin() + idx, data);  // Ã£Àº À§Ä¡¿¡ »õ·Î¿î µ¥ÀÌÅÍ °ª »ğÀÔ
+	seq.insert(seq.begin() + idx, data);  // ì°¾ì€ ìœ„ì¹˜ì— ìƒˆë¡œìš´ ë°ì´í„° ê°’ ì‚½ì…
 }
 
-// unsortedSeqPQ ¿Í ´Ş¸® ÀÌ¹Ì ½ÃÄö½º°¡ Á¤·ÄµÇÀÖ´Â »óÅÂÀÌ¹Ç·Î, ±×³É ¹Ù·Î ÃÖ¼Ú°ª ¸®ÅÏÇØÁÖ¸é µÈ´Ù.
+// unsortedSeqPQ ì™€ ë‹¬ë¦¬ ì´ë¯¸ ì‹œí€€ìŠ¤ê°€ ì •ë ¬ë˜ìˆëŠ” ìƒíƒœì´ë¯€ë¡œ, ê·¸ëƒ¥ ë°”ë¡œ ìµœì†Ÿê°’ ë¦¬í„´í•´ì£¼ë©´ ëœë‹¤.
 int sortedSeqPQ::max() {
 	if (empty())
 		return -1;
@@ -53,7 +121,7 @@ int sortedSeqPQ::max() {
 	return seq.front(); 
 }
 
-// unsortedSeqPQ ¿Í ´Ş¸® ÀÌ¹Ì ½ÃÄö½º°¡ Á¤·ÄµÇÀÖ´Â »óÅÂÀÌ¹Ç·Î, ±×³É ¹Ù·Î ÃÖ¼Ú°ªÀ» »èÁ¦ÇÏ¸é ³¡ÀÌ´Ù.
+// unsortedSeqPQ ì™€ ë‹¬ë¦¬ ì´ë¯¸ ì‹œí€€ìŠ¤ê°€ ì •ë ¬ë˜ìˆëŠ” ìƒíƒœì´ë¯€ë¡œ, ê·¸ëƒ¥ ë°”ë¡œ ìµœì†Ÿê°’ì„ ì‚­ì œí•˜ë©´ ëì´ë‹¤.
 void sortedSeqPQ::removeMax() {
 	if (empty())
 		return;
@@ -71,7 +139,7 @@ void sortedSeqPQ::print()
 
 	vector<int> list;
 
-	// ¿À¸§Â÷¼ø Ãâ·Â
+	// ì˜¤ë¦„ì°¨ìˆœ ì¶œë ¥
 	for (int i = 0; i < seq.size(); i++)
 	{
 		if (seq[i] % 2 == 0)
@@ -104,3 +172,5 @@ int main(void)
 		q.print();
 	}
 }
+
+*/
