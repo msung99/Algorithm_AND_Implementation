@@ -92,6 +92,9 @@ void BST::remove(int key) {
 
 	node* parNode = delNode->parent; // 삭제할 노드의 부모
  	node* childNode;  // 삭제할 노드 부모에 새롭게 연결할 자식
+	
+	
+	// 삭제후 연결해줄 자식 노드를 지정해주는 과정
 
 	// Case1. 삭제할 노드가 리프 노드인 경우 (=> 이론시간 내용 : 두 자식이 external 인 경우)
 	if (delNode->left == NULL && delNode->right == NULL) {
