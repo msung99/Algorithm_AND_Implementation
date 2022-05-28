@@ -123,10 +123,10 @@ void BST::remove(int key) {
 		}
 		// while 문이 끝나면 childNode 는 successor 가 된다.
 		delNode->key = childNode->key;  // successor 의 key 값을 덮어씌우고
-		// 기존 successor 를 삭제
-		delNode = childNode;  // 삭제할 노드를 기존 successor 로 지정
-		parNode = delNode->parent;  // 삭제할 노드의 부모 
-		childNode = delNode->right;  // 삭제할 노드에 매달아줄 노드를 오른쪽 자식으로 지정
+		// 기존 successor 를 삭제하기 위한 셋팅을 한다.
+		delNode = childNode;  // 삭제할 노드를 기존 successor 최신화
+		parNode = delNode->parent;  // 삭제할 노드의 부모를 기존 successor 의 부모로 최신화
+		childNode = delNode->right;  // 삭제할 노드(successor)의 부모에 매달아줄 노드를 기존 successor의 오른쪽 자식으로 지정
 	}
 
 	// 삭제할 노드의 부모가 NULL 인경우. 즉, 삭제할 노드가 루트노드인 경우
