@@ -128,6 +128,9 @@ void BST::remove(int key) {
 		parNode = delNode->parent;  // 삭제할 노드의 부모를 기존 successor 의 부모로 최신화
 		childNode = delNode->right;  // 삭제할 노드(successor)의 부모에 매달아줄 노드를 기존 successor의 오른쪽 자식으로 지정
 	}
+	
+	
+	// 앞서 삭제를 위해 셋팅한 것들을 기반으로 이제부터 본격적으로 삭제 시작  
 
 	// 삭제할 노드의 부모가 NULL 인경우. 즉, 삭제할 노드가 루트노드인 경우
 	if (parNode == NULL) {
@@ -138,15 +141,15 @@ void BST::remove(int key) {
 	// 왼쪽 자식을 삭제하는 경우
 	else if (delNode == parNode->left) {
 		parNode->left = childNode;   // 삭제한 노드의 부모의 왼쪽 자식으로 연결
-		if (childNode != NULL)
-			childNode->parent = parNode;
+		if (childNode != NULL)    // 연결하려는 자식 노드가 internal 인 경우
+			childNode->parent = parNode;  // 이 자식 internal 노드의 부모를 parNode 로 설정
 	}
 	
 	// 오른쪽 자식을 삭제하는 경우
 	else {
 		parNode->right = childNode;  // 삭제한 노드의 부모의 오른쪽 자식으로 연결
-		if (childNode != NULL)
-			childNode->parent = parNode;
+		if (childNode != NULL) // 연결하려는 자식 노드가 internal 인 경우
+			childNode->parent = parNode; / 이 자식 internal 노드의 부모를 parNode 로 설정
 	}
 
 	delete delNode;
