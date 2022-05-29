@@ -3,12 +3,10 @@
 #include <vector>
 using namespace std;
 
-// vertex ¿ÀºêÁ§Æ®
 struct vertex {
-	int vertexId; // Á¤Á¡ÀÇ °íÀ¯ ¹øÈ£
-	int matrixId; // edge matrix ¿¡¼­ Á¤Á¡ÀÇ ÀÎµ¦½º ¹øÈ£
-
-	vertex* prev; // vertex ½ÃÄö½º¿¡¼­ ÀÚ½ÅÀÇ ÀÌÀü°ú ´ÙÀ½ vertex ¿ÀºêÁ§Æ®°¡ ´©±¸ÀÎÁö¸¦ ÀúÀå
+	int vertexId;
+	int matrixId;
+	vertex* prev;
 	vertex* next;
 
 	vertex() {
@@ -23,8 +21,27 @@ struct vertex {
 	}
 };
 
-// Á¤Á¡À» ÀúÀåÇÏ´Â ½ÃÄö½º 
-// ( ÀÌ·Ğ ¼ö¾÷‹š ¹è¿î °Í°ú ´Ş¸®, ¿§Áö ¿ÀºêÁ§Æ®µéÀ» °¡¸®Å°´Â ½ÃÄö½º¿Í, vertex ¿ÀºêÁ§Æ®µéÀ» °¡Å°¸®´Â ½ÃÄö½º°¡ µû·Î Á¸ÀçÇÏÁö ¾Ê´Â´Ù.)
+struct edge {
+	vertex* src;
+	vertex* dst;
+	edge* next;
+	edge* prev;
+
+	edge() {
+		src = dst = NULL;
+		prev = next = NULL;
+	}
+
+	edge(vertex* src, vertex* dst) {
+		this->src = src;
+		this->dst = dst;
+		prev = next = NULL;
+	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 class vertexList {
 private:
 	vertex* header;
@@ -39,70 +56,43 @@ public:
 vertexList::vertexList() {
 	header = new vertex();
 	trailer = new vertex();
+
 	header->next = trailer;
 	header->matrixId = -1;
+
 	trailer->prev = header;
 }
 
-// Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡ »õ·Î¿î Á¤Á¡À» »ğÀÔ
 void vertexList::insertVertex(vertex* newVertex) {
 	newVertex->prev = trailer->prev;
 	newVertex->next = trailer;
-	newVertex->matrixId = trailer->prev->matrixId + 1; // ±âÁ¸ Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½ºÀÇ ¸¶Áö¸· Á¤Á¡ ¿ÀºêÁ§Æ®ÀÇ matrixId °ªÀÌ 3ÀÌ¶ó¸é, »õ·Î »ğÀÔ½ÃÅ³ Á¤Á¡Àº 4·Î ¼³Á¤
+	newVertex->matrixId = trailer->prev->matrixId + 1; //  ìƒˆë¡œìš´ vertex ì˜ matrixId ê°’ ì„¤ì •
 	trailer->prev->next = newVertex;
 	trailer->prev = newVertex;
 }
 
-// Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ ÇØ´ç Á¤Á¡À» »èÁ¦
-// => ±×·¡ÇÁ¿¡¼­ Á¤Á¡ »èÁ¦½Ã 1
-// 1) Á¤Á¡ ¿ÀºêÁ§Æ® »èÁ¦ 2) Á¤Á¡ ¿ÀºêÁ§Æ®ÀÇ ½ÃÄö½º ¿ø¼Ò¸¦ »èÁ¦(¸ô·Ğ ½Ç½À ÄÚµå´Â ÀÌ ½ÃÄö½º°¡ µû·Î¾øÀ½)
-// 3) Á¤Á¡°ú ÀÎÁ¢ÇÑ(adjacent) ¿§Áöµé »èÁ¦
-// 4) »èÁ¦ÇÒ Á¤Á¡º¸´Ù ÀÎµ¦½º ¹øÈ£ µ¥ÀÌÅÍ (matrixId) °¡ Å« Á¤Á¡µéÀÇ matrixId ¸¦ 1¾¿ °¨¼Ò
-// ¿©±â¼­´Â 1¹øÀÎ "Á¤Á¡ ¿ÀºêÁ§Æ® »èÁ¦" °úÁ¤À» ÀÌ ÇÔ¼ö·Î ÁøÇàÇÏ¸é µÈ´Ù.
 void vertexList::eraseVertex(vertex* delVertex) {
-	for (vertex* cur = delVertex; cur != trailer; cur = cur->next) {    // »èÁ¦ÇÒ Á¤Á¡º¸´Ù matrixId°¡ Å« Á¤Á¡µéÀÇ matrixId¸¦ 1¾¿ °¨¼Ò
+	// ì‚­ì œë¥¼ ì‹œí‚¤ê¸°ì „ì—, ì •ì  ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œí•  ì •ì ë³´ë‹¤ ë’¤ì— ìˆëŠ” ì •ì ë“¤ì˜ ì¸ë±ìŠ¤ ë°ì´í„° ê°’ì„ 1ì”© ê°ì†Œì‹œì¼œì¤Œ
+	for (vertex* cur = delVertex; cur != trailer; cur = cur->next) {
 		cur->matrixId--;
 	}
 
 	delVertex->prev->next = delVertex->next;
 	delVertex->next->prev = delVertex->prev;
-	delete delVertex; // delVertex ¸¦ Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ »èÁ¦
+	delete delVertex;
 }
 
-// Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ Á¤Á¡ vertexId ¸¦ Ã£°í ¸®ÅÏ 
 vertex* vertexList::findVertex(int vertexId) {
 	for (vertex* cur = header->next; cur != trailer; cur = cur->next) {
 		if (cur->vertexId == vertexId) {
 			return cur;
 		}
 	}
-
 	return NULL;
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// edge ¿ÀºêÁ§Æ®
-struct edge {
-	vertex* src;  // ÀÌ edge °¡ ¾ç³¡¿¡ ¾î¶² µÎ °³ÀÇ Á¤Á¡ (source, destination) À» ¿¬°áÇÏ°í ÀÖ´ÂÁö¸¦ º¯¼ö·Î ÀúÀå
-	vertex* dst; 
-
-	edge* prev; // ¿§Áö ½ÃÄö½º¿¡¼­ ÀÚ½ÅÀÇ ´ÙÀ½°ú ÀÌÀü ¿§Áö°¡ ´©±¸ÀÎÁö¸¦ ÀúÀå
-	edge* next;
-	
-	edge() {
-		src = dst = NULL;
-		prev = next = NULL;
-	}
-
-	edge(vertex* src, vertex* dst) {
-		this->src = src;
-		this->dst = dst;
-		prev = next = NULL;
-	}
-};
-
-// ¿§Áö ¿ÀºêÁ§Æ®µéÀ» ÀúÀåÇÏ´Â ½ÃÄö½º
 class edgeList {
 private:
 	edge* header;
@@ -120,7 +110,6 @@ edgeList::edgeList() {
 	trailer->prev = header;
 }
 
-// »õ·Î¿î ¿§Áö ¿ÀºêÁ§Æ®¸¦ ¿§Áö ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡ »ğÀÔ
 void edgeList::insertEdge(edge* newEdge) {
 	newEdge->prev = trailer->prev;
 	newEdge->next = trailer;
@@ -128,94 +117,69 @@ void edgeList::insertEdge(edge* newEdge) {
 	trailer->prev = newEdge;
 }
 
-// ¿§Áö ¿ÀºêÁ§Æ®¸¦ ¿§Áö ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ »èÁ¦
-// ÀÌ ÇÔ¼ö´Â ¿§Áö ¿ÀºêÁ§Æ®¸¦ µü »èÁ¦ÇÏ°í ³¡³¯¶§ È°¿ëµÉ ¼öµµ ÀÖÙÁö¸¸, vertex ¿ÀºêÁ§Æ®¸¦ »èÁ¦ÇÏ´Â ¿¬»ê¿¡¼­ È°¿ëµÈ´Ù!
-// ( vertex ¸¦ »èÁ¦ÇÒ¶§ vertex ´Â ¸ô·Ğ, vertex ¿Í ¿¬°áµÈ edge µéµµ ÇÔ²² »èÁ¦ÇØ¾ß ÇÏ±â¶§¹®)
 void edgeList::eraseEdge(edge* delEdge) {
 	delEdge->prev->next = delEdge->next;
 	delEdge->next->prev = delEdge->prev;
 	delete delEdge;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 class graph {
 private:
-	vector<vector<edge*>> edgeMatrix; // ÀÎÁ¢ Çà·Ä => °¢ ¼¿¿¡ edge ÀÇ ÁÖ¼Ò¸¦ ÀúÀåÇØ¼­, edgeÀÇ ÁÖ¼Ò°¡ ÀúÀåµÈ ¼¿Àº ÇØ´ç edge ¿ÀºêÁ§Æ®¸¦ °¡¸®Å´
-	vertexList vList;  // Á¤Á¡À» ÀúÀåÇÏ´Â ¸®½ºÆ®
-	edgeList eList;    // edge¸¦ ÀúÀåÇÏ´Â ¸®½ºÆ®
+	vector<vector<edge*>> edgeMatrix;  // edge ì˜¤ë¸Œì íŠ¸ì˜ ì£¼ì†Œê°’ë“¤ì„ ì €ì¥í•˜ê³  ìˆëŠ” 2ì°¨ì› ë°°ì—´ 
+	vertexList vList;
+	edgeList eList;
 public:
 	void insertVertex(int vertexId);
 	void eraseVertex(int vertexId);
 	void insertEdge(int srcVertexId, int dstVertexId);
 	void eraseEdge(int srcVertexId, int dstVertexId);
+
 	void MaxAdjacentNode(int vertexId);
 };
 
-// vertex ½ÃÄö½º¿¡ vertex ¿ÀºêÁ§Æ®¸¦ »ğÀÔ. ÀÌ¶§ Çà·ÄÀÇ Çà°ú ¿­ÀÇ Å©±â¸¦ 1¾¿ ´Ã·ÁÁØ´Ù.
-// (ÀÌ·Ğ½Ã°£¿¡ ¹è¿î°ÍÀº ¿ø·¡ Å©±â¸¦ Å°¿î »õ·Î¿î Çà·ÄÀ» ¸¸µé°í ±âÁ¸ Çà·ÄÀÇ ¸ğµç ¿ø¼Ò¸¦ Ä«ÇÇÇÑÈÄ, »õ·Î¿î vertex ¿ÀºêÁ§Æ®¸¦ »ğÀÔÇÏ´Â °ÍÀÌ¿´À¸³ª,
-// ¿©±â¼­´Â ±âÁ¸ Çà·Ä¿¡¼­ ±×³É Å©±â¸¦ Å°¿î´Ù. )
 void graph::insertVertex(int vertexId) {
-	if (vList.findVertex(vertexId) != NULL) {  // Á¤Á¡ vertexId °¡ ÀÌ¹Ì ±×·¡ÇÁ°¡ Á¸ÀçÇÏ´Â °æ¿ì
+	if (vList.findVertex(vertexId) != NULL)
 		return;
-	}
 
 	vertex* newVertex = new vertex(vertexId);
 
-	// ÀÎÁ¢Çà·Ä¿¡ »õ·Î¿î Á¤Á¡°ú ¿¬°áµÉ edge ÀÇ Á¤º¸¸¦ ÀúÀåÇÒ °ø°£À» »ı¼º
-
-	for (int i = 0; i < edgeMatrix.size(); i++) {     // ÀÎÁ¢Çà·ÄÀÇ °¢ Çà¿¡´Ù NULL °ªÀ» Ãß°¡ÇØÁÜÀ¸·Î½á, Çà·ÄÀÇ ¿­À» 1Áõ°¡½ÃÅ´. 
-		edgeMatrix[i].push_back(NULL);                // ex. 3x3 Çà·ÄÀÎ °æ¿ì, 3x4 °¡ µÈ´Ù.  ¿¹¸¦µé¾î 2Çà¿¡ {NULL, NULL, NULL} ÀÌ ÀúÀåµÇÀÖ´Â °æ¿ì, 
-		                                              // NULL À» ÇÏ³ª Ãß°¡ÇÔÀ¸·Î½á ÇØ´ç ÇàÀº {NULL, NULL. NULL, NULL} ÀÌ µÈ´Ù.
+	for (int i = 0; i < edgeMatrix.size(); i++) {
+		edgeMatrix[i].push_back(NULL);   // ê° í–‰ì˜ ì—´ì˜ í¬ê¸°ë¥¼ 1ì”© ëŠ˜ë ¤ì¤Œ
 	}
+	edgeMatrix.push_back(vector<edge*>(edgeMatrix.size() + 1, NULL));  // í–‰ì˜ í¬ê¸°ë„ 1 ëŠ˜ë ¤ì¤Œ
 
-	edgeMatrix.push_back(vector<edge*>(edgeMatrix.size() + 1, NULL)); // ÀÎÁ¢Çà·ÄÀÇ ÇàÀ» 1 ´Ã¸². 
-	// ¾Õ¼­¼­ 1¿­À» ´Ã·ÈÀ¸¹Ç·Î, ÀÌ ÀÛ¾÷À» ÅëÇØ¼­ Çàµµ 1À» ´Ã¸°´Ù. ex) 3x3 Çà·ÄÀÌ ¾Õ¼­ ½ÇÇàÇÑ ÀÛ¾÷À¸·Î 3x4 °¡ µÇ¾ú´Ù¸é, ÀÌ¹ø ÀÛ¾÷À» ÅëÇØ 4x4 °¡ µÈ´Ù.
-
-	vList.insertVertex(newVertex);   // Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡ »õ·Î¿î Á¤Á¡ ¿ÀºêÁ§Æ®¸¦ »ğÀÔ 
+	vList.insertVertex(newVertex);  // vertex ì‹œí€€ìŠ¤ì— ìƒˆë¡œìš´ ì •ì  ì¶”ê°€
 }
 
-
-
-// Á¤Á¡ ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ ÇØ´ç Á¤Á¡À» »èÁ¦
-// => ±×·¡ÇÁ¿¡¼­ Á¤Á¡ »èÁ¦½Ã 
-// 1) Á¤Á¡ ¿ÀºêÁ§Æ® »èÁ¦ 2) Á¤Á¡ ¿ÀºêÁ§Æ®ÀÇ ½ÃÄö½º ¿ø¼Ò¸¦ »èÁ¦(¸ô·Ğ ½Ç½À ÄÚµå´Â ÀÌ ½ÃÄö½º°¡ µû·Î¾øÀ½)
-// 3) Á¤Á¡°ú ÀÎÁ¢ÇÑ(adjacent) ¿§Áöµé »èÁ¦
-// 4) »èÁ¦ÇÒ Á¤Á¡º¸´Ù ÀÎµ¦½º ¹øÈ£ µ¥ÀÌÅÍ (matrixId) °¡ Å« Á¤Á¡µéÀÇ matrixId ¸¦ 1¾¿ °¨¼Ò
-
-// Á¤Á¡ vertexId ¸¦ »èÁ¦. ÀÌ¶§ ÀÎÁ¢ÇÑ edge µéµµ ÇÔ²² »èÁ¦ÇØÁØ´Ù.
 void graph::eraseVertex(int vertexId) {
-	vertex* delVertex = vList.findVertex(vertexId);  // Á¤Á¡ ½ÃÄö½º¿¡¼­ Á¤Á¡ vertexId ¸¦ Ã£¾Æ³¿
+	vertex* delVertex = vList.findVertex(vertexId);
 
-	if (delVertex == NULL) { // »èÁ¦ÇÒ Á¤Á¡ÀÌ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
+	if (delVertex == NULL)
 		return;
-	}
 
-	int matrixId = delVertex->matrixId; // »èÁ¦ÇÒ ³ëµåÀÇ ÀÎµ¦½º ¹øÈ£
-	
-	// matrixId °ªÀÌ 2ÀÎ vertex, Áï µ¥ÀÌÅÍ ÇÊµå¿¡ ÀÎµ¦½º ¹øÈ£¸¦ 2¸¦ °¡Áö°í ÀÖ´Â vertex ¿ÀºêÁ§Æ®¿Í 
-	// ÀÎÁ¢ÇÑ edge ¿ÀºêÁ§Æ®µéÀÇ ÁÖ¼Ò°ªÀº ÀÎÁ¢Çà·Ä¿¡¼­ 2ÇàÀÇ ¼¿µé°ú, 2¿­ÀÇ ¼¿µéÀÌ ¸ğµÎ ÀúÀåÇÏ°í ÀÖ´Ù.
-	// µû¶ó¼­ ÀÎÁ¢Çà·Ä¿¡¼­ 2ÇàÀÇ ¼¿µé°ú, 2¿­ÀÇ ¼¿µéÀ» ¸ğµÎ Á¦°ÅÇØÁÖ¸é, ÇØ´ç vertex¿Í ÀÎÁ¢ÇÑ edgeµéÀ» ¸ğµÎ Á¦°ÅÇÏ¸é¼­ 
-	// µ¿½Ã¿¡ Çà·ÄÀÇ Çà°ú ¿­ÀÇ Å©±â¸¦ 1 ÁÙÀÏ ¼ö ÀÖ´Ù! (ex. 4x4 Çà·Ä => 3x3 Çà·Ä)
+	int matrixId = delVertex->matrixId;
 
-	// ÀÎÁ¢ Çà·Ä¿¡¼­ »èÁ¦ÇÒ Á¤Á¡°ú ¿¬°áµÈ edge ¿Í, edge ÀÇ Á¤º¸¸¦ ÀúÀåÇÏ´Â °ø°£À» »èÁ¦
-	// iÇà matrixId ¿­¿¡ ´ã°ÜÀÖ´Â ÁÖ¼Ò°ªÀ» Á¦°ÅÇÑ´Ù!
-	for (int i = 0; i < edgeMatrix.size(); i++) {  // * Âü°í : 2Â÷¿ø º¤ÅÍÀÇ size() ÇÔ¼ö °á°ú°ªÀº ÇàÀÇ Å©±â°¡ ³ª¿Â´Ù!!
-		if (i != matrixId) {  
-			if (edgeMatrix[i][matrixId] != NULL) {  // iÇà matrixId ¿¡ ´ã°ÜÀÖ´Â ÁÖ¼Ò°ªÀÌ NULL ÀÌ ¾Æ´Ï¶ó¸é. Áï, iÇà matrixLd ¿­ ¼¿ÀÌ ¾î¶² ¿§Áö ¿ÀºêÁ§Æ®¸¦ °¡¸®Å°°í ÀÖ´Â »óÅÂÀÌ¶ó¸é
-				eList.eraseEdge(edgeMatrix[i][matrixId]);  // ÀÎÁ¢ÇÑ edge ¿ÀºêÁ§Æ®µéµµ ÇÔ²² »èÁ¦
+	// ex) ì¸ë±ìŠ¤ ë°ì´í„°ê°€ 2ì´ê³ , í–‰ë ¬ì˜ í¬ê¸°ê°€ 4x4 ì¸ ê²½ìš°
+	for (int i = 0; i < edgeMatrix.size(); i++)
+	{
+		if (i != matrixId)
+		{
+			if (edgeMatrix[i][matrixId] != NULL) {  // (0,2), (1,2), (3,2) ì— ë‹´ê¸´ ì£¼ì†Œê°’ì´ ê°€ë¦¬í‚¤ëŠ” ì—£ì§€ ì˜¤ë¸Œì íŠ¸ë¥¼ ì—£ì§€ ì‹œí€€ìŠ¤ì—ì„œ ì‚­ì œ
+				eList.eraseEdge(edgeMatrix[i][matrixId]);  // ì¦‰, í–‰ë ¬ì˜ í•´ë‹¹ ì…€ì—ì„œ ê°€ë¦¬í‚¤ë˜ ì—£ì§€ ì˜¤ë¸Œì íŠ¸ë¥¼, ì—£ì§€ ì‹œí€€ìŠ¤(ì—£ì§€ ë¦¬ìŠ¤íŠ¸)ì—ì„œ ì‚­ì œ
 			}
-			edgeMatrix[i].erase(edgeMatrix[i].begin() + matrixId); // i¿­¿¡ ÀÖ´Â ¼¿µéÀ» ¸ğµÎ (ÀÌ¶§, iÇà i¿­Àº Á¦¿Ü) Á¦°Å. 
-			                                                       // => ÀÌ¶§ Çà·Ä ¼¿ ÀÚÃ¼¸¦ »èÁ¦ÇØ ¹ö¸®´Â °ÍÀÌ´Ù!
+			edgeMatrix[i].erase(edgeMatrix[i].begin() + matrixId); // (0,2), (1,2), (3,2) ì…€ ìì²´ë¥¼ í–‰ë ¬ì—ì„œ ì™„ì „íˆ ì‚­ì œì‹œì¼œë²„ë¦¼
 		}
-	}
+		edgeMatrix.erase(edgeMatrix.begin() + matrixId); // (2,0), (2,1), (2,2), (2,3) ì…€ ìì²´ë¥¼ í–‰ë ¬ì—ì„œ ì™„ì „íˆ ì‚­ì œì‹œì¼œë²„ë¦¼
 
-	edgeMatrix.erase(edgeMatrix.begin() + matrixId);  // ÀÎÁ¢Çà·ÄÀÇ matrixId ÇàÀÇ ¸ğµç ¼¿µéÀ» »èÁ¦
-	vList.eraseVertex(delVertex); // vertex ½ÃÄö½º¿¡¼­ vertex ¿ÀºêÁ§Æ® »èÁ¦
+		vList.eraseVertex(delVertex);  //  ì •ì ì„ vertex ì‹œí€€ìŠ¤ì—ì„œ ì‚­ì œ
+	}
 }
 
 void graph::insertEdge(int srcVertexId, int dstVertexId) {
-	vertex* src = vList.findVertex(srcVertexId);  // »ğÀÔÇÒ ¿§ÁöÀÇ ¾ç³¡Á¡ vertex ¿ÀºêÁ§Æ®¸¦ vertex ½ÃÄö½º¿¡¼­ Ã£¾Æ³¿
+	vertex* src = vList.findVertex(srcVertexId);  // ì‚½ì…í•  ì—£ì§€ì˜ ì–‘ëì  vertex ì˜¤ë¸Œì íŠ¸ë¥¼ vertex ì‹œí€€ìŠ¤ì—ì„œ ì°¾ì•„ëƒ„
 	vertex* dst = vList.findVertex(dstVertexId);
 	if (src == NULL || dst == NULL)
 		return;
@@ -223,66 +187,65 @@ void graph::insertEdge(int srcVertexId, int dstVertexId) {
 	int srcMatrixId = src->matrixId;
 	int dstMatrixId = dst->matrixId;
 
-	// µÎ Á¤Á¡À» ÀÕ´Â °£¼±ÀÌ ÀÌ¹Ì Á¸ÀçÇÏ´Â °æ¿ì
+	// ë‘ ì •ì ì„ ì‡ëŠ” ê°„ì„ ì´ ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ê²½ìš°
 	if (edgeMatrix[srcMatrixId][dstMatrixId] != NULL || edgeMatrix[dstMatrixId][srcMatrixId] != NULL) {
 		cout << "Exist" << endl;
 		return;
 	}
 
 	edge* newEdge = new edge(src, dst);
-	eList.insertEdge(newEdge); // ¿§Áö ½ÃÄö½º¿¡ »õ·Î¿î ¿§Áö ¿ÀºêÁ§Æ®¸¦ »ğÀÔ
-	edgeMatrix[srcMatrixId][dstMatrixId] = edgeMatrix[dstMatrixId][srcMatrixId] = newEdge; // Çà·Ä¿¡ »õ·Î¿î edge ¿ÀºêÁ§Æ®ÀÇ ÁÖ¼Ò¸¦ ÀúÀå
+	eList.insertEdge(newEdge); // ì—£ì§€ ì‹œí€€ìŠ¤ì— ìƒˆë¡œìš´ ì—£ì§€ ì˜¤ë¸Œì íŠ¸ë¥¼ ì‚½ì…
+	edgeMatrix[srcMatrixId][dstMatrixId] = edgeMatrix[dstMatrixId][srcMatrixId] = newEdge; // í–‰ë ¬ì— ìƒˆë¡œìš´ edge ì˜¤ë¸Œì íŠ¸ì˜ ì£¼ì†Œë¥¼ ì €ì¥
 }
 
-// ÀÎÀÚ·Î ÁÖ¾îÁø µÎ Á¤Á¡ »çÀÌ¸¦ ¿¬°áÇØÁÖ°í ÀÖ´Â edge ¸¦ »èÁ¦
 void graph::eraseEdge(int srcVertexId, int dstVertexId) {
 	vertex* src = vList.findVertex(srcVertexId);
 	vertex* dst = vList.findVertex(dstVertexId);
 
-	if (src == NULL || dst == NULL) // Á¤Á¡ÀÌ ±×·¡ÇÁ°¡ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
+	if (src == NULL || dst == NULL)
 		return;
 
 	int srcMatrixId = src->matrixId;
-	int dstMatrixId = dst->matrixId;
+	int dstMattrixId = dst->matrixId;
 
-	// µÎ Á¤Á¡À» ÀÕ´Â °£¼±ÀÌ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
-	if (edgeMatrix[srcMatrixId][dstMatrixId] == NULL || edgeMatrix[dstMatrixId][srcMatrixId] == NULL)
-	{
+	// ë‘ ì •ì ì„ ì‡ëŠ” ê°„ì„ ì´ ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ê²½ìš°.
+	if (edgeMatrix[srcMatrixId][dstMattrixId] == NULL || edgeMatrix[dstMattrixId][srcMatrixId] == NULL) {
 		cout << "None" << endl;
 		return;
 	}
 
-	eList.eraseEdge(edgeMatrix[srcMatrixId][dstMatrixId]); // edge ¿ÀºêÁ§Æ® ½ÃÄö½º¿¡¼­ »èÁ¦ÇÏ·Á´ø edge ¸¦ »èÁ¦
-	edgeMatrix[srcMatrixId][dstMatrixId] = NULL;  // ÀÎÁ¢Çà·ÄÀÇ ÇØ´ç ¼¿À» NULL Ã³¸®
-	edgeMatrix[dstMatrixId][srcMatrixId] = NULL;
+	eList.eraseEdge(edgeMatrix[srcMatrixId][dstMattrixId]); // ì—£ì§€ ì˜¤ë¸Œì íŠ¸ ì‚­ì œ
+	edgeMatrix[srcMatrixId][dstMattrixId] = NULL;  // ì¸ì ‘í–‰ë ¬ì— NULL ì„ ì €ì¥í•´ì„œ í• ë‹¹í•´ì œ
+	edgeMatrix[dstMattrixId][srcMatrixId] = NULL;
 }
+
 
 void graph::MaxAdjacentNode(int vertexId)
 {
 	vertex* vertex = vList.findVertex(vertexId);
 
 	int matrixId = vertex->matrixId;
-	int max = 0; 
+	int max = 0;
 
-	// Çà·ÄÀÇ ¸ğµç ¼¿¿¡ ´ëÇØ Å½»ö
+	// í–‰ë ¬ì˜ ëª¨ë“  ì…€ì— ëŒ€í•´ íƒìƒ‰
 	for (int i = 0; i < edgeMatrix.size(); i++)
 	{
-		for (int j = 0; j < edgeMatrix.size(); j++) 
+		for (int j = 0; j < edgeMatrix.size(); j++)
 		{
-			if (edgeMatrix[i][j] != NULL && edgeMatrix[j][i] != NULL) // ÇØ´ç ¼¿ÀÌ ¾î¶² ¿§Áö ¿ÀºêÁ§Æ®¸¦ °¡¸®Å°°í ÀÖ´Â °æ¿ì 
+			if (edgeMatrix[i][j] != NULL && edgeMatrix[j][i] != NULL) // í•´ë‹¹ ì…€ì´ ì–´ë–¤ ì—£ì§€ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°€ë¦¬í‚¤ê³  ìˆëŠ” ê²½ìš° 
 			{
 				// if (edgeMatrix[i][j] == edgeMatrix[j][i])
-				
-				if (edgeMatrix[i][j]->src == vertex || edgeMatrix[i][j]->dst == vertex) // ÇØ´ç ¼¿ÀÇ ¿§Áö ¿ÀºêÁ§Æ®°¡ °¡¸®Å°´Â µÎ °³ÀÇ vertex ¿ÀºêÁ§Æ®Áß ÇÏ³ª°¡ Á¤Á¡ vertex ÀÎ °æ¿ì. Áï, Á¤Á¡ vertex ¿Í ÀÎÁ¢ÇÑ Á¤Á¡À» Ã£Àº °æ¿ì
+
+				if (edgeMatrix[i][j]->src == vertex || edgeMatrix[i][j]->dst == vertex) // í•´ë‹¹ ì…€ì˜ ì—£ì§€ ì˜¤ë¸Œì íŠ¸ê°€ ê°€ë¦¬í‚¤ëŠ” ë‘ ê°œì˜ vertex ì˜¤ë¸Œì íŠ¸ì¤‘ í•˜ë‚˜ê°€ ì •ì  vertex ì¸ ê²½ìš°. ì¦‰, ì •ì  vertex ì™€ ì¸ì ‘í•œ ì •ì ì„ ì°¾ì€ ê²½ìš°
 				{
-					// ÀÌÁ¦ ¿§Áö ¿ÀºêÁ§Æ®°¡ °¡¸®Å°´Â µÎ Á¤Á¡ ¿ÀºêÁ§Æ® src, dst Áß¿¡¼­ vertex °¡ ¾Æ´Ñ Á¤Á¡¿¡ ´ëÇØ¼­ ÃÖ´ñ°ª ºñ±³ ¿¬»êÀ» ÁøÇàÇÏ¸é µÈ´Ù.
-					// => vertex°¡ ¾Æ´Ñ Á¤Á¡ÀÌ ¹Ù·Î Á¤Á¡ vertex¿Í ÀÎÁ¢ÇÑ Á¤Á¡ÀÌ´Ù.
-					if (edgeMatrix[i][j]->src != vertex) // src °¡ ÀÎÁ¢ÇÑ Á¤Á¡ÀÌ°í, dst °¡ Á¤Á¡ vertex ÀÎ °æ¿ì
+					// ì´ì œ ì—£ì§€ ì˜¤ë¸Œì íŠ¸ê°€ ê°€ë¦¬í‚¤ëŠ” ë‘ ì •ì  ì˜¤ë¸Œì íŠ¸ src, dst ì¤‘ì—ì„œ vertex ê°€ ì•„ë‹Œ ì •ì ì— ëŒ€í•´ì„œ ìµœëŒ“ê°’ ë¹„êµ ì—°ì‚°ì„ ì§„í–‰í•˜ë©´ ëœë‹¤.
+					// => vertexê°€ ì•„ë‹Œ ì •ì ì´ ë°”ë¡œ ì •ì  vertexì™€ ì¸ì ‘í•œ ì •ì ì´ë‹¤.
+					if (edgeMatrix[i][j]->src != vertex) // src ê°€ ì¸ì ‘í•œ ì •ì ì´ê³ , dst ê°€ ì •ì  vertex ì¸ ê²½ìš°
 					{
 						if (edgeMatrix[i][j]->src->vertexId > max)
-						max = edgeMatrix[i][j]->src->vertexId;
+							max = edgeMatrix[i][j]->src->vertexId;
 					}
-					else if (edgeMatrix[i][j]->dst != vertex) // dst °¡ ÀÎÁ¢ÇÑ Á¤Á¡ÀÌ°í, src °¡ Á¤Á¡ vertex ÀÎ °æ¿ì
+					else if (edgeMatrix[i][j]->dst != vertex) // dst ê°€ ì¸ì ‘í•œ ì •ì ì´ê³ , src ê°€ ì •ì  vertex ì¸ ê²½ìš°
 					{
 						if (edgeMatrix[i][j]->dst->vertexId > max)
 							max = edgeMatrix[i][j]->dst->vertexId;
@@ -292,8 +255,8 @@ void graph::MaxAdjacentNode(int vertexId)
 		}
 	}
 
-	if (max == 0) // Á¤Á¡ vertexId ¿Í ¿¬°áµÈ Á¤Á¡ÀÌ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
-	{  //  => ¿¬°áµÈ Á¤Á¡ÀÌ Á¸ÀçÇÏÁö ¾Ê¾Ò´Ù¸é, ºñ±³ ¿¬»êÀ» ´Ü ÇÑ¹øµµ ÁøÇàÇÏÁö ¾Ê¾Æ¼­ max °ªÀÌ ÃÊ±â¿¡ ¼³Á¤ÇØÁØ °ªÀÎ 0 ÀÏ °ÍÀÌ´Ù.
+	if (max == 0) // ì •ì  vertexId ì™€ ì—°ê²°ëœ ì •ì ì´ ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ê²½ìš°
+	{  //  => ì—°ê²°ëœ ì •ì ì´ ì¡´ì¬í•˜ì§€ ì•Šì•˜ë‹¤ë©´, ë¹„êµ ì—°ì‚°ì„ ë‹¨ í•œë²ˆë„ ì§„í–‰í•˜ì§€ ì•Šì•„ì„œ max ê°’ì´ ì´ˆê¸°ì— ì„¤ì •í•´ì¤€ ê°’ì¸ 0 ì¼ ê²ƒì´ë‹¤.
 		cout << "None " << endl;
 		return;
 	}
@@ -302,11 +265,13 @@ void graph::MaxAdjacentNode(int vertexId)
 }
 
 
+
+
 int main(void)
 {
 	graph g;
 	int t, n;
-	cin >> t >>  n;
+	cin >> t >> n;
 
 	while (n--)
 	{
