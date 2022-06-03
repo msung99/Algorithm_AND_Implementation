@@ -4,7 +4,6 @@
 #include <algorithm>
 using namespace std;
 
-
 int main(void)
 {
 	int testCase;
@@ -14,7 +13,7 @@ int main(void)
 		int n, m;
 		cin >> n >> m;
 
-		vector<int> adj_list[1000];  // ¹üÀ§¼³Á¤ Á¦´ë·Î ÇÏÀÚ!!! 100 À¸·Î ¼³Á¤ÇÏ¸é ·±¿¡·¯¶á´Ù ¤Ñ¤Ñ 
+		vector<int> adj_list[1000];  // ë²”ìœ„ì„¤ì • ì œëŒ€ë¡œ í•˜ì!!! 100 ìœ¼ë¡œ ì„¤ì •í•˜ë©´ ëŸ°ì—ëŸ¬ëœ¬ë‹¤ ã…¡ã…¡ 
 		bool visited[1000];
 		fill(visited + 1, visited + n + 1, false);
 
@@ -27,8 +26,8 @@ int main(void)
 		}
 
 		// DFS
-		int count = 1; //  È¦¼öÀÏ¶§¸¸ Ãâ·ÂÇÏµµ·Ï Ä«¿îÆÃÇÏ´Â º¯¼ö
-		stack<int> s; // DFS µ¹±âÀü¿¡ ½ÃÀÛÁ¤Á¡ 1 »ğÀÔ
+		int count = 1; //  í™€ìˆ˜ì¼ë•Œë§Œ ì¶œë ¥í•˜ë„ë¡ ì¹´ìš´íŒ…í•˜ëŠ” ë³€ìˆ˜
+		stack<int> s; // DFS ëŒê¸°ì „ì— ì‹œì‘ì •ì  1 ì‚½ì…
 		s.push(1);
 		while (!s.empty())
 		{
@@ -38,15 +37,15 @@ int main(void)
 			if (visited[cur])
 				continue;
 			
-			visited[cur] = true;  // ¹æ¹®Ã³¸®
+			visited[cur] = true;  // ë°©ë¬¸ì²˜ë¦¬
 
 			if (count % 2 == 1)
 				cout << cur << ' ';
 			for (int i = 0; i < adj_list[cur].size(); i++)
 			{
-				// ½ºÅÃÀÇ Æ¯¼º»ó ¿ª¼øÀ¸·Î ³Ö¾î¾ßÁö ÀÛÀº Á¤Á¡ÀÌ ½ºÅÃÀÇ »ó´Ü¿¡ À§Ä¡ÇÏ°Ô µÇ¼­, ÀÛÀº Á¤Á¡À» ¸ÕÀú ¹æ¹®ÇÏ°Ô µÊ
+				// ìŠ¤íƒì˜ íŠ¹ì„±ìƒ ì—­ìˆœìœ¼ë¡œ ë„£ì–´ì•¼ì§€ ì‘ì€ ì •ì ì´ ìŠ¤íƒì˜ ìƒë‹¨ì— ìœ„ì¹˜í•˜ê²Œ ë˜ì„œ, ì‘ì€ ì •ì ì„ ë¨¼ì € ë°©ë¬¸í•˜ê²Œ ë¨
 				int nxt = adj_list[cur][adj_list[cur].size() - 1 - i];
-				if (visited[nxt])  // ÀÌ¹Ì ¹æ¹®ÇÑ Á¤Á¡ÀÌ¶ó¸é ½ºÅµ
+				if (visited[nxt])  // ì´ë¯¸ ë°©ë¬¸í•œ ì •ì ì´ë¼ë©´ ìŠ¤í‚µ
 					continue;
 				s.push(nxt);
 			}
