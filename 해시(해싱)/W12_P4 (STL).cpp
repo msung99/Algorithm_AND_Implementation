@@ -1,16 +1,16 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <map>
 using namespace std;
 
 int main(void)
 {
-	map<string, string> list2;  // Ãâ¼® »óÅÂ¸¦ ÀúÀåÇÏ´Â ¸®½ºÆ®
+	map<string, string> list;  // ì¶œì„ ìƒíƒœë¥¼ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
+	// => ì´ë¦„ì„ key ê°’ìœ¼ë¡œ, ì¶œì„ì—¬ë¶€ ìƒíƒœë¥¼ value ë¡œ ê°€ì§„ë‹¤. ì¦‰, í•™ë²ˆì´ ì•„ë‹Œ ì´ë¦„ìœ¼ë¡œ ì¶œì„ì—¬ë¶€ë¥¼ íŒë‹¨
 
 	map<string, string> hash1;
 	map<string, string> hash2;
-	int present = 0; // ÇöÀç Ãâ¼® »óÅÂ¼ö
+	int present = 0; // í˜„ì¬ ì¶œì„ ìƒíƒœìˆ˜
 
 	int t;
 	cin >> t;
@@ -25,23 +25,20 @@ int main(void)
 			hash1.insert(make_pair(key, value));
 			hash2.insert(make_pair(value, key));
 
-			list2.insert(make_pair(value, "absent"));  // 0 : NOITEM, 1 : Ãâ¼®, 2 : °á¼®
+			list.insert(make_pair(value, "absent"));  // ì´ë¦„ìœ¼ë¡œ ì¶œì„ì—¬ë¶€ë¥¼ ì €ì¥í•˜ê¸° ìœ„í•´ value ë¡œ ì €ì¥í• ê²ƒ! 
 		}
 		else if (a == "delete")
 		{
 			string key;
 			cin >> key;
-			string key2 = hash1[key];
-			if (list2[key2] == "present") // Ãâ¼® »óÅÂÀÎ °æ¿ì
+			string key2 = hash1[key];  // í•´ì‹œí…Œì´ë¸”1ì˜ ì£¼ì–´ì§„ key ê°’ì˜ value ë¡œë¶€í„° í•´ì‹œí…Œì´ë¸”2 ì˜ key ê°’ì„ ì–»ì–´ì˜´ 
+			if (list[key2] == "present") // ì¶œì„ ìƒíƒœì¸ ê²½ìš°
 			{
-				// cout << "delete È£Ãâ" << endl;
 				present--;
 			}
 			hash1.erase(key);
 			hash2.erase(key2);
-			list2.erase(key2);
-
-			//auto key2 = hash1.find(key);
+			list.erase(key2);  // ì¶œì„ìƒíƒœ ë¦¬ìŠ¤íŠ¸ì—ì„œë„ ì‚­ì œ
 		}
 		else if (a == "name")
 		{
@@ -53,13 +50,12 @@ int main(void)
 		{
 			string key;
 			cin >> key;
-			if (hash2.count(key) == 1)  // count(key) : ÁÖ¾îÁø keyÀÇ ¿ä¼Ò °³¼ö¸¦ ¸®ÅÏ.  => 0 ¶Ç´Â 1À» ¸®ÅÏ
+			if (hash2.count(key) == 1)  // count(key) : ì£¼ì–´ì§„ keyì˜ ìš”ì†Œ ê°œìˆ˜ë¥¼ ë¦¬í„´.  => 0 ë˜ëŠ” 1ì„ ë¦¬í„´
 			{
 				cout << hash2[key] << endl;
-				if (list2[key] == "absent") // °á¼® »óÅÂÀÎ °æ¿ì
+				if (list[key] == "absent") // ê²°ì„ ìƒíƒœì¸ ê²½ìš°
 				{
-					// cout << "present È£Ãâ" << endl;
-					list2[key] = "present"; // Ãâ¼® »óÅÂ·Î º¯°æ
+					list[key] = "present"; // ì¶œì„ ìƒíƒœë¡œ ë³€ê²½
 					present++;
 				}
 			}
@@ -75,10 +71,9 @@ int main(void)
 			if (hash2.count(key) == 1)
 			{
 				cout << hash2[key] << endl;
-				if (list2[key] == "present") // Ãâ¼® »óÅÂÀÎ °æ¿ì
+				if (list[key] == "present") // ì¶œì„ ìƒíƒœì¸ ê²½ìš°
 				{
-					// cout << "absent È£Ãâ" << endl;
-					list2[key] = "absent";
+					list[key] = "absent";  // ê²°ì„ ìƒíƒœë¡œ ë³€ê²½
 					present--;
 				}
 			}
