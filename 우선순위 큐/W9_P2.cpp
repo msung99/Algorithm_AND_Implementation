@@ -1,4 +1,42 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main(void)
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		vector<int> list;
+		vector<int> list2;
+		int n;
+		cin >> n;
+		while (n--)
+		{
+			int data;
+			cin >> data;
+			list.push_back(data);
+		}
+		sort(list.rbegin(), list.rend());
+		for (int i = 0; i < list.size(); i++) {
+			if (list[i] % 2 == 0)
+				list2.push_back(list[i]);
+			else
+				cout << list[i] << ' ';
+		}
+
+		for (int i = 0; i <list2.size(); i++)
+		{
+			cout << list2[i] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+/*
+#include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -77,3 +115,4 @@ int main(void)
 		q.print();
 	}
 }
+*/
