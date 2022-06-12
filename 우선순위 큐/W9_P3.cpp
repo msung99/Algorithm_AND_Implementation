@@ -1,4 +1,33 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main(void)
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		vector<int> list;
+		int n;
+		cin >> n;
+		while (n--)
+		{
+			int data;
+			cin >> data;
+			list.push_back(data);
+		}
+		sort(list.rbegin(), list.rend());    // 벡터를 내림차순 정렬하고 싶다면 "rbegin()" , "rend()" 를 사
+		for (int i = 0; i < list.size(); i++) {
+			cout << list[i] << ' ';
+		}
+		cout << endl;
+	}
+}
+
+/*
+#include <iostream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -66,6 +95,7 @@ int main(void)
 		s.print();
 	}
 }
+*/
 
 
 /*
