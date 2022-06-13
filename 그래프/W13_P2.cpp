@@ -14,18 +14,17 @@ int main() {
 	}
 	
 	// 배열 초기화
-	int x, y;
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
-			// cin >> x;
 			int data;
 			cin >> data;
-			arr[i][j] = x;
+			arr[i][j] = data;
 		}
 	}
 	
 	// n개의 질문을 입력받고 처리
 	for (int i = 0; i < n; i++) {
+		int x, y;
 		int index2 = 0;
 		int index3 = 0;
 		int size2 = 0;
@@ -70,16 +69,9 @@ int main() {
 				}
 			}
 		}
-		// arr3 에는 최종적으로 친구의 친구인 녀석의 번호가 쌓인다. 이때 오름차순 출력을 위해 sorting 과정을 진행한다.
-		for (int j = 0; j < size3 - 1; j++) {
-			for (int k = j + 1; k < size3; k++) {
-				if (arr3[j] > arr3[k]) {
-					int temp = arr3[j];
-					arr3[j] = arr3[k];
-					arr3[k] = temp;
-				}
-			}
-		}
+		
+		sort(arr3, arr3 + size3);
+		
 		if (size3 == 0)
 			cout << 0 << endl;
 		else {
