@@ -57,6 +57,7 @@ void BST::insert(int key) {
 		return;
 
 	key_list.push_back(key); // 키 리스트 key_list 에 key 값을 추가 
+	// => 주의!!!!! 이 문장을 if(root == NULL) 구문 아래에 적었더니 오류 발생함. 제대로 push_back() 이 이행되지 않았음.
 
 	node* newNode = new node(key);
 
@@ -133,7 +134,7 @@ void BST::remove(int key) {
 
 	if (parNode == NULL) {
 		root = childNode;
-		root->parent = NULL;
+		root->parent = NULL;  // => 꼭 적어줄것!!!! 안적었더니 오류 발생했음!
 	}
 
 	
