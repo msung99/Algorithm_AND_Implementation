@@ -43,7 +43,7 @@ int main(void)
 				cout << cur << ' ';
 			for (int i = 0; i < adj_list[cur].size(); i++)
 			{
-				// 스택의 특성상 역순으로 넣어야지 먼저 간선이 만들어진 정점이 스택이 먼저 쌓이고, 나중에 탐색을 진행하게 된다.
+				// 스택의 특성상 역순으로 넣어야지 먼저 간선이 만들어진 정점이 스택 먼저 쌓이고, 나중에 탐색을 진행하게 된다.
 				int nxt = adj_list[cur][adj_list[cur].size() - 1 - i];
 				if (visited[nxt])  // 이미 방문한 정점이라면 스킵
 					continue;
