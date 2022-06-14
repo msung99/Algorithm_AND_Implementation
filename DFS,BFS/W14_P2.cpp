@@ -20,9 +20,7 @@ int main(void)
 
 		// 초기화 작업 (초기 셋팅)
 		fill(visited + 1, visited + n + 1, false);
-
-		for (int i = 0; i < 100; i++)
-			min_list[i] = 0;
+		fill(min_list + 1, min_list + n + 1, false);
 
 		while (m--)
 		{
