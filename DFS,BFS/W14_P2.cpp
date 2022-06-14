@@ -52,6 +52,10 @@ int main(void)
 			{
 				int cur = q.front();
 				q.pop();
+				
+				if (visited[cur])   // => 사실 이 문장 안넣어도 되는데, 암기하기 쉽도록 
+					continue;
+				
 				visited[cur] = true;
 				for (auto nxt : adj_list[cur])
 				{
