@@ -42,7 +42,6 @@ int main(void)
 			
 			queue<int> q;
 			q.push(i);
-			visited[i] = true;
 
 			int min = i;  // 각 conncted 컴포넌트의 최솟값 => for문을 돌릴때마다 최솟값 min 의 값은 1,2,3,4,... 순으로 값이 
 			min_list[i] = min; // 최솟값 리스트에서 우선 자신(인덱스 i) 에 대한 최솟값을 최신화
