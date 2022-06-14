@@ -46,7 +46,7 @@ int main(void)
 			q.push(i);
 			visited[i] = true;
 
-			int min = q.front();  // 각 conncted 컴포넌트의 최솟값
+			int min = q.front();  // 각 conncted 컴포넌트의 최솟값 => for문을 돌릴때마다 최솟값 min 의 값은 1,2,3,4,... 순으로 값이 
 
 			// while이 다 끝나면 현재 BFS를 돌린 시작정점과 연결된 정점들이 다 방문처리가 되었을 것이다.
 			// 즉, 시작정점이 속해있는 해당 conncted 컴포넌트가 모두 방문처리 된다! 
@@ -58,12 +58,10 @@ int main(void)
 				{
 					if (visited[nxt])
 						continue;
-					// 현재 정점과 인접한 정점들이 각각 최솟값이 될수 있는지를 확인
-					if (min > nxt)
-						min = nxt;
+					
 					q.push(nxt);
 					visited[nxt] = true;
-
+					// 최솟값을 자신과 인접한 정점들에게 점점 감염되는것 마냥 전파시킴
 					min_list[nxt] = min; // // 최솟값 리스트의 각 정점이 저장하고 있는 최솟값들을 최신화
 				}
 				min_list[i] = min; // 최솟값 리스트에서 인접한 정점들에 대해서 최솟값을 최신화 했으니, 자신도 최신화 시켜줌
