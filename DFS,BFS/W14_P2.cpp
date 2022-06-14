@@ -53,6 +53,7 @@ int main(void)
 			{
 				int cur = q.front();
 				q.pop();
+				visited[cur] = true;
 				for (auto nxt : adj_list[cur])
 				{
 					if (visited[nxt])
