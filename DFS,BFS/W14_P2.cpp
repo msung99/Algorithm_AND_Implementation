@@ -59,7 +59,6 @@ int main(void)
 						continue;
 					
 					q.push(nxt);
-					visited[nxt] = true;
 					// 최솟값을 자신과 인접한 정점들에게 점점 감염되는것 마냥 전파시킴
 					min_list[nxt] = min; // // 최솟값 리스트의 각 정점이 저장하고 있는 최솟값들을 최신화
 				}
