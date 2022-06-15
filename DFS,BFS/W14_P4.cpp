@@ -1,5 +1,72 @@
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int main(void)
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		int n, m, question;
+		cin >> n >> m >> question;
+		vector<int> adj_list[201];
+		int max_list[201];
+		bool visited[201];
+		fill(visited + 1, visited + n + 1, false);
+		fill(max_list + 1, max_list + n + 1, 0);
+
+		while (m--)
+		{
+			int u, v;
+			cin >> u >> v;
+			adj_list[u].push_back(v);
+			adj_list[v].push_back(u);
+		}
+
+		for (int i = n; i >= 1; i--)
+		{
+			if (visited[i])
+				continue;
+
+			queue<int> q;
+			q.push(i);
+			int max = i;
+			max_list[i] = max;
+			while (!q.empty())
+			{
+				int cur = q.front();
+				q.pop();
+				if (visited[cur])
+					continue;
+				
+				visited[cur] = true;
+
+				for (auto nxt : adj_list[cur])
+				{
+					if (visited[nxt])
+						continue;
+					q.push(nxt);
+					max_list[nxt] = max;
+				}
+			}
+		}
+		while (question--)
+		{
+			int ans;
+			cin >> ans;
+			cout << max_list[ans] << endl;
+		}
+	}
+}
+
+
+/*
+#include <iostream>
+#include <string>
 #include <queue>
 #include <vector>
 using namespace std;
@@ -32,8 +99,8 @@ int main(void)
 		}
 
 		// BFS
-		for (int i = n; i >= 1 ; i--)  // ÃÖ¼Ú°ª ±¸ÇÒ¶§¶û ´Ù¸¥Á¡ <=> for¹®À» °Å²Ù·Î µ¹·Á¾ßÇÔ!  
-		{                              // °Å²Ù·Î µ¹·Á¾ßÁö ÇØ´ç Á¤Á¡ÀÌ, ¼ÓÇØÀÖ´Â connected ÄÄÆ÷³ÍÆ®¿¡¼­ ÀÚ±â°¡ ÃÖ´ñ°ªÀÌ µÇ°í ±× connected ÄÄÆ÷³ÍÆ®ÀÇ ´Ù¸¥ Á¤Á¡µé¿¡°Ô ÀÚ½ÅÀÇ °ªÀÎ ÃÖ´ñ°ªÀÌ ÀüÆÄ°¡ µÈ´Ù
+		for (int i = n; i >= 1 ; i--)  // ìµœì†Ÿê°’ êµ¬í• ë•Œë‘ ë‹¤ë¥¸ì  <=> forë¬¸ì„ ê±°ê¾¸ë¡œ ëŒë ¤ì•¼í•¨!  
+		{                              // ê±°ê¾¸ë¡œ ëŒë ¤ì•¼ì§€ í•´ë‹¹ ì •ì ì´, ì†í•´ìˆëŠ” connected ì»´í¬ë„ŒíŠ¸ì—ì„œ ìê¸°ê°€ ìµœëŒ“ê°’ì´ ë˜ê³  ê·¸ connected ì»´í¬ë„ŒíŠ¸ì˜ ë‹¤ë¥¸ ì •ì ë“¤ì—ê²Œ ìì‹ ì˜ ê°’ì¸ ìµœëŒ“ê°’ì´ ì „íŒŒê°€ ëœë‹¤
 			if (visited[i]) 
 				continue;  
 
@@ -71,3 +138,4 @@ int main(void)
 		}
 	}
 }
+*/
