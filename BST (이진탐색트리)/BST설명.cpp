@@ -1,3 +1,5 @@
+// 기말고사 BST 메소드 내용 : add, minus
+
 #include <iostream>
 #include <string>
 #include <vector>
