@@ -25,7 +25,6 @@ void rotation() {
 }
 
 /*
-// 이렇게 하면 왜 안되는걸까..
 void move(int dir) {
 	while (dir--) rotation();
 	for (int i = 0; i < n; i++) {
