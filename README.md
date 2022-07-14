@@ -9,7 +9,7 @@
 - BFS, DFS (다차원 배열 활용)
 - 재귀, 백트래킹(BackTracking)
 - 시뮬레이션 (삼성전자 SW 역량테스트 A형 문제 포함)
-- 정렬 (Merge, Insertion, Selection, Quick Sort)
+- 정렬 (Merge, Insertion, Selection, Quick Sort, Counting sort, Stable sort, STL sort)
 - 수학 ( C++ STL 라이브러리 학습범위 포함)
 - 이진탐색
 - 해시, 투 포인터
