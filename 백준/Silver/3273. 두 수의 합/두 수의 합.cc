@@ -1,38 +1,37 @@
-// 투 포인터 활용
-
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
+
+int num[2000001];
+int n, sum;
+int cnt;
 
 int main(void)
 {
-  int len,num,target;
-  vector<int> v1; // 벡터
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
-  cin >> len;
-  for(int i=0; i<len; i++){ // 벡터에 원소 할당
-    cin >> num;
-    v1.push_back(num);
-  }
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		int data;
+		cin >> data;
+		num[data]++; // 입력받은 숫자에 해당하는 인덱스에 존재한다고 1표시
+	}
+	cin >> sum; // 목표 합
 
-  sort(v1.begin(), v1.end()); // 오름차순 정렬
-
-  cin >> target; // 두 수의 합 타깃. 두 수를 더했을 때 값이 target이 되면 정답
-  int left = 0, right = len-1, count = 0; // left, right : 투 포인터
-
-  // 투 포인터 활용
-  while(right > left){
-    int sum = v1[left] + v1[right];
-    if(sum == target){ // 쌍을 찾은 경우(정답인 경우)
-      count++; // 쌍의 개수 증가
-      left++; // 투포인터가 각각로 한칸씩 넘어감 
-      right--;
-    }
-    else if(sum < target) // target보다 작으면 sum 값을 더 키워야하므로 left 포인터 증가
-      left++; 
-    else // target 보다 크면 sum 값을 낮춰야하므로 right 포인터 감소
-      right--;
-  }
-  cout << count;
+	for (int i = 0; i < (sum + 1) / 2; i++) { // (2,3) 과 (3,2) 중복 카운팅 방지
+		// i 와 sum-i 라는 숫자가 존재하는지 확인
+		if (num[i] == 1 && num[sum - i] == 1)  // => 생각해보면, (i) + (sum-i) = sum 이므로, 2번쨰 피연산자인 sum-i 가 배열에 존재하는지 확인하면 된다.
+			cnt++; // 목표하는 두 숫자쌍을 찾은 경우 cnt 를 카운팅
+	}
+	cout << cnt;
 }
+
+/*
+	// 2중 for문을 돌리면 런타임에러 발생 =>  O(n^2) 보다 더 효율적인 방법이 필요하다.
+	for (int i = 0; i < n-1; i++) {
+		for (int j = i + 1; j < n; j++) {
+			if (arr[i] + arr[j] == ans)
+				cnt++;
+		}
+	}
+*/
