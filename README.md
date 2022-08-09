@@ -1,6 +1,6 @@
 ## 🧙‍♂️ BOJ 의 알고리즘 문제와, 자료구조 구현을 모아놓았습니다 🧙‍
 
-### * C++ 위주의 구현임을 미리 알려드립니다.
+### * C++ 위주의 구현임을 알려드립니다.
 
 ### 1. BaekJoon Online Judge 알고리즘 문제 풀이 (Solved.ac 기준 플래티넘5 ~ 브론즈5 사이의 난이도 문제)
 
@@ -9,7 +9,7 @@
 - BFS, DFS (다차원 배열 활용)
 - 재귀, 백트래킹(BackTracking)
 - 시뮬레이션 (삼성전자 SW 역량테스트 A형 문제 포함)
-- 정렬 (Merge, Insertion, Selection, Quick Sort, Counting sort, Stable sort, STL sort)
+- 정렬 (Merge, Insertion, Selection, Quick Sort, Counting sort, Stable sort, Radix Sort, STL sort)
 - 수학 ( C++ STL 라이브러리 학습범위 포함)
 - 이진탐색
 - 해시, 투 포인터
