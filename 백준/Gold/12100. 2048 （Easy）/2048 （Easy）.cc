@@ -151,4 +151,5 @@ int main(void)
 					mx = max(mx, board2[i][j]);
 	}
 	cout << mx;
+	return 0;
 }
