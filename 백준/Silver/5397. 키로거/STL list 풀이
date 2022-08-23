@@ -47,3 +47,54 @@ int main(void)
         cout << '\n';
     }
 }
+
+/*
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void)
+{
+
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	int t;
+	cin >> t;
+	while (t--) {
+		string str;
+		cin >> str;
+
+		list<char> l;
+		list<char>::iterator point = l.begin();
+
+		for (int i = 0; i < str.size(); i++) {
+			if (str[i] == '<') {
+				if (point != l.begin())
+					point--;
+			}
+			else if (str[i] == '>') {
+				if (point != l.end()) {
+					point++;
+				}
+			}
+			else if (str[i] == '-') {
+				if (point != l.begin()) {
+					point--;
+					point = l.erase(point);
+				}
+			}
+			else
+				l.insert(point, str[i]);
+		}
+
+		for (list<char>::iterator it = l.begin(); it != l.end(); it++)
+			cout << *it;
+		cout << '\n';
+	}
+}
+
+*/
+
+
+
