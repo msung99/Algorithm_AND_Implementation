@@ -17,9 +17,8 @@ private:
 public:
   linkedlist() // 생성자
   {
-    head = new node; // 만일 "BAPC" 가 입력값으로 주어지면 링크드 리스트 구조는 
-    tail = new node; // head => B => A => P => C 이런 구조로 이루어짐. 데이터 B를 저장하는 노드는
-    // head 노드의 next 노드이며, 노드 C 는 tail 의 prev 노드이다.
+    head = new node;
+    tail = new node;
 
     head -> next = tail;
     tail -> prev = head;
@@ -47,7 +46,7 @@ public:
 
   // 커서 포인터 왼쪽으로 한칸이동
   void moveleft(){
-    if(cursor != head)  // cursor 가 head 일때 커서 포인터를 왼쪽으로 이동 불가임
+    if(cursor != head)
     {
       cursor = cursor->prev; 
     }
@@ -63,8 +62,7 @@ public:
 
   // 커서 포인터의 노드 삭제
   void deletepass(){
-    if(cursor != head){ // 커서 포인터가 맨 앞 노드인 head일때 삭제하려고 하면, 삭제할 노드가 없음
-      // 생각해보면 cursor->prev 노드가 존재하지 않을 것임.
+    if(cursor != head){
       cursor->next ->prev = cursor-> prev;
       cursor->prev ->next = cursor->next;  
     
@@ -89,7 +87,7 @@ int main(void)
 
   cin >> n;
   
-  while(n--) 
+  while(n--)
   {
     linkedlist pw;
 
