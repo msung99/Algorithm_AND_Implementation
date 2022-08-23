@@ -1,34 +1,24 @@
-#include <iostream>
-#include <string>
-#include <stack>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main(void)
 {
-	int k;
-	int sum = 0;
-	int a;
-	stack<int> st;
-
-	cin >> k;
-	while (k--)
-	{
-		cin >> a;
-		if (a == 0)
-		{
-			st.pop();
-		}
+	stack<int> s;
+	int n;
+	cin >> n;
+	while (n--) {
+		int data;
+		cin >> data;
+		if (data == 0)
+			s.pop();
 		else
-		{
-			st.push(a);
-		}
+			s.push(data);
 	}
 
-	int b = st.size();
-	while (b--)
-	{
-		sum += st.top();
-		st.pop();
+	int res = 0;
+	while (!s.empty()) {
+		res += s.top();
+		s.pop();
 	}
-	cout << sum << '\n';
+	cout << res;
 }
