@@ -1,33 +1,30 @@
-#include <iostream>
-#include <string>
-#include <stack>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main(void)
 {
-	int n;
-	int count = 0;
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
-	cin >> n;
-	while (n--)
-	{
-		stack<char> s;
+	int t;
+	int count = 0;
+	cin >> t;
+
+	while (t--) {
 		string str;
+		stack<char> s;
 		cin >> str;
-		for (int i = 0; i < str.size(); i++)
-		{
-			if (s.empty())
-				s.push(str[i]);
+
+		for (auto mychar : str) {
+			if (s.empty() || mychar != s.top()) // 스택이 비어있는 경우를 감안할 것!
+				s.push(mychar);
 			else
-			{
-				if (s.top() == str[i]) // 현재 문자와 스택의 상단 문자가 동일하면, 스택의 상단 문자를 제거
-					s.pop();
-				else
-					s.push(str[i]);
-			}
+				s.pop();
 		}
-		if (s.empty()) // 적절한 쌍을 다 찾았다면, 스택은 비어있게 됨
-			count++; // 카운팅
+
+		// 모든 내용을 다 처리했음에도 아직 스택에 잔여물이 남아있다면 "좋은 단어" 가 아니다. 스택이 비어있어야 좋은단어임!
+		if (s.empty())
+			count++;
 	}
 	cout << count;
 }
