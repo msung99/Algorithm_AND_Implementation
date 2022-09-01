@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stack>
 using namespace std;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 
 int a[1000001];
