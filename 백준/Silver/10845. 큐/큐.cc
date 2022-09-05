@@ -1,5 +1,4 @@
-#include <iostream>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 int main(void)
@@ -9,51 +8,46 @@ int main(void)
 
 	queue<int> q;
 	int n;
-	string command;
 	cin >> n;
-	while (n--)
-	{
-		cin >> command;
-		if (command == "push")
-		{
-			int a;
-			cin >> a;
-			q.push(a);
+	while (n--) {
+		string str;
+		cin >> str;
+		if (str == "push") {
+			int data;
+			cin >> data;
+			q.push(data);
 		}
-		else if (command == "pop")
-		{
-			if (q.empty())
-				cout << "-1\n";
-			else
-			{
-				cout << q.front() << "\n";
-				q.pop();
+		else if (str == "pop") {
+			if (q.empty()) {
+				cout << -1 << '\n';
+				continue;
 			}
+			cout << q.front() << "\n";
+			q.pop();
 		}
-		else if (command == "size")
-		{
-			cout << q.size() << "\n";
+		else if (str == "front") {
+			if (q.empty()) {
+				cout << -1 << '\n';
+				continue;
+			}
+			cout << q.front() << "\n";
 		}
-		else if (command == "empty")
-		{
+		else if (str == "size") {
+			cout << q.size() << '\n';
+		}
+		else if (str == "empty") {
 			if (q.empty())
-				cout << "1\n";
+				cout << 1 << '\n';
 			else
-				cout << "0\n";
+				cout << 0 << '\n';
 		}
-		else if (command == "front")
-		{
-			if (q.empty())
-				cout << "-1\n";
-			else
-				cout << q.front() << "\n";
-		}
-		else if (command == "back")
-		{
-			if (q.empty())
-				cout << "-1\n";
-			else
-				cout << q.back() << "\n";
+		else if (str == "back") {
+			if (q.empty()) {
+				cout << -1 << '\n';
+				continue;
+			}
+
+			cout << q.back() << '\n';
 		}
 	}
 }
