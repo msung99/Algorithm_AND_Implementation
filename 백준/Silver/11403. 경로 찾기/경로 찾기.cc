@@ -1,7 +1,10 @@
+#include <bits/stdc++.h>
+/*
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <stack>
+*/
 using namespace std;
 
 vector<int> adj_list[100];
