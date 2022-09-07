@@ -103,3 +103,70 @@ int main(void)
 		}
 	}
 }
+
+/*
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void)
+{
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n;
+	cin >> n;
+	while (n--) {
+		deque<int> dq;
+		string command, str;
+		int size;
+		cin >> command >> size >> str;
+
+		// deque 원소 구성
+		int num = 0; // dq 에 push 되는 숫자
+		int multi = 1; // 곱해지는 수 (자릿수를 고려하기 위함)
+		for (int i = 0; i < str.size(); i++) {
+			if (str[i] != '[' && str[i] != ']' && str[i] != ',') {
+				//cout << "num:" << num << endl;
+				num = num + ((str[i] - '0') * multi);
+				multi *= 10;
+
+				if (str[i + 1] == ']' || str[i + 1] == ',') {
+					dq.push_back(num);
+					num = 0;
+					multi = 1;
+				}
+			}
+		}
+	
+		for (int i = 0; i < command.size(); i++) {
+			if (command[i] == 'R') {
+				int size = dq.size();
+				for (int j = 0; j < size/2; j++) {
+					//iter_swap(dq.begin(), dq.begin() + size -1 - j);
+					swap(dq[j], dq[size-1-j]);
+				}
+			}
+
+			else if (command[i] == 'D') {
+				if (dq.empty()) {
+					cout << "error\n";
+					break;
+				}
+				dq.pop_front();
+			}
+		}
+
+		if (dq.empty()) {
+			cout << "[]";
+			continue;
+		}
+
+		cout << "[";
+		for (int i = 0; i < dq.size()-1; i++) {
+			cout << dq[i] << ',';
+		}
+		cout << dq[dq.size()-1] << "]\n";
+	}
+}
+*/
