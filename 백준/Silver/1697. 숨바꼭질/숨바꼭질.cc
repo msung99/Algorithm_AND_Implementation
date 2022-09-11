@@ -1,35 +1,45 @@
-#include <iostream>
-#include <utility>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 int dist[100002];
+int n, m;
+int dx[3] = { 1,-1, 2 };
 
 int main(void)
 {
-	int n, k;
-	cin >> n >> k;
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	cin >> n >> m;
 
 	queue<int> q;
 	q.push(n);
 
 	fill(dist, dist + 100001, -1);
-	dist[n] = 0; // 방문 처리 => 방문처리 안하면 나중에 이 좌표를 또 방문할 수도 있다.
+	dist[n] = 0;
 
-	while (dist[k] == -1)
-	{
+	while (!q.empty()) {
 		int cur = q.front();
 		q.pop();
 
-		for (int i : {cur + 1, cur - 1, 2 * cur})
-		{
-			if (i < 0 || i > 100000)
+		for (int i = 0; i < 3; i++) {
+			int nx = 0;
+
+			if (i == 2) // 순간이동을 하는 경우
+				nx = cur * dx[i];
+			else  // 걷는 경우 
+				nx = cur + dx[i];
+
+			if (nx < 0 || nx > 100000)
 				continue;
-			if (dist[i] != -1) // 이미 방문한(거리 계산을 완료한) 좌표인 경우
+
+			if (dist[nx] != -1)
 				continue;
-			dist[i] = dist[cur] + 1;
-			q.push(i);
+
+			dist[nx] = dist[cur] + 1;
+			q.push(nx);
 		}
 	}
-	cout << dist[k];
+	cout << dist[m];
 }
