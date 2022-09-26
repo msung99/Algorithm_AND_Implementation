@@ -10,7 +10,7 @@ using namespace std;
 char board[101][101];
 bool vis[101][101];
 int n;
-int dx[4] = { 1,0,-1,0 };
+int dx[4] = { 1,0,-1,0 }; // 탐색 4방향 설정
 int dy[4] = { 0,1,0,-1 };
 
 int main(void)
