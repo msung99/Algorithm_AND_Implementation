@@ -31,6 +31,7 @@ int main(void)
 //	}
 
 	// lower_bound 내장함수를 활용
+	// => 찾으려는 key 값보다 같거나 큰 숫자가 배열 몇 번째에서 처음 등장하는지 찾는함수
 	for (int i = 0; i < n; i++) {
 		cout << lower_bound(uni.begin(), uni.end(), x[i]) - uni.begin() << ' '; // iterator(이터레이터) 를 lower_bound 를 이용해 찾아서
 	}                                                                       // uni.begin() 를 빼주면 그것이 바로 x[i] 가 등장하는 인덱스가 된다.
