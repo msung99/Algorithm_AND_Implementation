@@ -1,34 +1,40 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-// ** 귀납법 활용
+long long a, b, c;
 // 1승을 계산할 수 있다.
-// k승의 나머지를 계산했으면 2k승과 2k+1승의 나머지도 O(1) 에 계산할 수 있다.
+// k승을 계산했으면 2k 승과 2k+1 승도 O(1) 계산할 수 있다.
+// a^n x a^n = a^2n
+// 12^58 : 4 (% 67) => 12^116 : 16(%67)
 
-// a^b mod m   => a^b 를 m 으로 나눈 나머지 결과
-long long POW(long long a, long long b, long long m) {
-	if (b == 1) // 1승의 나머지 계산 결과
-		return a % m; // a가 m보다 클 수 있어서 a를 리턴하는 대신 a % m 을 리턴
+long long func(long long a, long long b, long long c) {
+	if (b == 1)
+		return a % c;
 
-	// 재귀적으로 a^(b/2) mod m 을 계산해 val에 대입하고  val 을 제곱함.
-	// b = 7인 경우 b/2 = 3 이므로  val = val * val % m;  줄의 내용이 끝나면 val 은 a^6 mod m 의 값이 들어간다.
-	 // 즉, b가 짝수이면 그냥 val의 값을 리턴하면 끝이지만, b가 홀수이면 val에 a를 한번 더 곱하고 나머지 결과를 다시 계산해서 리턴해야함
-	
-	long long val = POW(a, b / 2, m); // a의 (b/2)승 나머지 결과를 val에 저장
-	val = val * val % m; // a의 b승 나머지 결과 = { ( a의 (b/2)승 나머지 결과 ) x ( a의 (b/2)승 나머지 결과 ) } 의 나머지 결과 
-	
-	if (b % 2 == 0) // b가 짝수인 경우
-		return val; 
+	long long val = func(a, b / 2, c); // a^(b/2) % c 를 계산해서 val 에 할당
+	val = (val * val) % c;  // val 을 제곱합
 
-	return val * a % m; // b가 홀수인 경우 =>  val 에 a를 한번 더 곱해서 나머지 결과를 리턴해야 함
-} 
+	if (b % 2 == 0)
+		return val;
+	// if(b % 2 == 1) // b가 홀수이면 val 에 a를 한번더 곱해서 리턴해야한다. => 만약 b가 7이라하면 b/2 는 3이므로 
+	return (val * a) % c;     // val = (val * val) % c 를 실행하면 "a^7 % c" 가 아닌 "a^6 % c" 가 할당될 것이다. 따라서 a를 한번더 곱해준다.
+}
 
+/*
+long long func(long long a, long long b, long long c) {
+	long long val = 1;
+	while (b--) {
+		val = val * a % c;
+	}
+	return val;
+}
+*/
 
 int main(void)
 {
-	long long a, b, c, res;
-	cin >> a >> b >> c;
+	ios::sync_with_stdio(0);
+	cin.tie(0);
 
-	res = POW(a, b, c);
-	cout << res;
+	cin >> a >> b >> c;
+	cout << func(a, b, c);
 }
