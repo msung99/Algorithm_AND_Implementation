@@ -12,14 +12,14 @@ int main(void)
 	while (n--) {
 		int data;
 		cin >> data;
-		if (data == 0)
+		if (data == 0) 
 			s.pop();
 		else
 			s.push(data);
 	}
 
 	int res = 0;
-	while (!s.empty()) {
+	while (!s.empty()) { // while 문을 활용해야 함에 유의
 		res += s.top();
 		s.pop();
 	}
