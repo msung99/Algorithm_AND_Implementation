@@ -1,18 +1,23 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
+
+int arr[26];
 
 int main(void)
 {
-  int arr[26] = {0,};
-  string s;
-  cin >> s;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-  for(int i=0; i < s.length(); i++){
-     arr[s[i] - 'a']++;
-  }
+    string str;
+    cin >> str;
+    for(int i=0; i<str.size(); i++){ 
+        int data = str[i] - 'a';
+        arr[data]++;
+    }
 
-  for(int i=0; i < 26; i++){
-    cout << arr[i] << ' ';
-  }
+    for(int i=0; i<26; i++) {
+        cout << arr[i] << ' ';
+    }
+    return 0;
 }
