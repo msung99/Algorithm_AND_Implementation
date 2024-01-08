@@ -1,68 +1,65 @@
-#include <iostream>
-#include <utility>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-int board[100][100];
-int visited[100][100];
-
-int dx[4] = {-1,0,1,0};
 int dy[4] = {0,1,0,-1};
+int dx[4] = {-1,0,1,0};
+int board[51][51];
+bool visited[51][51];
+int result;
+int m ,n, k;
+
+void bfs(int startY, int startX) {
+    queue<pair<int, int>> q;
+    q.push(make_pair(startY, startX));
+
+    while(!q.empty()) {
+        int y = q.front().first;
+        int x = q.front().second;
+        q.pop();
+
+        if(y < 0 || y >= n || x < 0 || x >= m || visited[y][x] || board[y][x] == 0) {
+            continue;
+        }
+        q.push({y, x});
+        visited[y][x] = true;
+
+        for(int i=0; i<4; i++) {
+            int curY = y + dy[i];
+            int curX = x + dx[i];
+            q.push({curY, curX});
+        }
+    }
+}
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int t;
-	int m, n, k;
+    int t;
+    cin >> t;
+    while(t--) {
+        fill(&board[0][0], &board[0][0] + 51 * 51, 0);
+        fill(&visited[0][0], &visited[0][0] + 51 * 51, 0);
+        cin >> m >> n >> k;
 
-	cin >> t;
-	while (t--)
-	{
-		cin >> m >> n >> k;
-		int x, y;
-		for (int i = 0; i < k; i++) {
-			cin >> x >> y;
-			board[y][x] = 1;
-		}
+        for(int i=0; i<k; i++) {
+            int y, x;
+            cin >> x >> y;
+            board[y][x] = 1;
+        }
 
-		queue<pair<int, int>> q;
-		int area_count = 0; // 총 배추 영역 개수( = 지렁이 개수)
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {	
-				if (board[i][j] == 1 && visited[i][j] == 0) // 각 배추 영역에 대해 실행
-				{
-					area_count++; // 배추 영역 1증가
-					q.push({ i,j }); // 그 배추 영역의 BFS 탐색 시작점을 큐에 push 
-					visited[i][j] = 1;
-
-					// BFS 탐색 실행
-					while (!q.empty())
-					{
-						auto cur = q.front();
-						q.pop();
-
-						for (int i = 0; i < m; i++) {
-							int x = cur.first + dx[i];
-							int y = cur.second + dy[i];
-
-							if (x < 0 || x >= n || y < 0 || y >= m)
-								continue;
-							if (board[x][y] != 1 || visited[x][y] == 1)
-								continue;
-
-							q.push({ x,y });
-							visited[x][y] = 1;
-						}
-					}
-				}
-			}
-		}
-		cout << area_count << '\n';
-		for (int i = 0; i < n; i++) { // 새로운 테스트케이스에 대해서 실행하기 전에, board와 visited를 깨끗하게 초기화시켜둠
-			fill(board[i], board[i] + m, 0);
-			fill(visited[i], visited[i] + m, false);
-		}
-	}
+        int res = 0;
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<m; j++) {
+                if(!visited[i][j] && board[i][j] == 1) {
+                    bfs(i, j);
+                    res++;
+                }
+            }
+        }
+        cout << res << "\n";
+    }
+    return 0; 
 }
