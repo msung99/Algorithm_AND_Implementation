@@ -1,53 +1,46 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
 int n;
-int arr[64][64];
+char board[65][65];
 
-void solve(int n, int y, int x)
-{
-	if (n == 1) { // base condition
-		cout << arr[y][x];
-		return;
-	}
-
-	bool all_zero = true; // 그 구역의 모든 원소가 0으로 이루어져있는지 체크해주는 변수
-	bool all_one = true; // 마찬가지로 1로 이루어져있는지 체크해주는 변수
-
-	for (int i = y; i < y + n; i++) {
-		for (int j = x; j < x + n; j++) {
-			if (arr[i][j])  // arr[i][j] == 1  
-				all_zero = false; 
-			else  // arr[i][j] == 0
-				all_one = false;
-		}
-	}
-	if (all_zero) // 그 구역의 모든 원소가 0인경우
-		cout << 0;
-	else if (all_one) // 그 구역의 모든 원소가 1인경우
-		cout << 1;
-	else  // 그 구역의 원소들이 0과 1이 섞여있는경우
-	{
-		cout << "(";
-		int size = n / 2;
-		solve(size, y, x); // 왼쪽 위 
-		solve(size, y,  x + size); // 오른쪽 위
-		solve(size, y + size, x); // 왼쪽 아래
-		solve(size, y + size, x + size); // 오른쪽 아래
-		cout << ")";
-	}
-	return;
+string quard(int x, int y, int size) {
+    if(size == 1) {
+        return string(1, board[x][y]);
+    }
+    char c = board[x][y];
+    bool flag = 0;
+    string result = "";
+    for(int i=x; i <x+size; i++) {
+        for(int j=y; j<y+size; j++) {
+            if(c != board[i][j]) {
+                result += '(';
+                result += quard(x, y, size/2); // 왼쪽 위
+                result += quard(x, y + size/2, size/2); // 오른쪽 위
+                result += quard(x + size/2, y, size/2); // 왼쪽 아래
+                result += quard(x + size/2, y + size/2, size/2); // 오른쪽 아래
+                result += ')';
+                return result;
+            }
+        }
+    }
+    return string(1, board[x][y]);
 }
 
 int main(void)
 {
-	cin >> n;
-	for (int i = 0; i < n; i++) {
-		string str;
-		cin >> str;
-		for (int j = 0; j < n; j++)
-			arr[i][j] = str[j] - '0';  // 0을 뻄으로써 str[j]를 정수화시킴
-	}
-	solve(n, 0, 0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    cin >> n;
+    for(int i=0; i<n; i++) {
+        string str;
+        cin >> str;
+        for(int j=0; j<n; j++) {
+            board[i][j] = str[j];
+        }
+    }
+    cout << quard(0, 0, n) << "\n";
+    return 0;
 }
