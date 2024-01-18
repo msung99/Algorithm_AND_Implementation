@@ -1,4 +1,4 @@
-# [Silver IV] 회전하는 큐 - 1021 
+# [Silver III] 회전하는 큐 - 1021 
 
 [문제 링크](https://www.acmicpc.net/problem/1021) 
 
@@ -8,7 +8,11 @@
 
 ### 분류
 
-자료 구조(data_structures), 덱(deque)
+자료 구조, 덱
+
+### 제출 일자
+
+2024년 1월 18일 09:03:58
 
 ### 문제 설명
 
