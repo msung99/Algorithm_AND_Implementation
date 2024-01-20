@@ -1,95 +1,81 @@
-#include <iostream>
-#include <utility>
-#include <string>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-
-#define X first
-#define Y second
-char board[101][101];
-bool vis[101][101];
+string board[101];
+bool visited1[101][101];
 int n;
-int dx[4] = { 1,0,-1,0 }; // 탐색 4방향 설정
-int dy[4] = { 0,1,0,-1 };
+int dx[4] = { 0,1,0,-1 };
+int dy[4] = { -1,0,1,0 };
+
+void bfs1(int x, int y) {
+	queue<pair<int, int>> q1;
+	q1.push({ x,y});
+	while (!q1.empty()) {
+		int x = q1.front().first;
+		int y = q1.front().second;
+		q1.pop();
+		visited1[x][y] = true;
+
+		for (int i = 0; i < 4; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+
+			if (nx < 0 || nx >= n || ny < 0 || ny >= n)
+				continue;
+
+			if (board[x][y] != board[nx][ny] || visited1[nx][ny])
+				continue;
+
+			q1.push({ nx,ny });
+			visited1[nx][ny] = true;
+		}
+	}
+}
 
 int main(void)
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            cin >> board[i][j];
-        }
-    }
-    int area1 = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (vis[i][j] == 1)
-                continue;
-            area1++;
-            queue<pair<int, int>> Q1;
-            Q1.push({ i,j });
-            vis[i][j] = 1;
-            while (!Q1.empty()) {
-                auto cur = Q1.front();
-                Q1.pop();
-                for (int dir = 0; dir < 4; dir++) {
-                    int x = cur.X + dx[dir];
-                    int y = cur.Y + dy[dir];
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
 
-                    if (x < 0 || x >= n || y < 0 || y >= n)
-                        continue;
-                    if (vis[x][y] == 1 || board[i][j] != board[x][y])
-                        continue;
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		cin >> board[i];
+	}
 
-                    vis[x][y] = 1;
-                    Q1.push({ x,y });
-                }
-            }
-        }
-    }
+	// 적록색약이 아닌 경우 (R, G 를 다른 색깔로 분류)
+	int count1 = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (!visited1[i][j]) {
+				bfs1(i, j);
+				count1++;
+			}
+		}
+	}
 
-    // 적록색약인 사람을 구하기위한 방문배열 초기화
-    for (int i = 0; i < n; i++)
-        fill(vis[i], vis[i] + n, false);
+	// 적록색약인 경우 (R, G 를 동일한 색깔로 취급)
+	// => 초록과 빨강을 구분 못하므로 초록을 빨강으로 바꿔줌
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (board[i][j] == 'G')
+				board[i][j] = 'R';
+		}
+	}
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (board[i][j] == 'G')
-                board[i][j] = 'R';
-        }
-    }
+	for (int i = 0; i < n; i++) {
+		fill(visited1[i], visited1[i] + n, false);
+	}
 
-    int area2 = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (vis[i][j] == 1)
-                continue;
-            area2++;
-            queue<pair<int, int>> Q2;
-            Q2.push({ i,j });
-           
-            vis[i][j] = 1;
-            while (!Q2.empty()) {
-                auto cur = Q2.front();
-                Q2.pop();
-                for (int dir = 0; dir < 4; dir++) {
-                    int x = cur.X + dx[dir];
-                    int y = cur.Y + dy[dir];
-
-                    if (x < 0 || x >= n || y < 0 || y >= n)
-                        continue;
-                    if (vis[x][y] == 1 || board[i][j] != board[x][y])
-                        continue;
-
-                    vis[x][y] = 1;
-                    Q2.push({ x,y });
-                }
-            }
-        }
-    }
-
-    cout << area1 << ' ' << area2;
+	int count2 = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (!visited1[i][j]) {
+				bfs1(i, j);
+				count2++;
+			}
+		}
+	}
+	cout << count1 << ' ' << count2;
+	return 0;
 }
