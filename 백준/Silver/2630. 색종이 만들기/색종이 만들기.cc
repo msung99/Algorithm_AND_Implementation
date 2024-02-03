@@ -1,45 +1,51 @@
-#include <iostream>
-#include <string>
+#include <bits/stdc++.h>
 using namespace std;
 
-int board[2200][2200];
 int n;
-int ans[2];
+int board[130][130];
+int cnt[2];
 
-bool check(int x, int y, int n)
-{
-	int first_element = board[x][y]; // 그 색종이 구역의 첫번째 원소
-	for (int i = x; i < x + n; i++) {
-		for (int j = y; j < y + n; j++) {
-			if (first_element != board[i][j])
+bool check(int x, int y, int size) {
+	for (int i = x; i < x + size; i++) {
+		for (int j = y; j < y + size; j++) {
+			if (board[i][j] != board[x][y])
 				return false;
 		}
 	}
 	return true;
 }
 
-void func(int x, int y, int n)
-{
-	if (check(x, y, n))
-	{
-		ans[board[x][y]] += 1;
+void func(int x, int y, int size) {
+	if (check(x, y, size)) {
+		cnt[board[x][y]]++;
 		return;
 	}
-	// 그 색종이 구역의 원소가 하나라도 다를 경우, 4분할을 시행
-	int size = n / 2;
-	for (int i = 0; i < 2; i++)
-		for (int j = 0; j < 2; j++)
-			func(x + i * size, y + j * size, size);
-}
 
+	int divideSize = size / 2;
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			func(x + i*divideSize, y + j*divideSize, divideSize);
+		}
+	}
+}
 
 int main(void)
 {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
 	cin >> n;
-	for (int i = 0; i < n; i++) 
-		for (int j = 0; j < n; j++) 
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
 			cin >> board[i][j];
+		}
+	}
 
 	func(0, 0, n);
-	cout << ans[0] << '\n' << ans[1];
+	for (int i = 0; i < 2; i++) {
+		cout << cnt[i] << "\n";
+	}
+	return 0;
 }
