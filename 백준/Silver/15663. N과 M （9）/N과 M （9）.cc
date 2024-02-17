@@ -1,45 +1,45 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
+int n, m;
+bool isused[10];
 int arr[10];
 int num[10];
-int n, m;
-bool visited[10];
 
-
-void func(int k)
-{
-	if (k == m)
-	{
-		for (int i = 0; i < m; i++)
+void func(int k) {
+	if (k == m) {
+		for (int i = 0; i < m; i++) {
 			cout << arr[i] << ' ';
-		cout << '\n';
+		}
+		cout << "\n";
+		return;
 	}
 
-	int tmp = 0; // 중복 순열인지 확인하기 위해 필요한 임시변수
-	for (int i = 0; i < n; i++)
-	{
-		if (!visited[i] && tmp != num[i]) // 이전 수열의 마지막 항(tmp)과 새로운 수열의 마지막 항(num[i])이 같으면 중복수열
-		{
+	int tmp = 0;
+	for (int i = 0; i < n; i++) {
+		if (!isused[i] && tmp != num[i]) {
+			isused[i] = true;
 			arr[k] = num[i];
-			visited[i] = true;
-			tmp = arr[k];  // 수열의 마지막 항을 tmp 에 저장
+			tmp = arr[k];
 			func(k + 1);
-			visited[i] = false;
+			isused[i] = false;
 		}
 	}
 }
 
-
 int main(void)
 {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
 	cin >> n >> m;
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++) {
 		cin >> num[i];
-
-	sort(num, num + n);  // 오름차순 정렬
-
+	}
+	sort(num, num + n);
 	func(0);
+
+	return 0;
 }
