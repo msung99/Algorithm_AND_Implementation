@@ -1,42 +1,45 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int arr[10]; // arr : 출력할 부분수열 원소들을 모아두는 배열
-int num[10]; // num : 입력받은 원소들을 저장하고 있는 기존 배열
 int n, m;
-// bool visited[10];
+bool isused[10];
+int arr[10];
+int num[10];
 
-void func(int k, int start)
-{
-	if (k == m)
-	{
-		for (int i = 0; i < m; i++)
+void func(int k, int start) {
+	if (k == m) {
+		for (int i = 0; i < m; i++) {
 			cout << arr[i] << ' ';
-		cout << '\n';
+		}
+		cout << "\n";
+		return;
 	}
 
 	int tmp = 0;
-	for (int i = start; i < n; i++)
-	{
-		if (tmp != num[i]) // 이전 수열의 마지막 항과 새로운 수열의 마지막 항이 같으면 중복 수열
-		{
+	for (int i = start; i < n; i++) {
+		if (!isused[i] && tmp != num[i]) {
+			isused[i] = true;
 			arr[k] = num[i];
 			tmp = arr[k];
-			func(k + 1, i+1);
+			func(k + 1, i + 1);
+			isused[i] = false;
 		}
 	}
 }
 
-
 int main(void)
 {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
 	cin >> n >> m;
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++) {
 		cin >> num[i];
-
-	sort(num, num + n);  // 오름차순 정렬
-
+	}
+	sort(num, num + n);
 	func(0, 0);
+
+	return 0;
 }
