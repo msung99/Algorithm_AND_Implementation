@@ -1,48 +1,46 @@
-#include <iostream>
-#include <string>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj_list[1000];
-bool visited[1000];
+int n, m;
+vector<int> adj_list[1005];
+bool visited[1005];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int n, m;
-	cin >> n >> m;
-	while (m--)
-	{
-		int u, v;
-		cin >> u >> v;
-		adj_list[u].push_back(v);
-		adj_list[v].push_back(u);
-	}
+    cin >> n >> m; // 6, 5
 
-	int count = 0;
-	for (int i = 1; i <= n; i++)
-	{
-		if (visited[i])
-			continue;
-		count++;
-		queue<int> q;
-		q.push(i);
-		visited[i] = true;
-		while (!q.empty())
-		{
-			int cur = q.front();
-			q.pop();
-			for(auto nxt : adj_list[cur])
-			{
-				if (visited[nxt])
-					continue;
-				q.push(nxt);
-				visited[nxt] = true;
-			}
-		}
-	}
-	cout << count;
+    for(int i=0; i<m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj_list[u].push_back(v);
+        adj_list[v].push_back(u);
+    }
+
+    int cnt = 0;
+    for(int i=1; i<=n; i++) {
+        if(visited[i]) {
+            continue;
+        }
+        cnt++;
+        queue<int> q;
+        q.push(i);
+        visited[i] = true;
+        while(!q.empty()) {
+            int cur = q.front();
+            q.pop();
+            for(auto next : adj_list[cur]) {
+                if(visited[next]) {
+                    continue;
+                }
+                q.push(next);
+                visited[next] = true;
+            }
+        }
+    }
+    cout << cnt;
+    return 0;
 }
