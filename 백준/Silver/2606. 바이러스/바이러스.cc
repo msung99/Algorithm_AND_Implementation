@@ -1,42 +1,47 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <queue>
-#include <stack>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj_list[101];
-bool visited[101];
+vector<int> adj_list[105];
+bool visited[105];
+int n, m;
 
 int main(void)
 {
-	int n, m; // v : 정점의 수(컴퓨터의 수), n : 간선의 수
-	cin >> n >> m;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	while (m--)
-	{
-		int u, v;
-		cin >> u >> v;
-		adj_list[u].push_back(v);
-		adj_list[v].push_back(u);
-	}
+    cin >> n >> m; // 7, 6
 
-	int count = 0;  // 바이러스 걸리는 컴퓨터의 수
-	stack<int> q;
-	q.push(1);
-	visited[1] = true;
-	while (!q.empty())
-	{
-		int cur = q.top();
-		q.pop();
-		for (auto num : adj_list[cur])
-		{
-			if (visited[num])
-				continue;
-			count++;
-			q.push(num);
-			visited[num] = true;
-		}
-	}
-	cout << count;
+    for(int i=0; i<m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj_list[u].push_back(v);
+        adj_list[v].push_back(u);
+    }
+
+    int start = 1;
+    queue<int> q;
+    q.push(start);
+
+    int cnt = 0;
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+
+        if(visited[cur]) {
+            continue;
+        }
+
+        visited[cur] = true;
+        cnt++;
+
+        for(auto next : adj_list[cur]) {
+            q.push(next);
+        }
+    }
+
+    cout << cnt -1;
+
+    return 0;
 }
