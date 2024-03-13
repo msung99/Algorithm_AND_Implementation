@@ -1,46 +1,55 @@
-#include <iostream>
-#include <algorithm>
-#include <queue>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj_list[501];
-int dist[501];
+int n, m;
+vector<int> adj_list[505];
+int dist[505]; // dist[i] : i번째 이웃
 
 int main(void)
 {
-	int n, m;
-	cin >> n >> m;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	while (m--)
-	{
-		int u, v;
-		cin >> u >> v;
-		adj_list[u].push_back(v);
-		adj_list[v].push_back(u);
-	}
+    fill(dist, dist + 505, -1);
 
-	queue<int> q;
-	q.push(1);
-	dist[1] = 1;
-	while (!q.empty())
-	{
-		int cur = q.front();
-		q.pop();
-		for (auto num : adj_list[cur])
-		{
-			if (dist[num] != 0)
-				continue;
-			dist[num] = dist[cur] + 1;
-			q.push(num);
-		}
-	}
+    cin >> n; // 6
+    cin >> m; // 5
 
-	int count = 0;
-	for (int i = 1; i <= n; i++)
-	{
-		if (dist[i] == 2 || dist[i] == 3)
-			count++;
-	}
-	cout << count;
+    for(int i=0; i<m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj_list[u].push_back(v);
+        adj_list[v].push_back(u);
+    }
+
+    int start = 1;
+    queue<int> q; 
+    q.push(start);  
+    dist[start] = 0;
+
+    while(!q.empty()) {
+        int cur = q.front(); 
+        q.pop();
+
+        for(auto next : adj_list[cur]) {
+            if(dist[next] != -1) {
+                continue;
+            }
+
+            q.push(next);
+            dist[next] = dist[cur] + 1; 
+        }
+    }
+
+    int cnt = 0;
+    for(int i=0; i<505; i++) {
+        if(dist[i] == 1 || dist[i] == 2) {
+            cnt++;
+        }
+    }
+
+    cout << cnt;
+
+    return 0;
 }
