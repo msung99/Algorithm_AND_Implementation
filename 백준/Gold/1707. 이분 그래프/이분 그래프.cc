@@ -1,94 +1,75 @@
-#include <iostream>
-#include <algorithm>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define MAX 20001
-#define RED 1 
-#define BLUE 2
-
-vector<int> adj_list[20001];
-int color[20001]; // 색깔의 종류는 RED(= 1) 과 BLUE(= 2)로 두가지이다. 만일 0 이라면 아직 색깔을 처리안한 정점인 것이다.
 int v, e;
-int u, v1;
+vector<int> adj_list[20002];
+int flag[20002]; // -1: 아직 방문안함 / 1 또는 2로 구성 
 
-void BFS(int start)
-{
-	queue<int> q;
-	q.push(start);
-	color[start] = RED; // 색깔
-	while (!q.empty())
-	{
-		int cur = q.front();
-		q.pop();
-		for (auto nxt : adj_list[cur])
-		{
-			if (color[nxt] != 0) // 이미 색깔 처리 완료한 정점이라면 skip
-				continue;
+bool solve() {
+  fill(flag, flag + v + 1, -1);
 
-			// 현재 인접해 있는 정점들에 대해서 현재 색깔과 다른 색깔로 칠해준다.
-			if (color[cur] == RED) // 색깔 1이라면
-			{
-				color[nxt] = BLUE; // 색깔 2로 설정
-				q.push(nxt);
-			}
+  for(int i=1; i<=v; i++) {
+    if(flag[i] != -1) {
+      continue;
+    }
 
-			else if (color[cur] == BLUE) // 색깔 2이라면
-			{
-				color[nxt] = RED; // 색깔 1로 설정
-				q.push(nxt);
-			}
-		}
-	}
-}
+    queue<int> q;
+    q.push(i);
+    flag[i] = 1;
 
-// 이분 그래프인지 판단 
-bool is_Divide_Graph()
-{
-	for (int i = 1; i <= v; i++)
-	{
-		for(int j = 0; j < adj_list[i].size(); j++)
-		{
-			int nxt = adj_list[i][j];
-			if (color[i] == color[nxt]) // 정점 i와 인접한 정점들 중에서 동일한 색깔이 존재한다면 이분 그래프가 아니다. 
-				return false;         
-		}
-	}
-	return true;
+    while(!q.empty()) {
+      int cur = q.front();
+      q.pop();
+
+      for(int next : adj_list[cur]) {
+        // next 가 이미 색칠되어 있는 경우
+        if(flag[next] != -1) {
+          if(flag[cur] == flag[next]) { // 현재 칸(cur) 과 다음 칸(next) 의 색깔이 서로 같다면
+            return false;
+          } else {
+            continue;
+          }
+        }
+
+        // flag[next] == -1 인 경우 (처음 방문하는 경우)
+        if(flag[cur] == 1) {
+          flag[next] = 2;
+        } else if(flag[cur] == 2) {
+          flag[next] = 1;
+        }
+        q.push(next);
+      }
+    }
+  }
+  return true;
 }
 
 int main(void)
 {
-	int testCase;
-	cin >> testCase;
-	while (testCase--)
-	{
-		cin >> v >> e;
-		while (e--)
-		{
-			cin >> u >> v1;
-			adj_list[u].push_back(v1);
-			adj_list[v1].push_back(u);
-		}
-		
-		// 각 정점에 대해 BFS를 실행함으로써 각 정점들에 대해 색깔을 채워 넣는다.
-		// (그래프가 모두 연결되어 있다는 보장이 없으므로, 색깔 처리가 완료되지 않은 정점들에 대해 BFS를 실행)
-		for (int i = 1; i <= v; i++)
-		{
-			if (!color[i])
-				BFS(i);
-		}
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-		if (is_Divide_Graph())
-			cout << "YES\n";
-		else
-			cout << "NO\n";
+  int t;
+  cin >> t;
+  while(t--) {
+    cin >> v >> e;
 
-		// 그래프 인접리스트 및 색깔 초기화
-		for (int i = 1; i <= v; i++)
-			adj_list[i].clear();
+    for(int i=1; i<= v; i++) {
+      adj_list[i].clear();
+    }
 
-		fill(color, color + v + 1, 0);
-	}
+    for(int i=0; i<e; i++) {
+      int u, v;
+      cin >> u >> v;
+      adj_list[u].push_back(v);
+      adj_list[v].push_back(u);
+    }
+
+    if(solve()) {
+      cout << "YES\n";
+    } else {
+      cout << "NO\n";
+    }
+  }
 }
