@@ -1,80 +1,71 @@
-#include <iostream>
-#include <queue>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj_list[51];
-int dist[51];
-int score_list[51];
+int n;
+vector<int> adj_list[55];
+int dist[55];
+int score[55];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	int score = 0; // 회원의 점수
-	int n;
-	cin >> n;
-	int u, v;
-	while (true)
-	{
-		cin >> u >> v;
-		if (u == -1 && v == -1)
-			break;
-		adj_list[u].push_back(v);
-		adj_list[v].push_back(u);
-	}
+  cin >> n;
 
-	// BFS 탐색
-	for (int i = 1; i <= n; i++)
-	{
-		fill(dist, dist + n + 1, -1);
-		queue<int> q;
-		q.push(i);
-		dist[i] = 0;
-		while (!q.empty())
-		{
-			int cur = q.front();
-			q.pop();
-			for (auto nxt : adj_list[cur])
-			{
-				if (dist[nxt] != -1)
-					continue;
-				q.push(nxt);
-				dist[nxt] = dist[cur] + 1;
-			}
-		}
+  while(true) {
+    int u, v;
+    cin >> u >> v;
 
-		// 한 정점(회원)에 대한 BFS 탐색후 dist에 거리에 대한 정보가 저장되면, 그 회원에 대한 점수를 계산한다. 
-		for (int k = 1; k <= n; k++)
-		{
-			if (score < dist[k])
-				score = dist[k];
-		}
-		score_list[i] = score;
-		score = 0;
-	}
+    if(u == -1 && v == -1) {
+      break;
+    }
 
-	int last_score = 99999; // 회장 후보의 점수
-	int count = 0; // 회장 후보의 수
-	for (int i = 1; i <= n; i++)
-	{
-		if (last_score > score_list[i])
-			last_score = score_list[i];
-	}
+    adj_list[u].push_back(v);
+    adj_list[v].push_back(u);
+  }
 
-	for (int i = 1; i <= n; i++)
-	{
-		if (last_score == score_list[i])
-			count++;
-	}
-	
-	cout << last_score << ' ' << count << '\n';
-	// 회장 후보를 오름차순으로 모두 출력
-	for (int i = 1; i <= n; i++)
-	{
-		if (last_score == score_list[i])
-			cout << i << ' ';
-	}
+  for(int i=1; i<=n; i++) {
+    queue<int> q;
+    fill(dist, dist + n + 2, -1);
+
+    dist[i] = 0;
+    q.push(i);
+
+    while(!q.empty()) {
+      int cur = q.front();
+      q.pop();
+
+      for(int next : adj_list[cur]) {
+        if(dist[next] != -1) {
+          continue;
+        }
+
+        dist[next] = dist[cur] + 1;
+        q.push(next);
+      }
+    }
+
+    int minValue = *max_element(dist + 1, dist + n + 1);
+    score[i] = minValue;
+  }
+
+  int minScore = *min_element(score + 1, score + n + 1);
+  vector<int> personList;
+  int cnt = 0;
+
+  for(int i=1; i<=n; i++) {
+    if(score[i] == minScore) {
+      personList.push_back(i);      
+      cnt++;
+    }    
+  }
+
+  cout << minScore << ' ' << cnt << "\n";
+  for(int i=0; i<personList.size(); i++) {
+    cout << personList[i] << ' ';
+  }
+
+  return 0;
 }
