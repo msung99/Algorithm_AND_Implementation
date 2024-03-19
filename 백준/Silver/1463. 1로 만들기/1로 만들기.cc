@@ -1,33 +1,30 @@
-/*
-1. 테이블 정의하기
-D[k] : 정수 k가 1이 되는데 필요한 연산 횟수의 최솟값
-
-2. 점화식 설정하기
-D[k] = min(D[k/2], D[k/3], D[k-1])
-
-3. 초기값 설정하기
-D[1] = 0  D[2] = 1  D[3] = 1
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int d[1000005];
 int n;
+int arr[1000001]; // arr[i] : 정수 i을 1로 만드는데 필요한 최소 연산수
 
 int main(void)
 {
-	cin >> n;
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	d[1] = 0;
-	d[2] = d[3] = 1;
+  cin >> n;
 
-	for (int i = 2; i <= n; i++) {
-		d[i] = d[i - 1] + 1;
-		if (i % 2 == 0)
-			d[i] = min(d[i], d[i / 2] + 1);
-		if (i % 3 == 0)
-			d[i] = min(d[i], d[i / 3] + 1);
-	}
-	cout << d[n];
+  arr[1] = 0;
+  // arr[i] = min(arr[i/3], arr[i/2], arr[i-1]) + 1;
+
+  for(int i=2; i<=n; i++) {
+    arr[i] = arr[i-1] + 1;
+    if(i % 2 == 0) {
+      arr[i] = min(arr[i], arr[i/2] + 1);
+    }
+    if(i % 3 == 0) {
+      arr[i] = min(arr[i], arr[i/3] + 1);
+    }
+  }
+  cout << arr[n];
+
+  return 0;
 }
