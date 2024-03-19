@@ -1,28 +1,25 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-// D[n] = D[n-1] + 2 * D[n-2]
-
-int d[1005];
 int n;
+int arr[1002];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	cin >> n;
+  arr[1] = 1;
+  arr[2] = 3;
+  arr[3] = 5;
 
-	// 초기값 설정
-	d[1] = 1;
-	d[2] = 3;
+  cin >> n;
 
-	// 점화식 : D[i] = D[i-1] + D[i-2]  => 이때 문제의 조건에 따라, 10007 로 나눈 나머지를 구해야함
-	for (int i = 3; i <= n; i++) {
-		d[i] = (d[i - 1] + 2 * d[i - 2]) % 10007;
-	}
+  for(int i=4; i<=n; i++) {
+    arr[i] = (arr[i-1] + arr[i-2] * 2) % 10007;
+  }
 
-	cout << d[n];
+  cout << arr[n];
+  return 0;
 }
