@@ -1,53 +1,32 @@
-/*
-4 = 
-3 + (1)
-=> 1을 나타내는 방법의 수
-
-2 + (1+1)
-2 + (2)
-=> 2를 나타내는 방법의 수
-
-1 + (3)
-1 + (1+2)
-1 + (2+1)
-1 + (1+1+1)
-=> 3을 나타내는 방법의 수 
-
-1. 테이블 설정
-d[k] : k를 나타내는 방법의 수
-
-2. 점화식 설정
-d[k] = d[k-1] + sum(1,2,3,...,k-2)  
-(=> sum = d[1] + d[2] + ... + d[k-2])
-
-3. 초기값 설정
-d[1] = 1 (1 = 1)
-d[2] = 2 (2 = 2, 1+1)
-d[3] = 4  (3 = 3, 2+1, 1+1+1, 1+2+1) 
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int d[12];
-int n, t;
+int t;
+int d[12]; // d[i] : 정수 i를 나타내는 방법 
+// d[i] = d[i-1] + d[i-2] + d[i-3]
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cin >> t;
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	d[1] = 1;
-	d[2] = 2;
-	d[3] = 4;
-	// d[4] = d[3] + d[2] + d[1]
-	for (int i = 4; i <= 11; i++) {
-		d[i] = d[i - 1] + d[i - 2] + d[i - 3];
-	}
+  cin >> t;
 
-	while (t--) {
-		cin >> n;
-		cout << d[n] << '\n';
-	}
+  d[1] = 1;
+  d[2] = 2;
+  d[3] = 4;
+
+  for(int i=4; i<=11; i++) {
+    d[i] = d[i-1] + d[i-2] + d[i-3];
+  }
+
+  while(t--) {
+    int n;
+    cin >> n;
+    cout << d[n] << "\n";
+  }
+
+
+  return 0;
 }
