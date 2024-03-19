@@ -1,34 +1,35 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-
-int t;
-int d0[41];  // 0의 등장횟수  => d0[k] : fib(k) 에 대한 숫자 0의 등장횟수
-int d1[41];  // 1의 등장횟수  => d1[k] : fib(k) 에 대한 숫자 1의 등장횟수
+int zero[42];
+int one[42];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	cin >> t;
+  zero[0] = 1;
+  zero[1] = 0;
+  zero[2] = 1;
 
-	d0[0] = 1;
-	d0[1] = 0;
+  one[0] = 0;
+  one[1] = 1;
+  one[2] = 1;
 
-	d1[0] = 0;
-	d1[1] = 1;
+  for(int i=3; i<=40; i++) {
+    zero[i] = zero[i-1] + zero[i-2];
+    one[i] = one[i-1] + one[i-2];
+  }
 
-	for (int i = 2; i <= 40; i++) {
-		d0[i] = d0[i - 1] + d0[i - 2];  // 점화식 : d0[k] = d0[k-1] + d0[k-2]
-		d1[i] = d1[i - 1] + d1[i - 2];
-	}
+  int t;
+  cin >> t;
+  while(t--) {
+    int data;
+    cin >> data;
 
-	while (t--) {
-		int n;
-		cin >> n;
-		cout << d0[n] << ' ' << d1[n] << '\n';
-	}
+    cout << zero[data] << ' ' << one[data] << "\n";
+  }
+  return 0;
 }
