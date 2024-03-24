@@ -1,28 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, m;
-int a[10005], d[10005];
+int t, n, m;
+int d[10002]; 
+int coin[22];
 
-int main(void) {
+int main(void)
+{
     ios::sync_with_stdio(0);
     cin.tie(0);
-    int t;
-    cin >> t;
-    while (t--) {
-        fill(d, d + 10005, 0);
-        cin >> n;
+    cout.tie(0);
 
-        for (int i = 0; i < n; i++)
-            cin >> a[i];
+    cin >> t;
+    while(t--) {
+        fill(d, d + 10001, 0);
+        d[0] = 1; // 동전 0원을 만드는 경우의 수는 1가지
+        
+        cin >> n;
+        for(int i=0; i<n; i++) {
+            cin >> coin[i];
+        }
 
         cin >> m;
-        d[0] = 1;
 
-        for (int i = 0; i < n; i++) // 각 동전에 대해
-            for (int j = a[i]; j <= m; j++)
-                d[j] += d[j - a[i]];  // 금액 j를 만들 수 있는 경우의수  = (기존 금액 j 경우의 수) + (
-
-        cout << d[m] << '\n';
+        for(int i=0; i<n; i++) {
+            for(int j=coin[i]; j<=m; j++) {
+                d[j] += d[j - coin[i]];
+            }
+        }
+        cout << d[m] << "\n";
     }
+    return 0;
 }
