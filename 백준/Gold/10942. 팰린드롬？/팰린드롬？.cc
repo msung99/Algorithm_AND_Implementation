@@ -1,47 +1,51 @@
-/*
-palindrom[s][e] = s ~ e 까지 수의 팰린드롬 여부
-
-s ~ e 까지가 팰린드롬이려면 s+1 ~ e-1 까지도 팰린드롬이여야 한다.
-이 조건은 arr[s] == arr[e] && palindrom[s+1][e-1] == true 로 표현할 수 있다.
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int arr[2001];
-bool palindrom[2001][2001];
+bool palindrome[2002][2002]; // palindrome[i][j] : 원소 i~j번째 부분 문자열이 팰린드롬인지 참/거짓 저장
+int n;
+int arr[2002];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int n;
-	cin >> n;
+    cin >> n;
 
-	for (int i = 1; i <= n; i++)
-		cin >> arr[i];
+    // 초기값 설정1
+    for(int i=1; i<=n; i++) {
+        cin >> arr[i];
+        palindrome[i][i] = true; // 길이가 1짜리 문자열은 무조건 팰린드롬이다;
+    }
 
-	for (int i = 1; i <= n; i++)
-		palindrom[i][i] = true; // i~i번째 수는 팰린드롬이다.0
+    // 초기값 설정2
+    for(int i=1; i<=n-1; i++) {
+        if(arr[i] == arr[i+1]) {
+            palindrome[i][i+1] = true;
+        }
+    }
 
-	for (int i = 1; i <= n - 1; i++) {
-		if (arr[i] == arr[i + 1]) // i ~ (i+1) 번째 수에 대해서도 초기값 처리를 해줘야한다.
-			palindrom[i][i + 1] = true;
-	}
+    // 반복문을 거꾸로 돌려서 palinedrome[i+1][j-1] 에 접근
+    for(int i=n-1; i>=1; i--) {
+        for(int j=i+2; j<=n; j++) {
+            if((arr[i] == arr[j]) && (palindrome[i+1][j-1])) {
+                palindrome[i][j] = true;
+            }
+        }
+    }
 
-	for (int i = n - 1; i >= 1; i--) {
-		for (int j = i + 2; j <= n; j++) {
-			// palindrom[s][e] = s ~ e 까지 수의 팰린드롬 여부
-			if (arr[i] == arr[j] && palindrom[i + 1][j - 1] == true) // s ~ e 까지가 팰린드롬이려면 s+1 ~ e-1 까지도 팰린드롬이여야 한다.
-				palindrom[i][j] = true; // 이 조건은 arr[s] == arr[e] && palindrom[s+1][e-1] == true 로 표현할 수 있다.
-		}
-	}
+    int t;
+    cin >> t;
+    while(t--) {
+        int u, v;
+        cin >> u >> v;
+        if(palindrome[u][v]) {
+            cout << "1\n";
+        } else {
+            cout << "0\n";
+        }
+    }
 
-	int m, s, e;
-	cin >> m;
-	for (int i = 0; i < m; i++) {
-		cin >> s >> e;
-		cout << palindrom[s][e] << '\n';
-	}
+    return 0;
 }
