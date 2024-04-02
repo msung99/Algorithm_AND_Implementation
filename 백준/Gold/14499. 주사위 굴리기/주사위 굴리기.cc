@@ -1,129 +1,78 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
+
+#include <bits/stdc++.h>
 using namespace std;
 
-int n, m; // 지도의 세로크기, 가로크기
-int x, y; // 주사위를 놓은 곳의 좌표 (x,y)
-int k; // 명령의 개수
+int N, M, x, y, K, command;
+int board[21][21];  // 지도
+int dice[7];        // 주사위
+//  윗면이 2이고, 동쪽을 바라보는 방향이 6
+//     [1]
+//  [5][2][6]
+//     [3]
+//     [4]
 
-int dx[4] = { 0,0,-1,1 };
-int dy[4] = { 1,-1,0,0 };
+int idx[5][4] = {
+  {},        // dummy
+  {2,6,4,5}, // 동쪽, 5->2, 2->6, 6->4, 4->5
+  {2,5,4,6}, // 서쪽, 6->2, 2->5, 5->4, 4->6
+  {3,2,1,4}, // 북쪽, 4->3, 3->2, 2->1, 1->4
+  {2,3,4,1}, // 남쪽, 1->2, 2->3, 3->4, 4->1
+};
 
-int map[20][20];
-int dice[7] = { 0 };
-vector<int> cmd;  // 입력으로 주어진 이동하는 명령을 저장하는 벡터
-
-// 입력값 받기
-void input() {
-	cin >> n >> m >> x >> y >> k;
-
-	// 지도 초기화
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			cin >> map[i][j]; 
-		}
-	}
-	for (int i = 0; i < k; i++)
-	{
-		int a;
-		cin >> a;
-		a = a - 1;
-		cmd.push_back(a); // 입력주어진 이동하는 명령을 저장
-	}
+// 명령어가 유효한지 검증하는 함수
+bool isOk(int nx, int ny){
+  if(nx<0||nx>=N||ny<0||ny>=M) return false;
+  return true;
 }
 
-// 주사위를 지도에서 굴리면서, 지도에 등장하는 좌표
-void RollTheDice(int d) // d : 이동하는 명령 => 1:동쪽, 2:서쪽, 3:북쪽, 4:남쪽
-{
-	int d1, d2, d3, d4, d5, d6;
-	d1 = dice[1];
-	d2 = dice[2];
-	d3 = dice[3];
-	d4 = dice[4];
-	d5 = dice[5];
-	d6 = dice[6];
+// 주사위를 굴리는 함수
+void roll(int com){
+  // 회전 시 기존 주사위의 값을 별도로 보존하기 위한 배열 생성
+  int tmp[7];
+  for(int i = 1; i <= 6; ++i) tmp[i]=dice[i];
 
-	// 주사위를 굴려서 이동한 칸에 쓰여있는 수가 0이면, 주사위의 바닥면에 쓰여있는 수가 해당 지도의 칸에 복사된다.
-	if (d == 0)  // 동쪽으로 이동하는 경우
-	{
-		dice[1] = d4;
-		dice[4] = d6;
-		dice[6] = d3;
-		dice[3] = d1;
-	}
+  // 굴리는거 처리
+  for(int i = 0; i < 4; i++)
+    tmp[idx[com][i]] = dice[idx[com][(i+1)%4]];
 
-	// 0이 아닌 경우는, 칸에 쓰여있는 수가 주사위의 바닥면으로 복사되며, 칸에 쓰여있는 수는 0이 된다.
-	else if (d == 1) // 서쪽으로 이동하는 경우
-	{
-		dice[4] = d1;
-		dice[6] = d4;
-		dice[3] = d6;
-		dice[1] = d3;
-	}
-
-	else if (d == 2) // 북쪽으로 이동하는 경우
-	{
-		dice[1] = d5;
-		dice[2] = d1;
-		dice[6] = d2;
-		dice[5] = d6;
-	}
-
-	else if (d == 3) // 남쪽으로 이동하는 경우
-	{
-		dice[5] = d1;
-		dice[1] = d2;
-		dice[2] = d6;
-		dice[6] = d5;
-	}
+  // 회전 결괏값을 기존 주사위에 대입
+  for(int i = 1; i <= 6; ++i) dice[i]=tmp[i];
 }
 
-void solution()
-{
-	int x1 = x;
-	int y1 = y;
+void score(int c){
+  int nx=x, ny=y;
+  // 주사위 위치 이동
+  if(c==1) ++ny;
+  else if(c==2) --ny;
+  else if(c==3) --nx;
+  else ++nx;
 
-	for (int i = 0; i < cmd.size(); i++)
-	{
-		int nx = x1 + dx[cmd.at(i)];
-		int ny = y1 + dy[cmd.at(i)];
-		int d = cmd.at(i);
-
-		if (nx < 0 || ny < 0 || nx >= n || ny >= m)
-			continue;
-
-		RollTheDice(d);
-		if (map[nx][ny] == 0)
-			map[nx][ny] = dice[6];
-
-		else
-		{
-			dice[6] = map[nx][ny];
-			map[nx][ny] = 0;
-		}
-		cout << dice[1] << endl;
-		
-		x1 = nx;
-		y1 = ny;
-	}
+  if(isOk(nx, ny)){
+    x=nx; y=ny; // 유효성 확인 후 주사위의 위치 대입
+    roll(c);
+    // 0일 경우
+    if(board[nx][ny]==0)
+      board[nx][ny]=dice[4]; // 칸에 바닥면 값 대입
+    
+    // 0이 아닐 경우
+    else {
+      dice[4]=board[nx][ny]; // 바닥면에 칸 값 대입
+      board[nx][ny]=0; // 칸 값을 0으로 초기화
+    }
+    cout << dice[2] << '\n'; // 주사위 윗면 출력
+  }
 }
 
-void solve()
-{
-	input();
-	solution();
-}
+int main(void){
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cin >> N >> M >> x >> y >> K;
+  for(int i = 0; i < N; ++i)
+    for(int j = 0; j < M; ++j)
+      cin >> board[i][j];
 
-int main(void)
-{
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cin.tie(NULL);
-
-	solve();
-	return 0;
+  while(K--){
+    cin >> command;
+    score(command);
+  }
 }
