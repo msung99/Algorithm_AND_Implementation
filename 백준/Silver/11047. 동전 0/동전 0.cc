@@ -1,29 +1,36 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int n, k, cnt;
-int coin[10];
+int n, money;
+int arr[1000003];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	cin >> n >> k;
+    cin >> n >> money;
 
-	for(int i = 0; i < n; i++) {
-		cin >> coin[i];
-	}
+    for(int i=1; i<=n; i++) {
+        cin >> arr[i];
+    }
 
-	for (int i = n - 1; i >= 0;) {
-		if (coin[i] > k) {
-			i--;
-			continue;
-		}
-		k = k - coin[i];
-		cnt++;
-	}
-	cout << cnt;
+    int cnt = 0;
+
+    for(int i=n; i>0; i--) {
+        while(true) {
+            if(money - arr[i] >= 0) {
+                money = money - arr[i];
+                cnt++;
+            } else {
+                break;
+            }
+        }
+    }
+
+    cout << cnt;
+
+
+    return 0;
 }
