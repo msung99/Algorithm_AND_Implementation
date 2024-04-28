@@ -7,17 +7,16 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    string str1, str2;
-
-    getline(cin, str1);
-    getline(cin, str2);
+    string s, tmp;
+    getline(cin, s);
+    getline(cin, tmp);
 
     int cnt = 0;
-    int f = str1.find(str2);
+    int pos = s.find(tmp);
 
-    while(f != string::npos) {
+    while(pos != string::npos) {
         cnt++;
-        f = str1.find(str2, f + str2.size());
+        pos = s.find(tmp, tmp.size() + pos);        
     }
 
     cout << cnt;
