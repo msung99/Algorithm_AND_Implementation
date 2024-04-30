@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<string, int> names;
-map<int, string> numbers;
+int n, m;
+unordered_map<string, int> dic1;
+unordered_map<int, string> dic2;
 
 int main(void)
 {
@@ -10,26 +11,26 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    int n,m;
     cin >> n >> m;
 
     for(int i=1; i<=n; i++) {
         string str;
         cin >> str;
-        names.insert({str, i});
-        numbers.insert({i, str});
+
+        dic1[str] = i;
+        dic2[i] = str;
     }
 
+    for(int i=0; i<m; i++) {
+        string a;
+        cin >> a;
 
-    for(int i=1; i<=m; i++) {
-        string str;
-        cin >> str;
-
-        if(isalpha(str[0])) {
-            cout << names[str] << "\n";
+        if(a[0] >= '0' && a[0] <= '9') {
+            cout << dic2[stoi(a)] << "\n";
         } else {
-            cout << numbers[stoi(str)] << "\n";
+            cout << dic1[a] << "\n";
         }
     }
+
     return 0;
 }
