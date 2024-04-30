@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-map<string, int> clothes;
-
 int main(void)
 {
     ios::sync_with_stdio(0);
@@ -14,19 +12,19 @@ int main(void)
     while(t--) {
         int n;
         cin >> n;
-
+        unordered_map<string, int> dic;
         for(int i=0; i<n; i++) {
-            string cloth, type;
-            cin >> cloth >> type;
-            clothes[type]++;
-        }
+            string a, b;
+            cin >> a >> b;
 
-        int result = 1;
-        for(auto iterator : clothes) {
-            result *= iterator.second + 1;
+            dic[b]++;
         }
-
-        cout << result - 1<< "\n";
-        clothes.clear();
+        int ans = 1;
+        for(auto clothCnt : dic) {
+            ans *= (clothCnt.second + 1);
+        }
+        cout << ans - 1 << "\n";
     }
+
+    return 0;
 }
