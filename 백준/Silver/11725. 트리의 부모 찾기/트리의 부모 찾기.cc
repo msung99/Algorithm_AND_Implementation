@@ -1,46 +1,46 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <algorithm>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-vector<int> adj[100001];
-int parent[100001];
+int n;
+vector<int> adj_list[100003];
+int p[100003];
 
-void BFS(int root)
-{
-	queue<int> q;
-	q.push(root);
-	while (!q.empty())
-	{
-		int cur = q.front();
-		q.pop();
-		for (int nxt : adj[cur])
-		{
-			if (parent[cur] == nxt)
-				continue;
-			q.push(nxt);
-			parent[nxt] = cur;
-		}
-	}
+void bfs(int root) {
+    queue<int> q;
+    q.push(root);
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+        for(int next : adj_list[cur]) {
+            if(p[cur] == next) {
+                continue;
+            }
+            q.push(next);
+            p[next] = cur;
+        }
+    }
 }
 
 int main(void)
 {
-	int n;
-	cin >> n;
-	for (int i = 0; i < n - 1; i++)
-	{
-		int u, v;
-		cin >> u >> v;
-		adj[u].push_back(v);
-		adj[v].push_back(u);
-	}
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	BFS(1);
-	for (int i = 2; i < n+1; i++)
-	{
-		cout << parent[i] << '\n';
-	}
+    cin >> n;
+
+    for(int i=1; i<=n-1; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj_list[u].push_back(v);
+        adj_list[v].push_back(u);
+    }
+
+    bfs(1);
+
+    for(int i=2; i<=n; i++) {
+        cout << p[i] << "\n";        
+    }
+
+    return 0;
 }
