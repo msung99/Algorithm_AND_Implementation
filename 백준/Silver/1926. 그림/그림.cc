@@ -2,69 +2,70 @@
 using namespace std;
 
 int n, m;
-int board[501][501];
-bool visited[501][501];
-int dx[4] = { 0,1,0,-1 };
-int dy[4] = { -1,0,1,0 };
+int board[502][502];
+bool visited[502][502];
+int cnt;
+int area;
 
-int bfs(int curX, int curY) {
-	queue<pair<int,int>> q;
-	q.push({curX, curY});
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {-1, 0, 1, 0};
 
-	int area = 0;
-	while (!q.empty()) {
-		int x = q.front().first;
-		int y = q.front().second;
-		q.pop();
+void bfs(int x, int y) {
+    queue<pair<int,int>> q;
+    q.push({x, y});
+    int cur_area = 0;
 
-		visited[x][y] = true; 
-		area++;
+    while(!q.empty()) {
+        cur_area++;
+        auto cur = q.front();
+        q.pop();
+        int x = cur.first;
+        int y = cur.second;
+        visited[x][y] = true;
 
-		for (int i = 0; i < 4; i++) {
-			int nx = x + dx[i];
-			int ny = y + dy[i];
+        for(int i=0; i<4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
 
-			if (nx < 0 || nx >= n || ny < 0 || ny >= m) {
-				continue;
-			}
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                continue;
+            }
 
-			if (!visited[nx][ny] && board[nx][ny] == 1) {
-				q.push({nx, ny});
-				visited[nx][ny] = true;
-			}
-		}
-	}
-	return area;
+            if(visited[nx][ny] || board[nx][ny] != 1) {
+               continue; 
+            }
+            q.push({nx, ny});
+            visited[nx][ny] = true;
+        }
+    }
+    area = max(area, cur_area);
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
+    cin >> n >> m;
 
-	cin >> n >> m;
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<m; j++) {
+            cin >> board[i][j];
+        }
+    }
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			int data;
-			cin >> data;
-			board[i][j] = data;
-		}
-	}
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<m; j++) {
+            if(!visited[i][j] && board[i][j] == 1) {
+                bfs(i, j);
+                cnt++;
+            }
+        }
+    }
+    
+    cout << cnt << "\n";
+    cout << area;
 
-	int maxVal = 0;
-	int areas = 0;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if (!visited[i][j] && board[i][j] == 1) {
-				maxVal = max(maxVal, bfs(i, j));
-				areas++;
-			}
-		}
-	}
-
-	cout << areas << "\n" << maxVal;
-	return 0;
+    return 0;
 }
