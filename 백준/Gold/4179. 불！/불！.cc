@@ -1,6 +1,4 @@
-// Authored by : BaaaaaaaaaaarkingDog
-// Co-authored by : -
-// http://boj.kr/aed4ec552d844acd8853111179d5775d
+
 #include <bits/stdc++.h>
 using namespace std;
 #define X first
