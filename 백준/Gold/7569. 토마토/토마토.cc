@@ -1,71 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dz[6] = {1,-1,0,0,0,0};
-int dy[6] = {0,0,1,-1,0,0};
-int dx[6] = {0,0,0,0,1,-1};
 int n, m, h;
 int board[102][102][102];
 int dist[102][102][102];
-queue<tuple<int, int, int>> q;
+int dx[6] = {0, 0, 1, -1, 0, 0};
+int dy[6] = {1, -1, 0, 0, 0, 0};
+int dz[6] = {0, 0, 0, 0, 1, -1};
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	// m : 5, n : 3, h ;2
-	cin >> m >> n >> h;
+    cin >> m >> n >> h; // 5, 3, 1
 
-	for (int i = 0; i < h; i++) { // 2
-		for (int j = 0; j < n; j++) { // 3
-			for (int k = 0; k < m; k++) { // 5
-				int tmp;
-				cin >> tmp;
-				board[j][k][i] = tmp;
-				if (tmp == 1)
-					q.push({j,k,i});
-				if (tmp == 0)
-					dist[j][k][i] = -1;
-			}
-		}
-	}
+    queue<tuple<int,int,int>> q;
 
-	while (!q.empty()) {
-		auto cur = q.front();
-		q.pop();
-		int curx, cury, curz;
-		tie(curx, cury, curz) = cur;
+    for(int i=0; i<h; i++) {
+        for(int j=0; j<n; j++) {
+            for(int k=0; k<m; k++) {
+                cin >> board[i][j][k];
+                if(board[i][j][k] == 0) {
+                    dist[i][j][k] = -1;
+                }
+                if(board[i][j][k] == 1) {
+                    q.push(make_tuple(i, j, k));
+                }
+            }
+        }
+    }
 
-		for (int i = 0; i < 6; i++) {
-			int nx = curx + dx[i];
-			int ny = cury + dy[i];
-			int nz = curz + dz[i];
+    while(!q.empty()) {
+        auto cur = q.front();
+        int z, x, y;
+        tie(z, x, y) = cur;
+        q.pop();
 
-			if (nx < 0 || nx >= n || ny < 0 || ny >= m || nz < 0 || nz >= h)
-				continue;
+        for(int i=0; i<6; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            int nz = z + dz[i];
 
-			if (dist[nx][ny][nz] >= 0)
-				continue;
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m || nz < 0 || nz >= h) {
+                continue;
+            }
 
-			dist[nx][ny][nz] = dist[curx][cury][curz] + 1;
-			q.push({ nx, ny, nz });
-		}
-	}
+            if(dist[nz][nx][ny] != -1) {
+                continue;
+            }
 
-	int ans = 0;
-	for(int i=0; i<h; i++) {
-		for (int j = 0; j < n; j++) {
-			for (int k = 0; k < m; k++) {
-				if (dist[j][k][i] == -1) {
-					cout << -1 << "\n";
-					return 0;
-				}
-				ans = max(ans, dist[j][k][i]);
-			}
-		}
-	}
-	cout << ans << "\n";
-	return 0;
+            dist[nz][nx][ny] = dist[z][x][y] + 1;
+            q.push(make_tuple(nz, nx, ny));
+        }
+    }
+
+    int res =0;
+    for(int i=0; i<h; i++) {
+        for(int j=0; j<n; j++) {
+            for(int k=0; k<m; k++) {
+                if(dist[i][j][k] == -1) {
+                    cout << -1;
+                    return 0;
+                }
+                res = max(res, dist[i][j][k]);
+            }
+        }
+    }
+    cout << res;
+
+    return 0;
 }
