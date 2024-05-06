@@ -1,32 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int dy[4] = {0,1,0,-1};
-int dx[4] = {-1,0,1,0};
-int board[51][51];
-bool visited[51][51];
-int result;
-int m ,n, k;
+int board[52][52];
+bool visited[52][52];
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {-1, 0, 1, 0};
+int m, n, k;
 
-void bfs(int startY, int startX) {
-    queue<pair<int, int>> q;
-    q.push(make_pair(startY, startX));
+void bfs(int x, int y) {
+    queue<pair<int,int>> q;
+    q.push({x,y});
+    visited[x][y] = true;
 
     while(!q.empty()) {
-        int y = q.front().first;
-        int x = q.front().second;
+        auto cur = q.front();
+        int x = cur.first;
+        int y = cur.second;
         q.pop();
 
-        if(y < 0 || y >= n || x < 0 || x >= m || visited[y][x] || board[y][x] == 0) {
-            continue;
-        }
-        q.push({y, x});
-        visited[y][x] = true;
-
         for(int i=0; i<4; i++) {
-            int curY = y + dy[i];
-            int curX = x + dx[i];
-            q.push({curY, curX});
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                continue;
+            }
+
+            if(visited[nx][ny] || board[nx][ny] != 1) {
+                continue;
+            }
+            visited[nx][ny] = true;
+            q.push({nx, ny});
         }
     }
 }
@@ -40,26 +44,30 @@ int main(void)
     int t;
     cin >> t;
     while(t--) {
-        fill(&board[0][0], &board[0][0] + 51 * 51, 0);
-        fill(&visited[0][0], &visited[0][0] + 51 * 51, 0);
         cin >> m >> n >> k;
 
         for(int i=0; i<k; i++) {
-            int y, x;
-            cin >> x >> y;
-            board[y][x] = 1;
+            int u, v;
+            cin >> u >> v;
+            board[v][u] = 1;
         }
 
-        int res = 0;
+        int cnt = 0;
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
-                if(!visited[i][j] && board[i][j] == 1) {
+                if(board[i][j] == 1 && !visited[i][j]) {
                     bfs(i, j);
-                    res++;
+                    cnt++;
                 }
             }
         }
-        cout << res << "\n";
-    }
-    return 0; 
+        cout << cnt << "\n";
+
+        for(int i=0; i<n; i++) {
+            fill(board[i], board[i] + m, 0);
+            fill(visited[i], visited[i] + m, false);
+        }
+    }    
+
+    return 0;
 }
