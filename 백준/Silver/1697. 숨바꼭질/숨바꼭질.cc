@@ -1,35 +1,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int n, m;
 int dist[100002];
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int start, end;
-	cin >> start >> end;
-	fill(dist, dist + 100001, -1);
-	dist[start] = 0;
+    cin >> n >> m;
+    fill(dist, dist + 100001, -1);
 
-	queue<int> q;
-	q.push(start);
+    queue<int> q;
+    q.push(n);
+    dist[n] = 0;
 
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
 
-	while (!q.empty()) {
-		int cur = q.front();
-		q.pop();
+        for(int i=0; i<3; i++) {
+            int nx;
+            if(i == 0) {
+                nx = cur+1;
+            } 
+            if(i == 1) {
+                nx = cur-1;
+            }
+            if(i == 2) {
+                nx = cur*2;
+            }
 
-		for (int next : {cur + 1, cur - 1, cur * 2}) {
-			if (next < 0 || next > 100000 || dist[next] != -1)
-				continue;
+            if(nx < 0 || nx > 100000) {
+                continue;
+            }
 
-			dist[next] = dist[cur] + 1;
-			q.push(next);
-		}
-	}
-	cout << dist[end];
-	return 0;
+            if(dist[nx] != -1) {
+                continue;
+            }
+            dist[nx] = dist[cur] + 1;
+            q.push(nx);
+        }
+    }
+
+    cout << dist[m];
+
+    return 0;
 }
