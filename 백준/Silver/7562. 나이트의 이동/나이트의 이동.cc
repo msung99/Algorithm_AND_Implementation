@@ -1,55 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int n;
 int dist[302][302];
-int dx[8] = { -2,-1,1,2,2,1,-1,-2 };
-int dy[8] = { 1,2,2,1,-1,-2,-2,-1 };
+int dx[8] = {1,2, 2, 1, -1, -2, -2, -1};
+int dy[8] = {2, 1, -1, -2, -2, -1, 1, 2};
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int t;
-	cin >> t;
-	while (t--) {
-		int n;
-		cin >> n;
-		int s1, s2, e1, e2;
-		cin >> s1 >> s2;
-		cin >> e1 >> e2;
-		pair<int, int> start = make_pair(s1, s2);
-		pair<int, int> end = make_pair(e1, e2);
+    int t;
+    cin >> t;
+    while(t--) {
+        cin >> n;
+        for(int i=0; i<n; i++) {
+            fill(dist[i], dist[i] + n, -1);
+        }
 
-		for (int i = 0; i < n; i++) {
-			fill(dist[i], dist[i] + n, -1);
-		}
+        int u, v;
+        cin >> u >> v;
+        pair<int,int> start = make_pair(u, v);
 
-		queue<pair<int, int>> q;
-		q.push({ s1,s2 });
-		dist[s1][s2] = 0;
+        cin >> u >> v;
+        pair<int,int> end = make_pair(u, v);
 
-		while (!q.empty()) {
-			int x = q.front().first;
-			int y = q.front().second;
-			q.pop();
+        queue<pair<int,int>> q;
+        q.push(start);
+        dist[start.first][start.second] = 0;
 
-			for (int i = 0; i < 8; i++) {
-				int nx = x + dx[i];
-				int ny = y + dy[i];
+        while(!q.empty()) {
+            auto cur = q.front();
+            int x = cur.first;
+            int y = cur.second;
+            q.pop();
 
-				if (nx < 0 || nx >= n || ny < 0 || ny >= n)
-					continue;
+            for(int i=0; i<8; i++) {
+                int nx = x + dx[i];
+                int ny = y + dy[i];
 
-				if (dist[nx][ny] != -1)
-					continue;
+                if(nx < 0 || nx >= n || ny < 0 || ny >= n) {
+                    continue;
+                }
 
-				dist[nx][ny] = dist[x][y] + 1;
-				q.push({ nx,ny });
-			}
-		}
-		cout << dist[end.first][end.second] << "\n";
-	}
-	return 0;
+                if(dist[nx][ny] != -1) {
+                    continue;
+                }
+
+                dist[nx][ny] = dist[x][y] + 1;
+                q.push({nx, ny});
+            }
+        }
+        cout << dist[end.first][end.second] << "\n";
+    }
+
+    return 0;
 }
