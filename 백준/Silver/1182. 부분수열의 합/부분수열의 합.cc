@@ -1,5 +1,3 @@
-// k 번째 수에 대해서까지 부분수열을 만들었다면 k+1 번쨰 수에 대해서도 부분수열을 만들 수 있다.
-// k+1 번쨰 수에 대해 부분수열을 만드는 방법 : k번째 수를 택하는 경우 / k번쨰 수를 택하지 않는 경우
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -7,17 +5,18 @@ int n, s;
 int arr[22];
 int res;
 
+// k 번쨰 수를 택했다면 k+1 번쨰 수도 택할 수 있다.
+// k+1번째 수를 택하는 방법 : k+1 번쨰 수를 택한다 / 택하지 않는다.
 void func(int k, int total) {
-  // n번째 숫자에 대해서까지 선택 여부를 모두 결정해줬다면
   if(k == n) {
     if(total == s) {
-      res++;
+      res++;      
     }
     return;
   }
 
-  func(k+1, total);
   func(k+1, total + arr[k]);
+  func(k+1, total);
 }
 
 int main(void)
@@ -27,11 +26,13 @@ int main(void)
   cout.tie(0);
 
   cin >> n >> s;
+
   for(int i=0; i<n; i++) {
     cin >> arr[i];
   }
 
   func(0, 0);
+
   if(s == 0) {
     res--;
   }
