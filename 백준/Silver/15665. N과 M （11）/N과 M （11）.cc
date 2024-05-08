@@ -1,43 +1,50 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int arr[10]; // arr : 출력할 부분수열 원소들을 모아두는 배열
-int num[10]; // num : 입력받은 원소들을 저장하고 있는 기존 배열
+// k-1 번쨰 수를 택하여 순열을 만들 수 있다면, K번째 수를 택하여 순열을 만들 수 있다.
+// 택하는 방법 : 중복되는 원소들을 제거하여 그 중 원소를 택한다.
 int n, m;
-// bool visited[10];
+int arr[10002];
+int num[10];
+bool isAppeared[10002];
 
-void func(int k)
-{
-	if (k == m)
-	{
-		for (int i = 0; i < m; i++)
-			cout << arr[i] << ' ';
-		cout << '\n';
-		return;
-	}
+void func(int k, int cnt) {
+  if(k == m) {
+    for(int i=0; i<m; i++) {
+      cout << arr[i] << ' ';
+    }
+    cout << "\n";
+    return;
+  } 
 
-	int tmp = 0;
-	for (int i = 0; i < n; i++)
-	{
-		if (tmp != num[i]) // 이전 수열의 마지막 항과 새로운 수열의 마지막 항이 같으면 중복 수열
-		{
-			arr[k] = num[i];
-			tmp = arr[k];
-			func(k + 1);
-		}
-	}
+  for(int i=0; i<cnt; i++) {
+    arr[k] = num[i];
+    func(k+1, cnt);
+  }
 }
-
 
 int main(void)
 {
-	cin >> n >> m;
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	for (int i = 0; i < n; i++)
-		cin >> num[i];
+  cin >> n >> m;
 
-	sort(num, num + n);  // 오름차순 정렬
+  int cnt = 0; // 중복된 숫자를 제거하고 남은 순수한 원소 갯수
 
-	func(0);
+  for(int i=0; i<n; i++) {
+    int data;
+    cin >> data;
+    if(!isAppeared[data]) {
+      isAppeared[data] = true;
+      num[cnt] = data;
+      cnt++;
+    }
+  }
+
+  sort(num, num + cnt);
+  func(0, cnt);
+
+  return 0;
 }
