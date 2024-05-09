@@ -1,33 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
-int cnt;
-queue<pair<int, int>> q;
 
+// func(n) 과 같은 향태로는 옮길 수 없다. 
+// 애초에 플로우가 
+// (1) 상위 n-1개의 원판을 기둥 1에서 기둥 2로 옮긴다.
+// (2) 맨 아래의 원판 (n번째 원파판) 1개를 기둥 1에서 3으로 옮긴다.
+// (3) 기둥 2에 옮겨진 n-1개의 원판을 기둥 2에서 3으로 롬긴다.
+// 이러한데, func(n) 으로 정의하면 원판 n개를 기둥 1에서 3으로 옮기는 것에 대해서만 정의가 가능하기 떄문에, 기둥 1에서 2로 옮기는
+// 것에 대해선 정의가 불가능해진다.
+// 따라서 무조건적으로 기둥 1에서 3으로 옮기는 것이 아니라, 기둥 2로 옮기는 것도 고려해야 하므로, 어떤 기둥에서 어떤 기둥으로 
+// 옮기는지에 대한 재귀 함수 형태로 정의해야한다.
+
+// 원핀 n개를 기둥 a에서 b로 옮기는 함수
 void func(int a, int b, int n) {
-	if (n == 1) {
-		q.push({ a, b });
-		// cout << a << ' ' << b << "\n";
-		return;
-	}
-	func(a, 6 - a - b, n - 1); // n-1개의 원판을 기둥 a에서 기둥 6-a-b로 이동
-	q.push({a, b});
-	// cout << a << ' ' << b << "\n"; // n번째 원판을 a 에서 b 로 옮긴다.
-	func(6 - a - b, b, n - 1); // n-1개의 원판을 기둥 6-a-b 에서 기둥 b로 옮긴다.
+  // 원판 1개 단위를 옮길 때
+  if(n == 1) {
+    cout << a << ' ' << b << "\n";
+    return;
+  }
+
+  func(a, 6-a-b, n-1); // (1) 상위 n-1개의 원판을 기둥 a에서 기둥 6-a-b 로 옮긴다.
+  cout << a << ' ' << b << "\n"; // (2) 맨 아래의 기둥의 원판(n번째 원판) 1개를 기둥 a 에서 b 로 옮긴다.
+  func(6-a-b, b, n-1); // (3) 기둥 6-a-b 에 옮겨진 n-1개의 원판을 기둥 6-a-b 에서 b 로 옮긴다.
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	int num;
-	cin >> num;
-	func(1, 3, num);
+  int n;
+  cin >> n;
 
-	cout << q.size() << "\n";
-	while (!q.empty()) {
-		cout << q.front().first << ' ' << q.front().second << "\n";
-		q.pop();
-	}
+  cout << (1 << n) - 1 << "\n";
+
+  func(1, 3, n);
+
+  return 0;
 }
