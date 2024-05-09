@@ -1,46 +1,63 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-char board[65][65];
+int board[66][66];
 
-string quard(int x, int y, int size) {
-    if(size == 1) {
-        return string(1, board[x][y]);
+void func(int n, int startX, int startY) {
+  if(n == 1) {
+    cout << board[startX][startY];
+    return;
+  }
+
+  bool isSameArea = true;
+  int color = board[startX][startY];
+  for(int i=startX; i<startX+n; i++) {
+    for(int j=startY; j<startY+n; j++) {
+      if(color != board[i][j]) {
+        isSameArea = false;
+        break;
+      }      
     }
-    char c = board[x][y];
-    bool flag = 0;
-    string result = "";
-    for(int i=x; i <x+size; i++) {
-        for(int j=y; j<y+size; j++) {
-            if(c != board[i][j]) {
-                result += '(';
-                result += quard(x, y, size/2); // 왼쪽 위
-                result += quard(x, y + size/2, size/2); // 오른쪽 위
-                result += quard(x + size/2, y, size/2); // 왼쪽 아래
-                result += quard(x + size/2, y + size/2, size/2); // 오른쪽 아래
-                result += ')';
-                return result;
-            }
-        }
+  }
+
+  if(isSameArea) {
+    cout << board[startX][startY];
+  } else {
+    int size = n/2;
+    cout << "(";
+    for(int i=0; i<2; i++) {
+      for(int j=0; j<2; j++) {
+        int newX = startX + size * i;
+        int newY = startY + size * j;
+        func(size, newX, newY);
+      }
     }
-    return string(1, board[x][y]);
+    cout << ")";
+  }
 }
 
 int main(void)
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-    cin >> n;
-    for(int i=0; i<n; i++) {
-        string str;
-        cin >> str;
-        for(int j=0; j<n; j++) {
-            board[i][j] = str[j];
-        }
+  int n;
+  cin >> n;
+
+  for(int i=0; i<n; i++) {
+    string s;
+    cin >> s;
+    for(int j=0; j<n; j++) {
+      if(s[j] == '0') {
+        board[i][j] = 0;
+      } else {
+        board[i][j] = 1;
+      }
     }
-    cout << quard(0, 0, n) << "\n";
-    return 0;
+  }
+
+  func(n, 0, 0);
+
+  return 0;
 }
