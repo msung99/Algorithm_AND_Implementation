@@ -1,53 +1,79 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-int cnt[3];
 int board[2200][2200];
+int cntMinus;
+int cntZero;
+int cntOne;
 
-bool check(int x, int y, int size) {
-	for (int i = x; i < x + size; i++) {
-		for (int j = y; j < y + size; j++) {
-			if (board[x][y] != board[i][j]) {
-				return false;
-			}
-		}
-	}
-	return true;
-}
+void func(int n, int startX, int startY) {  // 6
+  if(n == 1) {
+    if(board[startX][startY] == -1) {
+      cntMinus++;
+    }
+    if(board[startX][startY] == 0) {
+      cntZero++;
+    }
+    if(board[startX][startY] == 1) {
+      cntOne++;
+    }
+    return;
+  }
 
-void func(int x, int y, int size) {
-	if (check(x, y, size)) {
-		cnt[board[x][y] + 1]++;
-		return;
-	}
+  int isSameArea = true;
+  int color = board[startX][startY];
+  for(int i=startX; i<startX+n; i++) {
+    for(int j=startY; j<startY+n; j++) {
+      if(color != board[i][j]) {
+        isSameArea = false;
+        break;
+      }
+    }
+  }
 
-	int divideSize = size / 3;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			func(x + i*divideSize, y + j*divideSize, divideSize);
-		}
-	}
+  int size = n/3;
+  if(!isSameArea) {
+    for(int i=0; i<3; i++) {
+      for(int j=0; j<3; j++) {
+        int newX = startX + size * i;
+        int newY = startY + size * j;
+        func(size, newX, newY);
+      }
+    }
+  }
+
+  if(isSameArea){
+    if(color == -1) {
+      cntMinus++;
+    }
+    if(color == 0) {
+      cntZero++;
+    }
+    if(color == 1) {
+      cntOne++;
+    }
+  }
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cout.tie(0);
 
-	cin >> n;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			cin >> board[i][j];
-		}
-	}
+  int n;
+  cin >> n;
 
-	func(0, 0, n);
+  for(int i=0; i<n; i++) {
+    for(int j=0; j<n; j++) {
+      cin >> board[i][j];
+    }
+  }
 
-	for (int i = 0; i < 3; i++) {
-		cout << cnt[i] << "\n";
-	}
+  func(n, 0, 0);
+  cout << cntMinus << "\n";
+  cout << cntZero << "\n";
+  cout << cntOne;
 
-	return 0;
+  return 0;
 }
