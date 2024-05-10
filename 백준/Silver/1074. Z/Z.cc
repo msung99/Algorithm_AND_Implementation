@@ -1,22 +1,24 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// 2^n x 2^n 배열에서 (r, c) 를 방문하는 순서를 리턴하는 함수 
 int func(int n, int r, int c) {
-  if(n == 0) {
-    return 0;
+  if(n == 1) {
+    return 1;
   }
-  int half = 1 << (n-1);
+
+  int half = n/2;
   if(r < half && c < half) {
-    return func(n-1, r, c);
+    return func(half, r, c);
   }
-  if(r < half && c >= half) {
-    return half*half + func(n-1, r, c-half);
+  else if(r < half && c >= half) {
+    return half*half + func(half, r, c-half);
   }
-  if(r >= half && c < half) {
-    return 2*half*half + func(n-1, r-half, c);
+  else if(r >= half && c < half) {
+    return 2*half*half + func(half, r-half, c);
   }
-  return 3*half*half + func(n-1, r-half, c-half);    
+  else {
+    return 3*half*half + func(half, r-half, c-half);
+  }
 }
 
 int main(void)
@@ -27,7 +29,10 @@ int main(void)
 
   int n, r, c;
   cin >> n >> r >> c;
-  cout << func(n, r, c);
+
+  n = (1 << n);
+
+  cout << func(n, r, c) -1;
 
   return 0;
 }
