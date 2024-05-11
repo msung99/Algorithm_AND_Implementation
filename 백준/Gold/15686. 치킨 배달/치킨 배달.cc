@@ -12,7 +12,6 @@ int main(void)
     cout.tie(0);
 
     cin >> n >> m;
-
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
             int data;
@@ -28,24 +27,24 @@ int main(void)
 
     vector<int> brute(chicken.size(), 1);
     fill(brute.begin(), brute.begin() + chicken.size() - m, 0);
-    // chicken.size() 개 중에서 m개를 선택하기 위한 셋팅
-    int mn = 999999999;
+    int ans = 999999999;
 
     do {
-        int dist = 0;
+        int total = 0;
         for(auto h : house) {
-            int tmp = 999999999;
+            int dist = 9999999;
             for(int i=0; i<chicken.size(); i++) {
                 if(brute[i] == 1) {
-                    tmp = min(tmp, abs(chicken[i].first - h.first) + abs(chicken[i].second - h.second));                    
+                    int cur = abs(h.first - chicken[i].first) + abs(h.second - chicken[i].second);
+                    dist = min(cur, dist);
                 }
             }
-            dist += tmp;
+            total += dist;
         }
-        mn = min(mn, dist);
+        ans = min(ans, total);
     } while(next_permutation(brute.begin(), brute.end()));
 
-    cout << mn;
+    cout << ans;
 
     return 0;
 }
