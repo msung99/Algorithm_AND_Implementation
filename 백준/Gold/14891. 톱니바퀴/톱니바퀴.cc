@@ -1,35 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int k;
-string board[6];
+string board[4];
 
-// num번째 톱니바퀴를 dir 방향으로 회전시킴
-void go(int num, int dir) {
-    int dirs[5] = {};
-    dirs[num] = dir; // num번쨰 톱니바퀴의 회전방향을 dir 로 설정
+void func(int num, int dir) {
+    int dirs[4] = {};
+    dirs[num] = dir;
 
-    // 왼쪽 방향으로 회전을 전파
-    int pos = num;
-    while(pos >= 1 && board[pos][6] != board[pos-1][2]) {
-        dirs[pos-1] = -dirs[pos];
-        pos--;
+    int idx = num;
+    // 왼쪽으로 회전 전파
+    while(idx > 0 && board[idx-1][2] != board[idx][6]) {
+        dirs[idx-1] = -dirs[idx];
+        idx--;
     }
 
-    // 오른쪽 방향으로 회전을 전파
-    pos = num;
-    while(pos <= 4 && board[pos][2] != board[pos+1][6]) {
-        dirs[pos+1] = -dirs[pos];
-        pos++;
+    idx = num;
+    // 오른쪽으로 회전 전파
+    while(idx < 3 && board[idx][2] != board[idx+1][6]) {
+        dirs[idx+1] = -dirs[idx];
+        idx++;
     }
 
-    // c++ rotate() 함수를 활용하여 톱니바퀴를 회전시킴
-    for(int i=1; i<=4; i++) {
-        // 반시계 방향으로 회전
-        if(dirs[i] == -1) { 
-            rotate(board[i].begin(), board[i].begin() + 1, board[i].end());            
+    for(int i=0; i<4; i++) {
+        if(dirs[i] == -1) {
+            rotate(board[i].begin(), board[i].begin() + 1, board[i].end());
         }
-        // 시계 방향으로 회전
         else if(dirs[i] == 1) {
             rotate(board[i].begin(), board[i].begin() + 7, board[i].end());
         }
@@ -42,21 +37,22 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    for(int i=1; i<=4; i++) {
+    for(int i=0; i<4; i++) {
         cin >> board[i];
     }
 
+    int k;
     cin >> k;
     while(k--) {
         int num, dir;
         cin >> num >> dir;
-        go(num, dir);
+        func(num -1, dir);
     }
 
     int ans = 0;
-    for(int i=1; i<=4; i++) {
+    for(int i=0; i<4; i++) {
         if(board[i][0] == '1') {
-            ans += (1 << (i-1));
+            ans += (1 << i);
         }
     }
     cout << ans;
