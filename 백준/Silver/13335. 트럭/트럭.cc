@@ -3,11 +3,13 @@ using namespace std;
 
 int n, w, l;
 queue<int> truck;
-int bridge[102];
+int bridge[1002];
 
 bool isBridgeEmpty() {
     for(int i=0; i<w; i++) {
-        if(bridge[i] != 0) return false;
+        if(bridge[i] != 0) {
+            return false;
+        }
     }
     return true;
 }
@@ -21,12 +23,12 @@ int getCurBridgeTruckWeight() {
 }
 
 int move() {
-    int lastBridgeTruckWeight = bridge[w-1];
+    int lastQuitTruckWeight = bridge[w-1];
     for(int i=w-1; i>0; i--) {
         bridge[i] = bridge[i-1];
     }
     bridge[0] = 0;
-    return lastBridgeTruckWeight;
+    return lastQuitTruckWeight;
 }
 
 int main(void)
@@ -36,6 +38,7 @@ int main(void)
     cout.tie(0);
 
     cin >> n >> w >> l;
+
     for(int i=0; i<n; i++) {
         int data;
         cin >> data;
@@ -44,16 +47,14 @@ int main(void)
 
     int ans = 0;
     do {
+        ans++;
         int tmp = getCurBridgeTruckWeight();
-        int quitBridgeTruckWeight = move(); // 트럭들이 이동시킴
-        tmp = tmp - quitBridgeTruckWeight; // 다리의 맨 마지막 칸에 위치한 트럭의 무게(quitBridgeTruckWeight) 를 기존 무게에서 뺀다.
-
-        // 아직 다리위에 올라가지 못한 트럭이 있으며 && 다리 최대허용 무게를 초과하지 않는다면
+        int lastQuitTruckWeight = move();
+        tmp = tmp - lastQuitTruckWeight;
         if(!truck.empty() && tmp + truck.front() <= l) {
             bridge[0] = truck.front();
             truck.pop();
         }
-        ans++;
     } while(!isBridgeEmpty());
 
     cout << ans;
