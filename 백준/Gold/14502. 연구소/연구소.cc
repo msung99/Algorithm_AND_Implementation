@@ -1,78 +1,109 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define X first
-#define Y second
 
 int n, m;
 int board[10][10];
-int play_board[10][10];
-int vis[10][10];
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
-queue<pair<int, int>> v;
-vector<pair<int, int>> blank;
+int tmp[10][10];
+vector<pair<int,int>> wall;
+vector<pair<int,int>> virus;
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {-1, 0, 1, 0};
 
-bool oob(int x, int y) {
-  return x < 0 || x >= n || y < 0 || y >= m;
+void init(vector<pair<int,int>> curWall) {
+  for(int i=0; i<n; i++) {
+    // fill(vistied[i], vistied[i] + m, false); // 방문 배열 초기화
+    for(int j=0; j<m; j++) {
+      tmp[i][j] = board[i][j]; // board 배열을 tmp 배열에 카피
+    }
+  }
+
+  // 벽 3개 셋팅
+  for(int i=0; i<curWall.size(); i++) {
+    int x = curWall[i].first;
+    int y = curWall[i].second;
+    tmp[x][y] = 1;
+  }
 }
 
-void reset_board() {
-  for(int i = 0; i < n; i++) {
-    fill(vis[i], vis[i]+m, 0);
-    for(int j = 0; j < m; j++) {
-      play_board[i][j] = board[i][j];
-      if(board[i][j] == 2) {
-          v.push({i, j});
-          vis[i][j] = 1;
+// board 가 아닌, tmp 배열에 대해 BFS 를 수행
+int bfs(vector<pair<int,int>> curWall) {
+  init(curWall);
+  queue<pair<int,int>> q;
+  for(int i=0; i<virus.size(); i++) {
+    q.push(virus[i]);
+  }
+
+  while(!q.empty()) {
+    auto cur = q.front();
+    int x = cur.first;
+    int y = cur.second;
+    q.pop();
+    tmp[x][y] = 1;
+
+    for(int i=0; i<4; i++) {
+      int nx = x + dx[i];
+      int ny = y + dy[i];
+
+      if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+        continue;
+      }
+
+      if(tmp[nx][ny] == 1 || tmp[nx][ny] == 2) {
+        continue;
+      }
+
+      tmp[nx][ny] = 1;
+      q.push({nx, ny});
+    }
+  }
+
+  int cnt = 0;  
+  for(int i=0; i<n; i++) {
+    for(int j=0; j<m; j++) {
+      if(tmp[i][j] == 0) {
+        cnt++;
       }
     }
   }
+  return cnt;
 }
 
-int bfs() {
-  while(!v.empty()) {
-    int x, y; tie(x, y) = v.front(); v.pop();
-    for(int dir = 0; dir < 4; dir++) {
-      int nx = x + dx[dir];
-      int ny = y + dy[dir];
-      if(oob(nx, ny)) continue;
-      if(vis[nx][ny] || play_board[nx][ny] != 0) continue;
-      play_board[nx][ny] = 2;
-      vis[nx][ny] = 1;
-      v.push({nx, ny});
-    }
-  }
-  int sum = 0;
-  for(int i = 0; i < n; i++) {
-    for(int j = 0; j < m; j++) {
-        if(play_board[i][j] == 0) sum++;
-    }
-  }
-  return sum;
-}
-
-int main(void) {
+int main(void)
+{
   ios::sync_with_stdio(0);
   cin.tie(0);
+  cout.tie(0);
+
   cin >> n >> m;
-  for(int i = 0; i < n; i++) {
-    for(int j = 0; j < m; j++) {
-        cin >> board[i][j];
-        if(board[i][j] == 0) blank.push_back({i, j});
+  for(int i=0; i<n; i++) {
+    for(int j=0; j<m; j++) {
+      cin >> board[i][j];
+      if(board[i][j] == 0) {
+        wall.push_back({i, j});
+      }
+      if(board[i][j] == 2) {
+        virus.push_back({i, j});
+      }
     }
   }
-  vector<int> brute(blank.size(), 1);
-  fill(brute.begin(), brute.end()-3, 0);
+
+  vector<int> brute(wall.size(), 1);
+  fill(brute.begin(), brute.end() - 3, 0); // 빈 칸들 중에 3개를 조합으로 선택
   int mx = 0;
+
   do {
-    reset_board();
-    // 빈 칸 중에 3개를 선택해서 벽으로 만들기
-    for(int i = 0; i < brute.size(); i++) {
-        if(brute[i] == 1) {
-            play_board[blank[i].X][blank[i].Y] = 1;
-        }
+    vector<pair<int,int>> curWall;
+    // 3개의 빈칸을 벽으로 선택
+    for(int i=0; i<brute.size(); i++) {
+      if(brute[i] == 1) {
+        curWall.push_back({wall[i].first, wall[i].second});
+      }
     }
-    mx = max(mx, bfs());
+    int cur = bfs(curWall);
+    mx = max(mx, cur);
   } while(next_permutation(brute.begin(), brute.end()));
+
   cout << mx;
+
+  return 0;
 }
