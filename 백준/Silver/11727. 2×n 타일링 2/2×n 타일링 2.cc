@@ -2,7 +2,7 @@
 using namespace std;
 
 int n;
-int arr[1002];
+long long d[1002];
 
 int main(void)
 {
@@ -10,16 +10,14 @@ int main(void)
   cin.tie(0);
   cout.tie(0);
 
-  arr[1] = 1;
-  arr[2] = 3;
-  arr[3] = 5;
-
   cin >> n;
+  d[1] = 1;
+  d[2] = 3;
 
-  for(int i=4; i<=n; i++) {
-    arr[i] = (arr[i-1] + arr[i-2] * 2) % 10007;
+  for(int i=3; i<=n; i++) {
+    d[i] = (d[i-1] + 2*d[i-2]) % 10007;
   }
+  cout << d[n];
 
-  cout << arr[n];
   return 0;
 }
