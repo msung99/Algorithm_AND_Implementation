@@ -2,10 +2,35 @@
 using namespace std;
 
 int n;
-int num[12];
-int ops[12];
-int mn = 1999999999;
-int mx = -1999999999;
+int num[102];
+int ops[4];
+int mx=-1999999999;
+int mn=1999999999;
+
+// k번쨰 숫자에 대한 연산을 진행
+void func(int k, int total) {
+  if(k == n) {
+    mx = max(mx, total);
+    mn = min(mn, total);
+    return;
+  }
+
+  for(int i=0; i<4; i++) {
+    if(ops[i] != 0) {
+      ops[i]--;
+      if(i == 0) {
+        func(k+1, total + num[k]);
+      } else if(i == 1) {
+        func(k+1, total - num[k]);
+      } else if(i == 2) {
+        func(k+1, total * num[k]);
+      } else if(i == 3) {
+        func(k+1, total / num[k]);
+      }
+      ops[i]++;
+    }
+  }
+}
 
 int main(void)
 {
@@ -18,31 +43,11 @@ int main(void)
     cin >> num[i];
   }
 
-  for(int op=0, idx=1; op<4; op++) {
-    int x;
-    cin >> x;
-    while(x--) {
-      ops[idx++] = op;
-    }
+  for(int i=0; i<4; i++) {
+    cin >> ops[i];
   }
-  
-  do {
-    int res = 0;
-    for(int i=0; i<n; i++) {
-      if(ops[i] == 0) {
-        res += num[i];
-      } else if(ops[i] == 1) {
-        res -= num[i];
-      } else if(ops[i] == 2) {
-        res *= num[i];
-      } else if(ops[i] == 3) {
-        res /= num[i];
-      }
-    }
-    mx = max(res, mx);
-    mn = min(res, mn);
-  } while(next_permutation(ops+1, ops+n));
 
+  func(1, num[0]);
   cout << mx << "\n";
   cout << mn;
 
