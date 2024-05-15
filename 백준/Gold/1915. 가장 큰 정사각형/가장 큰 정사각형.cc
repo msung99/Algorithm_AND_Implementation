@@ -1,39 +1,39 @@
-#include <iostream>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 int n, m;
-int map[1001][1001] = { 0, }; 
-int maxlength = 0;			
+int board[1002][1002];
+int d[1002][1002];
 
-int main()
+int main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    
-    string num;
+
     cin >> n >> m;
 
     for(int i=1; i<=n; i++) {
-        string str;
-        cin >> str;
+        string s;
+        cin >> s;
         for(int j=1; j<=m; j++) {
-            map[i][j] = str[j-1] - '0';
-        }
-    }
-
-    for(int i=1; i<=n; i++) {
-        for(int j=1; j<=m; j++) {
-            if(map[i][j] == 1) {
-                map[i][j] = min({map[i][j-1], map[i-1][j-1], map[i-1][j]}) + 1;
-                maxlength = max(maxlength, map[i][j]);
+            if(s[j-1] == '1')  {
+                board[i][j] = 1;
             }
         }
     }
 
-    cout << maxlength * maxlength;
+    int maxLength = 0;
+    for(int i=1; i<=n; i++) {
+        for(int j=1; j<=m; j++) {
+            if(board[i][j] == 1) {
+                d[i][j] = min(min(d[i-1][j-1], d[i-1][j]), d[i][j-1]) + 1;
+            }
+            maxLength = max(maxLength, d[i][j]);
+        }
+    }
 
-	return 0;
+    cout << maxLength * maxLength;
+
+    return 0;
 }
