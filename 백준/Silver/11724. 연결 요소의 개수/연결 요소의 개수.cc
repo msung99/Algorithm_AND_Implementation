@@ -5,6 +5,23 @@ int n, m;
 vector<int> adj_list[1005];
 bool visited[1005];
 
+void bfs(int i) {
+    queue<int> q;
+    q.push(i);
+    visited[i] = true;
+    while(!q.empty()) {
+        int cur = q.front();
+         q.pop();
+        for(auto next : adj_list[cur]) {
+            if(visited[next]) {
+                continue;
+            }
+            q.push(next);
+            visited[next] = true;
+        }
+    }
+}
+
 int main(void)
 {
     ios::sync_with_stdio(0);
@@ -25,21 +42,8 @@ int main(void)
         if(visited[i]) {
             continue;
         }
+        bfs(i);
         cnt++;
-        queue<int> q;
-        q.push(i);
-        visited[i] = true;
-        while(!q.empty()) {
-            int cur = q.front();
-            q.pop();
-            for(auto next : adj_list[cur]) {
-                if(visited[next]) {
-                    continue;
-                }
-                q.push(next);
-                visited[next] = true;
-            }
-        }
     }
     cout << cnt;
     return 0;
