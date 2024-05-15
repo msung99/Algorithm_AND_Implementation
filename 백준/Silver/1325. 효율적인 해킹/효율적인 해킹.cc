@@ -2,54 +2,55 @@
 using namespace std;
 
 int n, m;
-vector<int> adj_list[10001];
-bool visited[10001];
-// vector<pair<int,int>> sortArr;
-vector<int> arr;
+vector<int> adj_list[10002];
+int arr[10002];
+bool visited[10002];
 
-int bfs(int start) {
-	int cnt = 1;
-	queue<int> q;
-	q.push(start);
-	visited[start] = true;
+int bfs(int st) {
+    fill(visited, visited +n+2, false);
+    queue<int> q;
+    q.push(st);
+    visited[st] = true;
 
-	while (!q.empty()) {
-		int cur = q.front();
-		q.pop();
-		for (auto nxt : adj_list[cur]) {
-			if (visited[nxt])
-				continue;
-			q.push(nxt);
-			visited[nxt] = true;
-			cnt++;
-		}
-	}
+    int cnt = 0;
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+        cnt++;
 
-	return cnt;
+        for(int next : adj_list[cur]) {
+            if(!visited[next]) {
+                q.push(next);
+                visited[next] = true;
+            }
+        }
+    }
+    return cnt;
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	cin >> n >> m;
-	for (int i = 0; i < m; i++) {
-		int u, v;
-		cin >> u >> v;
-		adj_list[v].push_back(u);
-	}
+    cin >> n >> m;
+    
+    while(m--) {
+        int u, v;
+        cin >> u >> v;
+        adj_list[v].push_back(u);
+    }
 
-	for (int i = 1; i <= n; i++) {
-		int cur_count = bfs(i);
-		arr.push_back(cur_count),
-		fill(visited, visited + n + 1, false);
-	}
+    for(int i=1; i<=n; i++) {
+        arr[i] = bfs(i);        
+    }
+    int maxVal = *max_element(arr+1, arr+n+1);
+    for(int i=1; i<=n; i++) {
+        if(arr[i] == maxVal) {
+            cout << i << ' ';
+        }
+    }
 
-	int max_value = *max_element(arr.begin(), arr.end());
-
-	for (int i = 0; i < arr.size(); i++) {
-		if (max_value == arr[i])
-			cout << i + 1 << ' ';
-	}
+    return 0;
 }
