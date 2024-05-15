@@ -1,46 +1,60 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n,m,start;
-vector<int> adj_list[1005];
-bool visited[1005];
+int n, m, st;
+vector<int> adj_list[1002];
+bool visited[1002];
 
-void dfs() {
+// 비재귀 DFS
+void dfs2() {
     stack<int> s;
-    s.push(start);
+    s.push(st);
+    visited[st] = true;
+
     while(!s.empty()) {
         int cur = s.top();
-        s.pop();
-
-        if(visited[cur]) {
-            continue;
-        }
-        visited[cur] = true;
         cout << cur << ' ';
+        s.pop();
+        visited[cur] = true;
+
         for(int i=0; i<adj_list[cur].size(); i++) {
-            int next = adj_list[cur][adj_list[cur].size() - 1 - i];
-            if(visited[next]) {
-                continue;
+            // 스택의 특성상 정점을 역순으로 넣아야한다.
+            int next = adj_list[cur][adj_list[cur].size()-(i+1)];
+            if(!visited[next]) {
+                s.push(next);
+                visited[next] = true;
             }
-            s.push(next);
+        }
+    }
+}
+
+// 재귀 DFS
+void dfs(int cur) {
+    visited[cur] = true;
+    cout << cur << ' ';
+    for(auto next : adj_list[cur]) {
+        if(!visited[next]) {
+            dfs(next);
         }
     }
 }
 
 void bfs() {
     queue<int> q;
-    q.push(start);
-    visited[start] = true;
+    q.push(st);
+    visited[st] = true;
+
     while(!q.empty()) {
         int cur = q.front();
         cout << cur << ' ';
         q.pop();
-        for(int next : adj_list[cur]) {
-            if(visited[next]) {
-                continue;
+        visited[cur] = true;
+
+        for(auto next : adj_list[cur]) {
+            if(!visited[next]) {
+                q.push(next);
+                visited[next] = true;
             }
-            q.push(next);
-            visited[next] = true;
         }
     }
 }
@@ -51,9 +65,9 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    cin >> n >> m >> start;
+    cin >> n >> m >> st;
 
-    for(int i=0; i<m; i++) {
+    while(m--) {
         int u, v;
         cin >> u >> v;
         adj_list[u].push_back(v);
@@ -64,8 +78,10 @@ int main(void)
         sort(adj_list[i].begin(), adj_list[i].end());
     }
 
-    dfs();
+    dfs(st);
     cout << "\n";
-    fill(visited+1, visited+n+1, false);
+    fill(visited, visited + n+1, false);
     bfs();
+
+    return 0;
 }
