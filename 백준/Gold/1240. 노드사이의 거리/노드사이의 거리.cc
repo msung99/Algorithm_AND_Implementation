@@ -22,26 +22,27 @@ int main(void)
     while(m--) {
         int source, dest;
         cin >> source >> dest;
-        fill(visited, visited + n + 1 , false);
+        fill(visited, visited + n + 1, false);
+
         queue<pair<int,int>> q;
         q.push({source, 0});
         visited[source] = true;
 
         while(!q.empty()) {
-            auto [cur, dist] = q.front();
+            auto cur = q.front();
             q.pop();
 
-            if(cur == dest) {
-                cout << dist << "\n";
+            if(cur.first == dest) {
+                cout << cur.second << "\n";
                 break;
             }
-
-            for(auto [next, nextDist] : adj_list[cur]) {
-                if(visited[next]) {
+            
+            for(auto next : adj_list[cur.first]) {
+                if(visited[next.first]) {
                     continue;
                 }
-                visited[next] = true;
-                q.push({next, dist + nextDist});
+                visited[next.first] = true;
+                q.push({next.first, cur.second+next.second});
             }
         }
     }
