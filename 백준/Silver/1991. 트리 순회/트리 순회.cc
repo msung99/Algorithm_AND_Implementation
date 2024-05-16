@@ -2,11 +2,12 @@
 using namespace std;
 
 int n;
+vector<int> adj_list[30];
 int lc[30];
 int rc[30];
 
 void preOrder(int cur) {
-    cout << char(cur + 'A' - 1);
+    cout << char(cur+'A'-1);
     if(lc[cur] != 0) {
         preOrder(lc[cur]);
     }
@@ -15,13 +16,13 @@ void preOrder(int cur) {
     }
 }
 
-void inOrder(int cur) {
+void midOrder(int cur) {
     if(lc[cur] != 0) {
-        inOrder(lc[cur]);
+        midOrder(lc[cur]);
     }
-    cout << char(cur + 'A' - 1);
+    cout << char(cur+'A'-1);
     if(rc[cur] != 0) {
-        inOrder(rc[cur]);
+        midOrder(rc[cur]);
     }
 }
 
@@ -32,7 +33,7 @@ void postOrder(int cur) {
     if(rc[cur] != 0) {
         postOrder(rc[cur]);
     }
-    cout << char(cur + 'A' - 1);
+    cout << char(cur+'A'-1);
 }
 
 int main(void)
@@ -42,9 +43,10 @@ int main(void)
     cout.tie(0);
 
     cin >> n;
-    for(int i=1; i<=n; i++) {
+    for(int i=0; i<n; i++) {
         char c, l, r;
         cin >> c >> l >> r;
+
         if(l != '.') {
             lc[c-'A'+1] = l-'A'+1;
         }
@@ -55,12 +57,9 @@ int main(void)
 
     preOrder(1);
     cout << "\n";
-
-    inOrder(1);
+    midOrder(1);
     cout << "\n";
-
     postOrder(1);
-    cout << "\n";
 
     return 0;
 }
