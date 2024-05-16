@@ -2,21 +2,23 @@
 using namespace std;
 
 int n;
-vector<int> adj_list[100003];
-int p[100003];
+vector<int> adj_list[100002];
+int p[100002];
 
 void bfs(int root) {
     queue<int> q;
     q.push(root);
+
     while(!q.empty()) {
         int cur = q.front();
         q.pop();
+
         for(int next : adj_list[cur]) {
             if(p[cur] == next) {
                 continue;
             }
-            q.push(next);
             p[next] = cur;
+            q.push(next);
         }
     }
 }
@@ -29,7 +31,7 @@ int main(void)
 
     cin >> n;
 
-    for(int i=1; i<=n-1; i++) {
+    for(int i=0; i<n-1; i++) {
         int u, v;
         cin >> u >> v;
         adj_list[u].push_back(v);
@@ -39,7 +41,7 @@ int main(void)
     bfs(1);
 
     for(int i=2; i<=n; i++) {
-        cout << p[i] << "\n";        
+        cout << p[i] << ' ';
     }
 
     return 0;
