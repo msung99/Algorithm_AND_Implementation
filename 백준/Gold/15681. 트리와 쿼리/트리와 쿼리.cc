@@ -3,17 +3,17 @@ using namespace std;
 
 int n, r, q;
 vector<int> adj_list[1000002];
-bool visited[1000002];
+bool visited[10000002];
 int subTreeCnt[1000002];
 
-int addSubTreeCount(int cur) {
+int addSubTrees(int cur) {
     visited[cur] = true;
-
-    for(auto next : adj_list[cur]) {
+    
+    for(int next : adj_list[cur]) {
         if(visited[next]) {
             continue;
         }
-        subTreeCnt[cur] += addSubTreeCount(next);
+        subTreeCnt[cur] += addSubTrees(next);
     }
     subTreeCnt[cur]++;
     return subTreeCnt[cur];
@@ -27,16 +27,16 @@ int main(void)
 
     cin >> n >> r >> q;
 
-    for(int i=1; i<=n-1; i++) {
+    for(int i=0; i<n-1; i++) {
         int u, v;
         cin >> u >> v;
         adj_list[u].push_back(v);
         adj_list[v].push_back(u);
     }
 
-    addSubTreeCount(r);
+    addSubTrees(r);
 
-    for(int i=0; i<q; i++) {
+    while(q--) {
         int root;
         cin >> root;
         cout << subTreeCnt[root] << "\n";
