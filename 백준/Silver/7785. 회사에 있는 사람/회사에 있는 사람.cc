@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-unordered_set<string> dic;
-
 int main(void)
 {
     ios::sync_with_stdio(0);
@@ -11,20 +9,25 @@ int main(void)
 
     int t;
     cin >> t;
+
+    unordered_set<string> s;
+
     while(t--) {
-        string name, command;
-        cin >> name >> command;
-        if(command == "enter") {
-            dic.insert(name);
-        } else if(command == "leave") {
-            dic.erase(name);
+        string name, status;
+        cin >> name >> status;
+
+        if(status == "enter") {
+            s.insert(name);
+        } else if(status == "leave") {
+            s.erase(name);
         }
     }
 
-    vector<string> res(dic.begin(), dic.end());
-    sort(res.rbegin(), res.rend());
-    for(auto element : res) {
-        cout << element << "\n";
+    vector<string> ans(s.begin(), s.end());
+    sort(ans.begin(), ans.end(), greater<string>());
+
+    for(auto e : ans) {
+        cout << e << "\n";
     }
 
     return 0;
