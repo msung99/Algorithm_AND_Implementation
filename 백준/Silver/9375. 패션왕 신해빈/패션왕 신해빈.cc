@@ -10,20 +10,20 @@ int main(void)
     int t;
     cin >> t;
     while(t--) {
+        unordered_map<string, int> dic;
         int n;
         cin >> n;
-        unordered_map<string, int> dic;
         for(int i=0; i<n; i++) {
             string a, b;
             cin >> a >> b;
-
             dic[b]++;
         }
-        int ans = 1;
-        for(auto clothCnt : dic) {
-            ans *= (clothCnt.second + 1);
+
+        int res = 1;
+        for(auto cloth : dic) {
+            res *= (cloth.second + 1);
         }
-        cout << ans - 1 << "\n";
+        cout << res -1 << "\n";
     }
 
     return 0;
