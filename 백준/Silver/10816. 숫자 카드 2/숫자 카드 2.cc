@@ -1,31 +1,62 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
+
+int n;
+int arr[500005];
+
+// target 이 들어갈 수 있는 가장 왼쪽 위치
+int lower_idx(int target, int len) {
+    int st = 0;
+    int en = len;
+
+    while(st < en) {
+        int mid = (st + en) / 2;
+        if(arr[mid] >= target) {
+            en = mid;
+        } else {
+            st = mid + 1;
+        }
+    }
+    return st;
+}
+
+// target 이 들어갈 수 있는 가장 오른쪽 위치
+int upper_idx(int target, int len) {
+    int st = 0;
+    int en = len;
+    while(st < en) {
+        int mid = (st + en) / 2;
+        if(arr[mid] > target) {
+            en = mid;
+        } else {
+            st = mid + 1;
+        }
+    }
+    return st; 
+}
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	int n = 0;
-	int m = 0;
-	int i = 0;
-	cin >> n;
-	vector<int> card(n, 0);
+    cin >> n;
 
-	for (int i = 0; i < n; i++)
-		cin >> card[i];
+    for(int i=0; i<n; i++) {
+        cin >> arr[i];
+    }
 
-	sort(card.begin(), card.end());
+    sort(arr, arr + n);
 
-	cin >> m;
-	sort(card.begin(), card.end());
-	int num = 0;
+    int m;
+    cin >> m;
+    while(m--) {
+        int target;
+        cin >> target;
 
-	for (int i = 0; i < m; i++) {
-		cin >> num;
-		cout << upper_bound(card.begin(), card.end(), num) - lower_bound(card.begin(), card.end(), num) << ' ';
-	}
+        cout << upper_idx(target, n) - lower_idx(target, n) << " ";
+    }
+
+    return 0;
 }
