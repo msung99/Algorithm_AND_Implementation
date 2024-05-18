@@ -6,21 +6,21 @@ vector<int> adj_list[100002];
 int p[100002];
 
 void bfs(int root) {
-    queue<int> q;
-    q.push(root);
+     queue<int> q;
+     q.push(root);
 
-    while(!q.empty()) {
+     while(!q.empty()) {
         int cur = q.front();
         q.pop();
 
         for(int next : adj_list[cur]) {
-            if(p[cur] == next) {
+            if(p[next] != 0) {
                 continue;
             }
             p[next] = cur;
             q.push(next);
         }
-    }
+     }
 }
 
 int main(void)
@@ -41,7 +41,7 @@ int main(void)
     bfs(1);
 
     for(int i=2; i<=n; i++) {
-        cout << p[i] << ' ';
+        cout << p[i] << "\n";
     }
 
     return 0;
