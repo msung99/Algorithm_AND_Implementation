@@ -2,18 +2,18 @@
 using namespace std;
 
 int n, r, q;
-vector<int> adj_list[1000002];
-bool visited[10000002];
-int subTreeCnt[1000002];
+vector<int> adj_list[100002];
+int subTreeCnt[100002];
+bool visited[100002];
 
-int addSubTrees(int cur) {
+int addSubTreeCnt(int cur) {
     visited[cur] = true;
-    
+
     for(int next : adj_list[cur]) {
         if(visited[next]) {
             continue;
         }
-        subTreeCnt[cur] += addSubTrees(next);
+        subTreeCnt[cur] += addSubTreeCnt(next);
     }
     subTreeCnt[cur]++;
     return subTreeCnt[cur];
@@ -34,7 +34,7 @@ int main(void)
         adj_list[v].push_back(u);
     }
 
-    addSubTrees(r);
+    addSubTreeCnt(r);    
 
     while(q--) {
         int root;
