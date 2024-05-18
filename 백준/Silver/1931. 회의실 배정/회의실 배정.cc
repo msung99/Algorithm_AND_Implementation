@@ -2,7 +2,7 @@
 using namespace std;
 
 int n;
-pair<int, int> arr[100005];
+pair<int,int> arr[100005];
 
 int main(void)
 {
@@ -15,23 +15,18 @@ int main(void)
     for(int i=0; i<n; i++) {
         cin >> arr[i].second >> arr[i].first;
     }
-
-    // 끝나는 시간이 가장 빠른것을 앞단으로 정렬
-    // 또한 끝나는 시간이 동일하다면, 시작하는 시간이 빠른 순으로 배치한다.
     sort(arr, arr + n);
 
-    int ans = 0;
-    int time = 0; // 현재 시간
+    int cnt = 0;
+    int time = 0;
 
     for(int i=0; i<n; i++) {
-        if(time > arr[i].second) {
-            continue;
+        if(time <= arr[i].second) {
+            time = arr[i].first;
+            cnt++;
         }
-        ans++;
-        time = arr[i].first; // 지금보는 시간이 time 이하려면 바로 회의를 배정한다.
     }
-
-    cout << ans;
+    cout << cnt;
 
     return 0;
 }
