@@ -1,55 +1,48 @@
-/*
-칭찬받는 노드와 정도를 받을떄마다 DFS를 실행하는 것이 아니라, 해당 정보를 배열에 미리 저장하고 이를 활용한다.
-
-1. 몇번째 노드가 칭찬을 얼마나 받았는지 그 시작점을 우선 배열에 저장한다.
-2. 사장(1번노드)이 트리의 root 노드이므로, DFS를 1번 노드부터 시작해서 여태까지 자신이 받은 칭찬의 양을 모든 자식 노드(자손)들에게 더해준다.
-
-이렇게 하면 DFS를 한번 실행하면서도 자손들에게 내리 칭찬을 할 수 있다.
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
 int n, m;
-vector<vector<int>> graph;
-vector<int> praise;
+int p[100002];
+int score[100002];
+vector<int> child[100002];
 
-void DFS(int cur) {
-	for (int i = 0; i < graph[cur].size(); i++) {
-		int next = graph[cur][i];
-		praise[next] += praise[cur];
-		DFS(next);
-	}
+void dfs(int cur) {
+    if(p[cur] != -1) {
+        score[cur] += score[p[cur]]; // 현재 노드(cur) 이 부모 p[cur] 의 점수를 누적해서 내려받는다.
+    }
+
+    for(int next : child[cur]) {
+        dfs(next);
+    }
 }
 
 int main(void)
 {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-	cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	graph.emplace_back();
+    cin >> n >> m;
 
-	cin >> n >> m;
-	graph.assign(n + 1, vector<int>(0, 0));
-	praise.assign(n + 1, 0);
+    for(int i=1; i<=n; i++) {
+        cin >> p[i];
+        if(p[i] == -1) {
+            continue;
+        }
+        child[p[i]].push_back(i);
+    }
 
-	for (int i = 1; i <= n; i++) {
-		int superior;
-		cin >> superior;
-		if (superior != -1)
-			graph[superior].emplace_back(i);
-	}
+    while(m--) {
+        int i, w;
+        cin >> i >> w;
+        score[i] += w;
+    }
 
-	for (int i = 0; i < m; i++) {
-		int person, credit;
-		cin >> person >> credit;
-		praise[person] += credit;
-	}
+    dfs(1);
 
-	DFS(1);
+    for(int i=1; i<=n; i++) {
+        cout << score[i] << ' ';
+    }
 
-	for (int i = 1; i <= n; i++) {
-		cout << praise[i] << ' ';
-	}
+    return 0;
 }
