@@ -1,0 +1,41 @@
+import sys
+ 
+ 
+def play(x, y):
+    notEnd = True
+    visited = [[False] * n for _ in range(n)]
+    visited[x][y] = True
+    while notEnd:
+        count, command = int(info[x][y][:-1]), info[x][y][-1]
+        dx, dy = direction[command]
+        for _ in range(count):
+            x = (x + dx) % n
+            y = (y + dy) % n
+            if visited[x][y]:
+                notEnd = False
+                break
+            visited[x][y] = True
+    return sum([sum(i) for i in visited])
+ 
+ 
+n = int(input())
+ 
+# 구름이의 말 위치
+Rg, Cg = map(int, input().split())
+# 플레이어의 말 위치
+Rp, Cp = map(int, input().split())
+Rg, Cg, Rp, Cp = Rg - 1, Cg - 1, Rp - 1, Cp - 1
+ 
+# 이동 정보
+info = [list(input().split()) for _ in range(n)]
+ 
+# 상하좌우
+direction = {"U": [-1, 0], "D": [1, 0], "L": [0, -1], "R": [0, 1]}
+ 
+goorm = play(Rg, Cg)
+player = play(Rp, Cp)
+ 
+if goorm > player:
+    print("goorm", goorm)
+else:
+    print("player", player)
