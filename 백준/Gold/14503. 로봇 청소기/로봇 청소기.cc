@@ -4,8 +4,8 @@ using namespace std;
 int n, m;
 int x, y;
 int board[52][52];
+int dy[4] = {0, 1, 0, -1}; // dy, dx 에서 dy 를 위에다 두고 반시계 방향 회전 생각하면 떠올리기 쉬움
 int dx[4] = {-1, 0, 1, 0};
-int dy[4] = {0, 1, 0, -1};
 int dir; // 0: 북, 1: 동, 2: 남, 3: 서
 
 int main(void)
@@ -32,7 +32,8 @@ int main(void)
 
     bool isClean = false;
     for(int i=0; i<4; i++) {
-      dir = (dir + 3) % 4;
+      dir = (dir + 3) % 4;  // 반시계 방향을 생각해봤을때, dx[i] 와 dy[i] 에서 90도를 3번 회전시키면 270도가 회전된다.
+                             // 즉, 반시계 방향으로 90도 회전시키는 것과 동일한 효과가 적용된다.
       int nx = x + dx[dir];
       int ny = y + dy[dir];
 
