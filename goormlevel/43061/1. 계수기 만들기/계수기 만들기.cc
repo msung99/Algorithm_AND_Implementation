@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, k;
-int counter[10];
-int number[10];
+int n;
+int arr[10];
+int num[10];
 
 int main(void)
 {
@@ -14,38 +14,34 @@ int main(void)
     cin >> n;
 
     for(int i=0; i<n; i++) {
-        cin >> counter[i];
+        cin >> arr[i];
     }
 
     for(int i=0; i<n; i++) {
-        cin >> number[i];
+        cin >> num[i];
     }
 
+    int k;
     cin >> k;
-    
+
     while(k--) {
         int idx = n-1;
-        bool overflow = true;
+        bool isOverflow = true;
 
-        while(overflow) {
-            number[idx] += 1;
-            if(number[idx] > counter[idx]) {
-                number[idx] = 0;
-                idx--;
-                overflow = true;
-
-                if(idx < 0) {
-                    break;
-                }
-
+        while(isOverflow) {
+            if(num[idx] == arr[idx]) {
+                isOverflow = true;
+                num[idx] = 0;
             } else {
-                overflow = false;
+                isOverflow = false;
+                num[idx]++;
             }
+            idx--;
         }
     }
 
     for(int i=0; i<n; i++) {
-        cout << number[i];
+        cout << num[i];
     }
 
     return 0;
