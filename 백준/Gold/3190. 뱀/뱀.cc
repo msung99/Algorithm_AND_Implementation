@@ -8,8 +8,8 @@ int board[102][102];
 deque<pair<int,int>> dq;
 queue<pair<int,char>> switchDir;
 int moveDir = 1;
+int dy[4] = {0, 1, 0, -1}; // dy, dx 위치 바꿔서 생각하면 회전 방향 생각하기 쉬운듯
 int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
 
 int main(void)
 {
