@@ -10,27 +10,26 @@ int dy[4] = {-1, 0, 1, 0};
 void bfs(int x, int y) {
     queue<pair<int,int>> q;
     q.push({x, y});
-
-    dist[0][0] = 0;
+    dist[x][y] = 0;
 
     while(!q.empty()) {
         auto cur = q.front();
-        int x = cur.first;
-        int y = cur.second;
         q.pop();
 
         for(int i=0; i<4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+            int nx = cur.first + dx[i];
+            int ny = cur.second + dy[i];
 
             if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
                 continue;
             }
-            if(board[nx][ny] != 1 || dist[nx][ny] != -1) {
+
+            if(dist[nx][ny] != -1 || board[nx][ny] == 0) {
                 continue;
             }
+
+            dist[nx][ny] = dist[cur.first][cur.second] + 1;
             q.push({nx, ny});
-            dist[nx][ny] = dist[x][y] + 1;
         }
     }
 }
@@ -44,22 +43,18 @@ int main(void)
     cin >> n >> m;
 
     for(int i=0; i<n; i++) {
-        fill(dist[i], dist[i] + m, -1);
-    }
-
-    for(int i=0; i<n; i++) {
-        string str;
-        cin >> str;
-
+        string s;
+        cin >> s;
         for(int j=0; j<m; j++) {
-            if(str[j] == '1') {
-                board[i][j] = 1;
-            }
+            board[i][j] = s[j] - '0';
         }
     }
 
-    bfs(0, 0);
+    for(int i=0; i<n; i++) {
+        fill(dist[i], dist[i] + m + 1, -1);
+    }
 
+    bfs(0, 0);
     cout << dist[n-1][m-1] + 1;
 
     return 0;
