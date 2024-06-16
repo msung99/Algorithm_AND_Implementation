@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, m, h;
 int board[102][102][102];
 int dist[102][102][102];
-int dx[6] = {0, 0, 1, -1, 0, 0};
-int dy[6] = {1, -1, 0, 0, 0, 0};
+int dx[6] = {1, -1, 0, 0, 0, 0};
+int dy[6] = {0, 0, 1, -1, 0, 0};
 int dz[6] = {0, 0, 0, 0, 1, -1};
 
 int main(void)
@@ -14,7 +13,8 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    cin >> m >> n >> h; // 5, 3, 1
+    int m, n, h;
+    cin >> m >> n >> h; // 5 3 1 
 
     queue<tuple<int,int,int>> q;
 
@@ -22,20 +22,21 @@ int main(void)
         for(int j=0; j<n; j++) {
             for(int k=0; k<m; k++) {
                 cin >> board[i][j][k];
-                if(board[i][j][k] == 0) {
-                    dist[i][j][k] = -1;
-                }
+
                 if(board[i][j][k] == 1) {
                     q.push(make_tuple(i, j, k));
+                }
+
+                if(board[i][j][k] == 0) {
+                    dist[i][j][k] = -1;
                 }
             }
         }
     }
 
     while(!q.empty()) {
-        auto cur = q.front();
         int z, x, y;
-        tie(z, x, y) = cur;
+        tie(z, x, y) = q.front();
         q.pop();
 
         for(int i=0; i<6; i++) {
@@ -56,7 +57,7 @@ int main(void)
         }
     }
 
-    int res =0;
+    int res = 0;
     for(int i=0; i<h; i++) {
         for(int j=0; j<n; j++) {
             for(int k=0; k<m; k++) {
@@ -64,7 +65,8 @@ int main(void)
                     cout << -1;
                     return 0;
                 }
-                res = max(res, dist[i][j][k]);
+
+                res = max(res, dist[i][j][k]);                
             }
         }
     }
