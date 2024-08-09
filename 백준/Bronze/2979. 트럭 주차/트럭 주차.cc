@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int cnt[101];
-int res;
+int a, b, c;
+int cnt[102];
 
 int main(void)
 {
@@ -10,26 +10,30 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    int a,b,c;
     cin >> a >> b >> c;
+    b = b*2;
+    c = c*3;
 
     for(int i=0; i<3; i++) {
         int start, end;
         cin >> start >> end;
-        for(int j = start; j < end; j++) {
+
+        for(int j=start; j<end; j++) {
             cnt[j]++;
         }
     }
 
-    for(int i=0; i<=100; i++) {
+    int res = 0;
+    for(int i=1; i<=100; i++) {
         if(cnt[i] == 1) {
-            res += a;          
+            res += a;
         } else if(cnt[i] == 2) {
-            res += b * 2;
+            res += b;
         } else if(cnt[i] == 3) {
-            res += c * 3;
+            res += c;
         }
     }
     cout << res;
+
     return 0;
 }
