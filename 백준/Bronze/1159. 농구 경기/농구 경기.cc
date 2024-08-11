@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int arr[26];
+int t;
+int dic[28];
 
 int main(void)
 {
@@ -9,23 +10,26 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    int t;
     cin >> t;
-    for(int i=0; i<t; i++) {
-        string str;
-        cin >> str;        
-        arr[str[0] - 'a']++;
+
+    while(t--) {
+        string s;
+        cin >> s;
+
+        dic[s[0] - 'a']++;
     }
 
-    string res = "";
-    for(int i=0; i<26; i++) {
-        if(arr[i] >= 5) {
-            res += (i + 'a');
+    int cnt = 0;
+    for(int i=0; i<27; i++) {
+        if(dic[i] >= 5) {
+            cout << char('a' + i);
+            cnt++;
         }
     }
-    if(res.size() != 0){
-        cout << res; 
-    } else {
+
+    if(cnt == 0) {
         cout << "PREDAJA";
     }
+    
+    return 0;
 }
