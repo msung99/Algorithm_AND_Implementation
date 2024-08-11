@@ -1,30 +1,33 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std; 
+int main() {
+	int n, m; 
+	cin >> n >> m; 
 
-int n, m;
-int arr[10000000];
-int cnt;
+    vector <int> v; 
 
-int main(void)
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+	for (int i = 0; i < n; i++) {
+		int a; 
+        cin >> a; 
+		v.push_back(a); 
+	}
 
-    cin >> n;
-    cin >> m;
+	sort(v.begin(), v.end()); 
 
-    for(int i=0; i<n; i++) {
-        cin >> arr[i];
-    }
-
-    for(int i=0; i<n; i++) {
-        for(int j=i+1; j<n; j++) {
-            if(arr[i] + arr[j] == m) {
-                cnt++;
-            }
-        }
-    }
-    cout << cnt;
-    return 0;
+	int s, e; 
+	s = 0; 
+	e = v.size() - 1;
+	int result = 0; 
+    
+	while (s < e) {
+		if (v[s] + v[e] < m) s++;
+		else if (v[s] + v[e] > m)e--;
+		else {
+			result++; 
+			e--; 
+		}
+	}
+	cout << result; 
 }
