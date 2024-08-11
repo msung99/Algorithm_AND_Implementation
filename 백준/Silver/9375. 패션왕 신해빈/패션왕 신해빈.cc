@@ -9,14 +9,17 @@ int main(void)
 
     int t;
     cin >> t;
+
     while(t--) {
         unordered_map<string, int> dic;
+
         int n;
         cin >> n;
-        for(int i=0; i<n; i++) {
-            string a, b;
-            cin >> a >> b;
-            dic[b]++;
+
+        while(n--) {
+            string s1, s2;
+            cin >> s1 >> s2;
+            dic[s2]++;
         }
 
         int res = 1;
