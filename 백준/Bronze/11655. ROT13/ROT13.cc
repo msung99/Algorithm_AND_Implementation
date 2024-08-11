@@ -7,24 +7,19 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    string str;
-    getline(cin, str);
+    string s;
+    getline(cin, s);
 
-    for(int i=0; i<str.size(); i++) {
-        if(str[i] >= 65 && str[i] <= 90) {
-            if(str[i] + 13 > 90) {
-                str[i] = str[i] + 13 - 26; 
-            } else {
-                str[i] = str[i] + 13;
-            }
-        } else if (str[i] >= 97 && str[i] <= 122) {
-            if(str[i] + 13 > 122) {
-                str[i] = str[i] + 13 - 26;
-            } else {
-                str[i] = str[i] + 13;
-            }
+    for(int i = 0; i < s.size(); i++) {
+        char c = s[i];
+        if ('a' <= c && c <= 'z') {
+            // 소문자인 경우
+            c = (c - 'a' + 13) % 26 + 'a';
+        } else if ('A' <= c && c <= 'Z') {
+            // 대문자인 경우
+            c = (c - 'A' + 13) % 26 + 'A';
         }
-        cout << str[i];
+        cout << c;
     }
 
     return 0;
