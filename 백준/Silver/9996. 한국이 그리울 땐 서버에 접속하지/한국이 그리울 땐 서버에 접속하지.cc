@@ -1,35 +1,37 @@
-#include <iostream>
-#include <string>
-using namespace std;
+#include <bits/stdc++.h>
+using namespace std; 
 
-int main(void)
+
+int main(void) 
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+	int n; 
+    cin >> n; 
+	string s; 
+    cin >> s; 
 
-    int t;
-    cin >> t;
+    int index = s.find('*');
+    string part1 = s.substr(0, index);
+    string part2 = s.substr(index+1);
+    
+	while (n--) { //n번 동안
+		string cmp = ""; 
+		cin >> cmp; //string 하나 생성
 
-    string ans;
-    cin >> ans;
-    int pos = ans.find('*');
-    string pre = ans.substr(0, pos);
-    string end = ans.substr(pos + 1);
+		if (part1.size() + part2.size() > cmp.size()) { 
+            cout << "NE\n"; //part1,2 의 사이즈를 합했을때보다 cmp문자열 보다 더 작으면 NE 출력
+        }
 
-    while(t--) {
-        string str;
-        cin >> str;
-
-        if(pre.size() + end.size() > str.size()) {
-            cout << "NE\n";
-        } else {
-            if(pre == str.substr(0, pos) && end == str.substr(str.size() - end.size())) {
-                cout << "DA\n"; 
+        else if(cmp.find(part1) == 0) {
+            string ex = cmp.substr(cmp.size() - part2.size());
+            if(ex == part2) {  //자른 문자열이 part2와 동일하냐? 그렇다면 DA출력
+                cout << "DA\n";
             } else {
                 cout << "NE\n";
             }
         }
-    }
-    return 0;
+
+		else { 
+            cout << "NE\n";// part1과 cmp문자열이 일치하지 않으면 NE 바로 출력
+        }
+	}
 }
