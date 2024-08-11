@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int arr[100001];
-int sum[100001]; // sum[3] = sum[2] + arr[3];
+int n, k;
+int sum[100002];
+int ans=INT_MIN;
 
 int main(void)
 {
@@ -10,21 +11,18 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    int n, k;
     cin >> n >> k;
 
-    for(int i=1; i <= n; i++) {
+    for(int i=1; i<=n; i++) {
         int data;
         cin >> data;
-        sum[i] = sum[i-1] + data; // sum[i] : 0 ~ i번쨰 데이터들의 합
+        sum[i] = sum[i-1] + data;
     }
 
-    int result = sum[k];
-    for(int i = k+1; i <= n; i++) {
-        if(result < sum[i] - sum[i-k]) {
-            result = sum[i] - sum[i-k];
-        }
+    for(int i=k; i<=n; i++) {
+        ans = max(ans, sum[i] - sum[i-k]);
     }
-    cout << result;
+    cout << ans;
+
     return 0;
 }
