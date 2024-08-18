@@ -2,8 +2,7 @@
 using namespace std;
 
 int n, m;
-unordered_map<string, int> dic1;
-unordered_map<int, string> dic2;
+vector<string> res;
 
 int main(void)
 {
@@ -13,21 +12,24 @@ int main(void)
 
     cin >> n >> m;
 
+    unordered_map<string, int> dic1;
+    unordered_map<int, string> dic2;
+
     for(int i=1; i<=n; i++) {
         string s;
         cin >> s;
         dic1[s] = i;
         dic2[i] = s;
-    }
+    }    
 
     while(m--) {
-        string input;
-        cin >> input;
+        string s;
+        cin >> s;
 
-        if(input[0] >= '0' && input[0] <= '9') {
-            cout << dic2[stoi(input)] << "\n";
+        if(s[0] > '0' && s[0] <= '9') {
+            cout << dic2[stoi(s)] << "\n";
         } else {
-            cout << dic1[input] << "\n";
+            cout << dic1[s] << "\n";
         }
     }
 
