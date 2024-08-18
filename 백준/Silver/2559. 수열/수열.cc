@@ -3,7 +3,6 @@ using namespace std;
 
 int n, k;
 int sum[100002];
-int ans=INT_MIN;
 
 int main(void)
 {
@@ -19,6 +18,7 @@ int main(void)
         sum[i] = sum[i-1] + data;
     }
 
+    int ans = -2100000000;
     for(int i=k; i<=n; i++) {
         ans = max(ans, sum[i] - sum[i-k]);
     }
