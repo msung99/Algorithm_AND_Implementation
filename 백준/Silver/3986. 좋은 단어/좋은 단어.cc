@@ -1,34 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int cnt;
-
 int main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
 
+    int ans = 0;
     int t;
     cin >> t;
-    while(t--){
-        string str;
-        cin >> str;
+    while(t--) {
+        stack<char> st;
+        string s;
+        cin >> s;
 
-        stack<char> s;
-        for(int i=0; i<str.size(); i++) {
-            if(s.empty()) {
-                s.push(str[i]);
-            } else if(s.top() == str[i]) {
-                s.pop();
-            } else {
-                s.push(str[i]);
+        for(int i=0; i<s.size(); i++) {
+            if(st.empty() || st.top() != s[i]) {
+                st.push(s[i]);
             }
-        }   
-        if(s.empty()) {
-            cnt++;
+            else if(st.top() == s[i]) {
+                st.pop();
+            }
+        }
+
+        if(st.empty()) {
+            ans++;
         }
     }
-    cout << cnt;
+    cout << ans;
+
     return 0;
 }
