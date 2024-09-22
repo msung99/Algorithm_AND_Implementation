@@ -1,26 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
 int arr[100002];
-int d[100002]; // d[i] : i번째 항까지의 연속합 중에 최댓값
+int dp[100002];
+int n, res;
 
 int main(void)
 {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-  cin >> n;
-  for(int i=0; i<n; i++) {
-    cin >> arr[i];
-  }
-  
-  for(int i=0; i<n; i++) {
-    d[i] = max(0, d[i-1]) + arr[i];
-  }
-  
-  cout << *max_element(d, d + n);
+    cin >> n;
 
-  return 0;
+    for(int i=0; i<n; i++) {
+        cin >> arr[i];
+    }
+    res = arr[0];
+    dp[0] = arr[0];
+
+    for(int i=1; i<n; i++) {
+        dp[i] = max(dp[i-1] + arr[i], arr[i]);
+        res = max(dp[i], res);
+    }
+    cout << res;
+
+    return 0;
 }
