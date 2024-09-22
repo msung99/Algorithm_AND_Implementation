@@ -2,28 +2,27 @@
 using namespace std;
 
 int t;
-int arr[102];
-long long d[102];
+long long arr[102];
 
 int main(void)
 {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-  d[1] = 1;
-  d[2] = 1;
-  d[3] = 1;
+    cin >> t;
 
-  for(int i=4; i<=100; i++) {
-    d[i] = d[i-2] + d[i-3];
-  }
+    arr[1] = arr[2] = arr[3] = 1;
 
-  cin >> t;  
-  while(t--) {
-    int data;
-    cin >> data;
-    cout << d[data] << "\n";
-  }
-  return 0;
+    for(int i=4; i<=100; i++) {
+        arr[i] = arr[i-2] + arr[i-3];
+    }
+
+    while(t--) {
+        int n;
+        cin >> n;
+        cout << arr[n] << "\n";       
+    }
+
+    return 0;
 }
