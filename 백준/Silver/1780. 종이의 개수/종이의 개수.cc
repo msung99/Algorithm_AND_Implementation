@@ -1,79 +1,75 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+int n;
+int zero, one, minusone;
 int board[2200][2200];
-int cntMinus;
-int cntZero;
-int cntOne;
 
-void func(int n, int startX, int startY) {  // 6
-  if(n == 1) {
-    if(board[startX][startY] == -1) {
-      cntMinus++;
+void func(int size, int startX, int startY) {
+    if(size == 1) {
+        if(board[startX][startY] == 1) {
+            one++;
+        }
+        else if(board[startX][startY] == -1) {
+            minusone++;
+        } 
+        else if(board[startX][startY] == 0) {
+            zero++;
+        }
+        return;
     }
-    if(board[startX][startY] == 0) {
-      cntZero++;
-    }
-    if(board[startX][startY] == 1) {
-      cntOne++;
-    }
-    return;
-  }
 
-  int isSameArea = true;
-  int color = board[startX][startY];
-  for(int i=startX; i<startX+n; i++) {
-    for(int j=startY; j<startY+n; j++) {
-      if(color != board[i][j]) {
-        isSameArea = false;
-        break;
-      }
+    bool isSameArea = true;
+    int color = board[startX][startY];
+    for(int i=startX; i<startX+size; i++) {
+        for(int j=startY; j<startY+size; j++) {
+            if(color != board[i][j]) {
+                isSameArea = false;
+                break;
+            }
+        }
     }
-  }
 
-  int size = n/3;
-  if(!isSameArea) {
-    for(int i=0; i<3; i++) {
-      for(int j=0; j<3; j++) {
-        int newX = startX + size * i;
-        int newY = startY + size * j;
-        func(size, newX, newY);
-      }
-    }
-  }
+    if(isSameArea) {
+        if(color == 0) {
+            zero++;
+        }
+        else if(color == 1) {
+            one++;
+        }
+        else {
+            minusone++;
+        }
+    } else {
+        int newSize = size/3;        
 
-  if(isSameArea){
-    if(color == -1) {
-      cntMinus++;
+        for(int i=0; i<3; i++) {
+            for(int j=0; j<3; j++) {
+                func(newSize, startX + newSize*i, startY + newSize*j);
+            }
+        }
     }
-    if(color == 0) {
-      cntZero++;
-    }
-    if(color == 1) {
-      cntOne++;
-    }
-  }
 }
 
 int main(void)
 {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-  int n;
-  cin >> n;
+    cin >> n;
 
-  for(int i=0; i<n; i++) {
-    for(int j=0; j<n; j++) {
-      cin >> board[i][j];
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<n; j++) {
+            cin >> board[i][j];
+        }
     }
-  }
 
-  func(n, 0, 0);
-  cout << cntMinus << "\n";
-  cout << cntZero << "\n";
-  cout << cntOne;
+    func(n, 0, 0);
 
-  return 0;
+    cout << minusone << "\n";
+    cout << zero << "\n";
+    cout << one << "\n";
+
+    return 0;
 }
