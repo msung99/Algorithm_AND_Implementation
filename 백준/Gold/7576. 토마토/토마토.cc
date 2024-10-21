@@ -20,20 +20,22 @@ int main(void)
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
             cin >> board[i][j];
+
             if(board[i][j] == 0) {
                 dist[i][j] = -1;
-            }
+            }            
+            
             if(board[i][j] == 1) {
-                q.push({i,j});                
+                q.push({i, j});
             }
         }
     }
 
     while(!q.empty()) {
         auto cur = q.front();
+        q.pop();
         int x = cur.first;
         int y = cur.second;
-        q.pop();
 
         for(int i=0; i<4; i++) {
             int nx = x + dx[i];
@@ -52,7 +54,7 @@ int main(void)
         }
     }
 
-    int res = 0;    
+    int res = 0;
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
             if(dist[i][j] == -1) {
