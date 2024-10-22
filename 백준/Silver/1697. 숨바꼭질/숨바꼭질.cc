@@ -1,8 +1,32 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, m;
+int st, en;
 int dist[100002];
+
+void bfs() {
+    queue<int> q;
+    q.push(st);
+    dist[st] = 0;
+
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+
+        for(int next : {cur+ 1, cur-1, cur*2}) {
+            if(next < 0 || next > 100000) {
+                continue;
+            }
+
+            if(dist[next] != -1) {
+                continue;
+            }
+
+            dist[next] = dist[cur] + 1;
+            q.push(next);
+         }
+    }
+}
 
 int main(void)
 {
@@ -10,42 +34,12 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    cin >> n >> m;
+    cin >> st >> en;
+    
     fill(dist, dist + 100001, -1);
+    bfs();
 
-    queue<int> q;
-    q.push(n);
-    dist[n] = 0;
-
-    while(!q.empty()) {
-        int cur = q.front();
-        q.pop();
-
-        for(int i=0; i<3; i++) {
-            int nx;
-            if(i == 0) {
-                nx = cur+1;
-            } 
-            if(i == 1) {
-                nx = cur-1;
-            }
-            if(i == 2) {
-                nx = cur*2;
-            }
-
-            if(nx < 0 || nx > 100000) {
-                continue;
-            }
-
-            if(dist[nx] != -1) {
-                continue;
-            }
-            dist[nx] = dist[cur] + 1;
-            q.push(nx);
-        }
-    }
-
-    cout << dist[m];
+    cout << dist[en];
 
     return 0;
 }
