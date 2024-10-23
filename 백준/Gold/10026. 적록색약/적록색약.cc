@@ -5,19 +5,19 @@ int n;
 char board[102][102];
 bool visited[102][102];
 int dx[4] = {0, 1, 0, -1};
-int dy[4] = {-1 ,0, 1, 0};
+int dy[4] = {-1, 0, 1, 0};
 
-void bfs(int x, int y) {
+void bfs(int sx, int sy) {
     queue<pair<int,int>> q;
-    q.push({x, y});
-    visited[x][y] = true;
+    q.push({sx, sy});
+    visited[sx][sy] = true;
 
     while(!q.empty()) {
         auto cur = q.front();
+        q.pop();
+
         int x = cur.first;
         int y = cur.second;
-        visited[x][y] = true;
-        q.pop();
 
         for(int i=0; i<4; i++) {
             int nx = x + dx[i];
@@ -26,9 +26,8 @@ void bfs(int x, int y) {
             if(nx < 0 || nx >= n || ny < 0 || ny >= n) {
                 continue;
             }
-
-            // 색깔이 다르다면 continue
-            if(visited[nx][ny] || board[x][y] != board[nx][ny]) {
+            
+            if(board[x][y] != board[nx][ny] || visited[nx][ny]) {
                 continue;
             }
 
@@ -38,51 +37,27 @@ void bfs(int x, int y) {
     }
 }
 
-void bfs2(int x, int y) {
-    queue<pair<int,int>> q;
-    q.push({x, y});
-    visited[x][y] = true;
-
-    while(!q.empty()) {
-        auto cur = q.front();
-        int x = cur.first;
-        int y = cur.second;
-        visited[x][y] = true;
-        q.pop();
-
-        for(int i=0; i<4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if(nx < 0 || nx >= n || ny < 0 || ny >= n) {
-                continue;
-            }
-
-            // 색깔이 다르다면 continue
-            if(visited[nx][ny] || board[x][y] != board[nx][ny]) {
-                continue;
-            }
-        }
-    }
-}
-
 int main(void)
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-
+    
     cin >> n;
 
     for(int i=0; i<n; i++) {
         string s;
         cin >> s;
-        for(int j=0; j<s.length(); j++) {
+
+        for(int j=0; j<n; j++) {
             board[i][j] = s[j];
         }
     }
 
     int cnt1 = 0;
+    int cnt2 = 0;
+
+
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
             if(!visited[i][j]) {
@@ -90,12 +65,6 @@ int main(void)
                 cnt1++;
             }
         }
-    }
-
-    cout << cnt1 << " ";
-
-    for(int i=0; i<n; i++) {
-        fill(visited[i], visited[i] + n, false);
     }
 
     for(int i=0; i<n; i++) {
@@ -106,7 +75,10 @@ int main(void)
         }
     }
 
-    int cnt2 = 0;
+    for(int i=0; i<n; i++) {
+        fill(visited[i], visited[i] + n, false);
+    }
+
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
             if(!visited[i][j]) {
@@ -116,7 +88,7 @@ int main(void)
         }
     }
 
-    cout << cnt2;
+    cout << cnt1 << ' ' << cnt2;
 
     return 0;
 }
