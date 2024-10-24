@@ -1,40 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n, s;
 int cnt;
 int num[22];
+int n, s;
 
 void func(int k, int total) {
-  if(k == n) {
-    if(total == s) {
-      cnt++;
+    if(k == n) {
+        if(total == s) {
+            cnt++;
+        }
+        return;
     }
-    return;
-  }
 
-  func(k+1, total);
-  func(k+1, total + num[k]);
+    func(k+1, total);
+    func(k+1, total + num[k]);
 }
 
 int main(void)
 {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-  cout.tie(0);
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-  cin >> n >> s;
+    cin >> n >> s;
 
-  for(int i=0; i<n; i++) {
-    cin >> num[i];
-  }
+    for(int i=0; i<n; i++) {
+        cin >> num[i];
+    }
 
-  func(0, 0);
+    func(0, 0);
 
-  if(s == 0) {
-    cnt--;
-  }
-  cout << cnt;
+    if(s == 0) {
+        cnt--;
+    }
 
-  return 0;
+    cout << cnt;
+
+    return 0;
 }
