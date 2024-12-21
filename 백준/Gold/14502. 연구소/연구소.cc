@@ -2,10 +2,11 @@
 using namespace std;
 
 int n, m;
+int mx;
 int board[10][10];
 int tmp[10][10];
-vector<pair<int,int>> virus;
 vector<pair<int,int>> wall;
+vector<pair<int,int>> virus;
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
 
@@ -16,23 +17,24 @@ int main(void)
     cout.tie(0);
 
     cin >> n >> m;
+
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
             cin >> board[i][j];
 
-            if(board[i][j] == 2) {
-                virus.push_back({i, j});
-            }
             if(board[i][j] == 0) {
                 wall.push_back({i, j});
+            }
+
+            if(board[i][j] == 2) {
+                virus.push_back({i, j});
             }
         }
     }
 
     vector<int> brute(wall.size(), 1);
-    fill(brute.begin(), brute.end()-3, 0);
+    fill(brute.begin(), brute.begin() + wall.size() - 3, 0);
 
-    int mx = 0;
     do {
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
@@ -42,7 +44,7 @@ int main(void)
 
         for(int i=0; i<brute.size(); i++) {
             if(brute[i] == 1) {
-                tmp[wall[i].first][wall[i].second] = 1;                
+                tmp[wall[i].first][wall[i].second] = 1;
             }
         }
 
@@ -54,8 +56,10 @@ int main(void)
         while(!q.empty()) {
             auto cur = q.front();
             q.pop();
+
             int x = cur.first;
             int y = cur.second;
+
             tmp[x][y] = 2;
 
             for(int i=0; i<4; i++) {
@@ -66,27 +70,27 @@ int main(void)
                     continue;
                 }
 
-                if(tmp[nx][ny] == 1 || tmp[nx][ny] == 2) {
+                if(tmp[nx][ny] != 0) {
                     continue;
                 }
-
                 tmp[nx][ny] = 2;
                 q.push({nx, ny});
             }
         }
 
-        int cnt = 0;
+        int cur = 0;
         for(int i=0; i<n; i++) {
             for(int j=0; j<m; j++) {
                 if(tmp[i][j] == 0) {
-                    cnt++;
+                    cur++;
                 }
             }
         }
-        mx = max(mx, cnt);
+        mx = max(cur, mx);
+
     } while(next_permutation(brute.begin(), brute.end()));
 
     cout << mx;
 
-    return 0;
+    return 0; 
 }
