@@ -2,8 +2,28 @@
 using namespace std;
 
 int n, m;
-vector<int> adj_list[505];
-int dist[505]; // dist[i] : i번째 이웃
+vector<int> adj_list[502];
+int dist[502];
+
+void bfs(int st) {
+    queue<int> q;
+    q.push(st);
+
+    dist[st] = 0;
+
+    while(!q.empty()) {
+        int cur = q.front();
+        q.pop();
+
+        for(int next : adj_list[cur]) {
+            if(dist[next] != -1) {
+                continue;
+            }
+            dist[next] = dist[cur] + 1;
+            q.push(next);
+        }                 
+    }
+}
 
 int main(void)
 {
@@ -11,45 +31,27 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    fill(dist, dist + 505, -1);
-
-    cin >> n; // 6
-    cin >> m; // 5
+    cin >> n >> m;
 
     for(int i=0; i<m; i++) {
         int u, v;
         cin >> u >> v;
+
         adj_list[u].push_back(v);
         adj_list[v].push_back(u);
     }
 
-    int start = 1;
-    queue<int> q; 
-    q.push(start);  
-    dist[start] = 0;
+    fill(dist, dist + n+1, -1);
 
-    while(!q.empty()) {
-        int cur = q.front(); 
-        q.pop();
+    bfs(1);
 
-        for(auto next : adj_list[cur]) {
-            if(dist[next] != -1) {
-                continue;
-            }
-
-            q.push(next);
-            dist[next] = dist[cur] + 1; 
+    int ans = 0;
+    for(int i=2; i<=n; i++) {
+        if(dist[i] <= 2 && dist[i] != -1) {
+            ans++;
         }
     }
-
-    int cnt = 0;
-    for(int i=0; i<505; i++) {
-        if(dist[i] == 1 || dist[i] == 2) {
-            cnt++;
-        }
-    }
-
-    cout << cnt;
+    cout << ans;
 
     return 0;
 }
