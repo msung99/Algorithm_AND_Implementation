@@ -1,20 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int cnt;
-int num[22];
 int n, s;
+int ans;
+int arr[22];
 
 void func(int k, int total) {
     if(k == n) {
         if(total == s) {
-            cnt++;
+            ans++;
         }
         return;
     }
 
     func(k+1, total);
-    func(k+1, total + num[k]);
+    func(k+1, total + arr[k]);
 }
 
 int main(void)
@@ -26,16 +26,16 @@ int main(void)
     cin >> n >> s;
 
     for(int i=0; i<n; i++) {
-        cin >> num[i];
+        cin >> arr[i];
     }
 
     func(0, 0);
 
     if(s == 0) {
-        cnt--;
+        ans--;
     }
 
-    cout << cnt;
+    cout << ans;
 
     return 0;
 }
