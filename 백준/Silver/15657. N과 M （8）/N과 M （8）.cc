@@ -1,43 +1,40 @@
-#include <iostream>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 
-int arr[10];
-int num[10];
 int n, m;
-// bool visited[10];
+int arr[10];
+int res[10];
 
+void func(int k, int st) {
+    if(k == m) {
+        for(int i=0; i<m; i++) {
+            cout << res[i] << ' ';
+        }
+        cout << "\n";
+        return;
+    }
 
-void func(int k)
-{
-	if (k == m)
-	{
-		for (int i = 0; i < m; i++)
-			cout << num[arr[i]] << ' ';
-		cout << '\n';
-		return;
-	}
-	
-	int start = 0;
-	if (k != 0)
-		start = arr[k-1];
-
-	for (int i = start; i < n; i++)
-	{
-		arr[k] = i; // 인덱스 번호를 부분수열로 저장. ex) (0,0), (0,1) (0,2), (0,3), (1,2), (1,3), (2,3), (3,3) 이 배열 arr 에 저장된다
-		func(k + 1);
-	}
+    for(int i=st; i<n; i++) {
+        res[k] = arr[i];
+        func(k+1, i);
+    }
 }
-
 
 int main(void)
 {
-	cin >> n >> m;
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
 
-	for (int i = 0; i < n; i++)
-		cin >> num[i];
+    cin >> n >> m;
 
-	sort(num, num + n);  // 오름차순 정렬
+    for(int i=0; i<n; i++) {
+        cin >> arr[i];
+    }
 
-	func(0);
+    sort(arr, arr + n);
+
+    func(0, 0);
+
+    return 0;
 }
