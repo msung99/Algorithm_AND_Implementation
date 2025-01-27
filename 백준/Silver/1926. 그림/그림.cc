@@ -4,41 +4,39 @@ using namespace std;
 int n, m;
 int board[502][502];
 bool visited[502][502];
-int cnt;
-int area;
-
 int dx[4] = {0, 1, 0, -1};
 int dy[4] = {-1, 0, 1, 0};
+int cnt;
+int mx;
 
 void bfs(int x, int y) {
     queue<pair<int,int>> q;
     q.push({x, y});
-    int cur_area = 0;
+    visited[x][y] = true;
 
+    int area = 0;
     while(!q.empty()) {
-        cur_area++;
+        area++;
         auto cur = q.front();
         q.pop();
-        int x = cur.first;
-        int y = cur.second;
-        visited[x][y] = true;
 
         for(int i=0; i<4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
+            int nx = cur.first + dx[i];
+            int ny = cur.second + dy[i];
+ 
             if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
                 continue;
             }
 
-            if(visited[nx][ny] || board[nx][ny] != 1) {
-               continue; 
+            if(visited[nx][ny] || board[nx][ny] == 0) {
+                continue;
             }
-            q.push({nx, ny});
+
             visited[nx][ny] = true;
+            q.push({nx, ny});
         }
     }
-    area = max(area, cur_area);
+    mx = max(area, mx);
 }
 
 int main(void)
@@ -51,21 +49,21 @@ int main(void)
 
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
-            cin >> board[i][j];
+            cin >> board[i][j];            
         }
     }
 
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
-            if(!visited[i][j] && board[i][j] == 1) {
+            if(board[i][j] == 1 && !visited[i][j]) {
                 bfs(i, j);
                 cnt++;
             }
         }
     }
-    
+
     cout << cnt << "\n";
-    cout << area;
+    cout << mx;
 
     return 0;
 }
