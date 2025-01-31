@@ -7,27 +7,27 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
-    int t;
-    cin >> t;
+    int n;
+    cin >> n;
 
-    unordered_set<string> s;
+    unordered_set<string> dic;    
 
-    while(t--) {
-        string name, status;
-        cin >> name >> status;
+    while(n--) {
+        string s1, s2;
+        cin >> s1 >> s2;
 
-        if(status == "enter") {
-            s.insert(name);
-        } else if(status == "leave") {
-            s.erase(name);
+        if(s2 == "enter") {
+            dic.insert(s1);
+        } else {
+            dic.erase(s1);
         }
     }
 
-    vector<string> ans(s.begin(), s.end());
-    sort(ans.begin(), ans.end(), greater<string>());
+    vector<string> arr(dic.begin(), dic.end());
+    sort(arr.begin(), arr.end(), greater<string>());
 
-    for(auto e : ans) {
-        cout << e << "\n";
+    for(int i=0; i<arr.size(); i++) {
+        cout << arr[i] << "\n";
     }
 
     return 0;
