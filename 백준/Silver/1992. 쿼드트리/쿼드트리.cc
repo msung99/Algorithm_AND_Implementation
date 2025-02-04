@@ -1,25 +1,25 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int board[66][66];
+char board[66][66];
 
-void func(int n, int sx, int sy) {
+void func(int n, int startX, int startY) {
     if(n == 1) {
-        cout << board[sx][sy];
+        cout << board[startX][startY];
         return;
     }
 
+    char color = board[startX][startY];
     bool isSameArea = true;
-    int color = board[sx][sy];
-    for(int i=sx; i<sx+n; i++) {
-        for(int j=sy; j<sy+n; j++) {
+    for(int i=startX; i<startX+n; i++) {
+        for(int j=startY; j<startY+n; j++) {
             if(board[i][j] != color) {
                 isSameArea = false;
                 break;
             }
         }
     }
-
+    
     if(isSameArea) {
         cout << color;
     } else {
@@ -27,7 +27,7 @@ void func(int n, int sx, int sy) {
         int size = n/2;
         for(int i=0; i<2; i++) {
             for(int j=0; j<2; j++) {
-                func(size, sx + size*i, sy + size*j);
+                func(size, startX + size*i, startY + size*j);
             }
         }
         cout << ")";
@@ -47,7 +47,7 @@ int main(void)
         string s;
         cin >> s;
         for(int j=0; j<n; j++) {
-            board[i][j] = s[j] - '0';
+            board[i][j] = s[j];            
         }
     }
 
