@@ -3,18 +3,18 @@ using namespace std;
 
 int n, s;
 int ans;
-int arr[22];
+int num[22];
 
-void func(int k, int total) {
+void func(int k, int cur) {
     if(k == n) {
-        if(total == s) {
+        if(cur == s) {
             ans++;
         }
         return;
     }
 
-    func(k+1, total);
-    func(k+1, total + arr[k]);
+    func(k+1, cur);
+    func(k+1, cur+num[k]);
 }
 
 int main(void)
@@ -26,7 +26,7 @@ int main(void)
     cin >> n >> s;
 
     for(int i=0; i<n; i++) {
-        cin >> arr[i];
+        cin >> num[i];
     }
 
     func(0, 0);
