@@ -3,8 +3,8 @@ using namespace std;
 
 int n, m;
 int board[52][52];
-vector<pair<int,int>> house;
 vector<pair<int,int>> chicken;
+vector<pair<int,int>> house;
 
 int main(void)
 {
@@ -38,7 +38,6 @@ int main(void)
 
         for(auto h : house) {
             int houseMin = 1999999999;
-            
             for(int i=0; i<brute.size(); i++) {
                 if(brute[i] == 1) {
                     houseMin = min(houseMin, abs(h.first - chicken[i].first) + abs(h.second - chicken[i].second));
