@@ -5,11 +5,10 @@ int n, m;
 vector<int> adj_list[502];
 int dist[502];
 
-void bfs(int st) {
+void bfs(int sx) {
     queue<int> q;
-    q.push(st);
-
-    dist[st] = 0;
+    q.push(sx);
+    dist[sx] = 0;
 
     while(!q.empty()) {
         int cur = q.front();
@@ -21,7 +20,7 @@ void bfs(int st) {
             }
             dist[next] = dist[cur] + 1;
             q.push(next);
-        }                 
+        }
     }
 }
 
@@ -33,21 +32,19 @@ int main(void)
 
     cin >> n >> m;
 
-    for(int i=0; i<m; i++) {
+    while(m--) {
         int u, v;
         cin >> u >> v;
-
         adj_list[u].push_back(v);
         adj_list[v].push_back(u);
     }
 
     fill(dist, dist + n+1, -1);
-
     bfs(1);
 
     int ans = 0;
-    for(int i=2; i<=n; i++) {
-        if(dist[i] <= 2 && dist[i] != -1) {
+    for(int i=1; i<=n; i++) {
+        if(dist[i] == 1 || dist[i] == 2) {
             ans++;
         }
     }
