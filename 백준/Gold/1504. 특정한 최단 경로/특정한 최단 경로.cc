@@ -17,18 +17,22 @@ ll solve(int st, int en){
   pq.push({d[st], st});
 
   while(!pq.empty()){
-    int u, v, w, dw;
-    tie(w, u) = pq.top(); pq.pop();
-    if(d[u] != w) continue;
-    for(auto nxt : adj[u]){
-      tie(dw, v) = nxt;
-      dw += w;
-      if(dw < d[v]) {
-        d[v] = dw;
-        pq.push({dw, v});
-      }
+    auto cur = pq.top(); 
+    pq.pop();
+
+    if(d[cur.second] != cur.first) { 
+        continue;
+    }
+
+    for(auto next : adj[cur.second]){
+        if(d[next.second] <= d[cur.second] + next.first) {
+            continue;
+        }
+        d[next.second] = d[cur.second] + next.first;
+        pq.push({d[next.second], next.second});
     }
   }
+
   return d[en];
 }
 
@@ -51,9 +55,14 @@ int main(void){
   // 위 2가지 각 경우에 대해 최단 거리로 이동할 수 있는 것 중에 하나가 정답이 된다.
   int e1, e2;
   cin >> e1 >> e2;
+
   ll ans1 = solve(1, e1) + solve(e1, e2) + solve(e2, n);
   ll ans2 = solve(1, e2) + solve(e2, e1) + solve(e1, n);
+  
   ll ans = min(ans1, ans2);
-  if(ans >= INF) ans = -1;
+
+  if(ans >= INF) { 
+    ans = -1;
+  }
   cout << ans;
 }
