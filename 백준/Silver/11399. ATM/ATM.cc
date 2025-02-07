@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int n;
-vector<int> arr;
 int prefix_sum[1002];
+vector<int> arr;
 
 int main(void)
 {
@@ -11,6 +10,7 @@ int main(void)
     cin.tie(0);
     cout.tie(0);
 
+    int n;
     cin >> n;
 
     for(int i=0; i<n; i++) {
