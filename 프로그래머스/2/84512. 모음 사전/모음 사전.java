@@ -2,35 +2,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Solution {
-    static String[] words = {"A","E","I","O","U"};
-    static List<String> list;
+    static String[] words = {"A", "E", "I", "O", "U"};
+    List<String> results = new ArrayList<>();
 
-    void dfs(int k, String curWord) {
-        list.add(curWord);
-
-        if(k == 5) {
+    public void dfs(String curWord) {
+        results.add(curWord);
+        
+        if(curWord.length() == 5) {
             return;
         }
 
         for(int i=0; i<5; i++) {
-            dfs(k+1, curWord+words[i]);
+            dfs(curWord + words[i]);
         }
     }
 
     public int solution(String word) {
-        int answer = 0;
-        list = new ArrayList<>();
+        int ans = 0;
+        dfs("");
 
-        dfs(0,"");
-        int size = list.size();
-
-        for(int i=0; i<size; i++) {
-            if(list.get(i).equals(word)) {
-                answer = i;
+        for(int i=0; i<results.size(); i++) {
+            if(results.get(i).equals(word)) {
+                ans = i;
                 break;
             }
         }
-
-        return answer;
+        return ans;
     }
 }
