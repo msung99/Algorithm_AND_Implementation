@@ -2,22 +2,19 @@ import java.util.*;
 
 class Solution {
     public String solution(String[] participant, String[] completion) {
+        Map<String, Integer> map = new HashMap<>();
+
+        for(String member : participant) {
+            map.put(member, map.getOrDefault(member, 0) + 1);
+        }
+
+        for(String complete : completion) {
+            map.put(complete, map.get(complete)-1);
+        }
+
         String answer = "";
-
-        // Use a HashMap to count occurrences of each participant's name
-        HashMap<String, Integer> map = new HashMap<>();
-        for (String p : participant) {
-            map.put(p, map.getOrDefault(p, 0) + 1);
-        }
-
-        // Decrement the count for each name found in completion
-        for (String c : completion) {
-            map.put(c, map.get(c) - 1);
-        }
-
-        // Find the participant whose count is not zero (meaning they didn't complete)
-        for (String key : map.keySet()) {
-            if (map.get(key) != 0) {
+        for(String key : map.keySet()) {
+            if(map.get(key) == 1) {
                 answer = key;
                 break;
             }
