@@ -2,10 +2,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 class Solution {
-    int[][] board = new int[201][201];
-    boolean[] visited = new boolean[201];
+    boolean[] visited = new boolean[202];
+    int[][] board = new int[202][202];
 
-    public void bfs(int st, int n) {
+    void bfs(int st, int n) {
         Queue<Integer> q = new LinkedList<>();
         q.add(st);
 
@@ -13,11 +13,7 @@ class Solution {
             int cur = q.poll();
 
             for(int next=0; next<n; next++) {
-                if(visited[next]) {
-                    continue;
-                }
-
-                if(board[cur][next] == 0) {
+                if(visited[next] || board[cur][next] == 0) {
                     continue;
                 }
 
@@ -31,20 +27,20 @@ class Solution {
         for(int i=0; i<n; i++) {
             visited[i] = false;
         }
-
-        for(int i=0; i<boardTmp.length; i++) {
-            for(int j=0; j<boardTmp.length; j++) {
+        
+        for(int i=0; i<n; i++) {
+            for(int j=0; j<n; j++) {
                 board[i][j] = boardTmp[i][j];
             }
         }
 
-        int answer = 0;
+        int ans = 0;
         for(int i=0; i<n; i++) {
             if(!visited[i]) {
                 bfs(i, n);
-                answer++;
+                ans++;
             }
         }
-        return answer;
+        return ans;
     }
 }
